@@ -1,0 +1,76 @@
+@import "tailwindcss";
+
+:root {
+  --canvas: #f6f3ee;
+  --surface: #ffffff;
+  --surface-muted: #efeae2;
+  --ink: #141413;
+  --ink-secondary: #57534e;
+  --ink-tertiary: #78716c;
+  --border: #e5dfd6;
+  --border-strong: #d6cec2;
+  --emerald: #0f5132;
+  --emerald-hover: #0a3b24;
+  --emerald-soft: #e6f2ec;
+  --cobalt: #1d4ed8;
+  --cobalt-soft: #eff6ff;
+}
+
+@layer base {
+  html {
+    background-color: var(--canvas);
+    color: var(--ink);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    caret-color: var(--emerald);
+  }
+
+  ::selection {
+    background-color: #d1fae5;
+    color: #064e3b;
+  }
+
+  a {
+    text-underline-offset: 3px;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--emerald);
+    outline-offset: 2px;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+}
+
+.font-mono-num {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Refined hairline scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d6cec2;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a29e;
+}

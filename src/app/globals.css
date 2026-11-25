@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #11100E;
+  --color-stone: #181613;
+  --color-stone-elevated: #211E1A;
+  --color-stone-inset: #141210;
+  --color-hairline: #2B2722;
+  --color-hairline-strong: #3D3730;
+  --color-parchment: #F5F2EB;
+  --color-sand: #B5AEA2;
+  --color-ash: #968E82;
+  --color-copper: #D97745;
+  --color-copper-light: #E28758;
+  --color-sage: #84A98C;
+  --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display), Georgia, serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+:root {
+  color-scheme: dark;
+  caret-color: #D97745;
+}
+
+html,
+body {
+  background-color: #11100E;
+  color: #F5F2EB;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: -0.02em;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  text-underline-offset: 4px;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #11100E;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2B2722;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3D3730;
+}
