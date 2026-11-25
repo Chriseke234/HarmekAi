@@ -9,6 +9,7 @@ import type {
 import { runNativeSageEngine, type NativeEngineOutput } from "../native/engine";
 import type { WorkspaceKnowledgeBundle } from "../native/knowledge-matcher";
 import { getEnhancedProvider } from "../providers/adapters";
+import { verifyEnhancedReplyFacts } from "../providers/fact-verifier";
 import type { EnhancedAIProvider } from "../providers/types";
 
 export interface RouterInput {
@@ -136,6 +137,29 @@ export async function routeIntelligenceRequest(input: RouterInput): Promise<Rout
       topMatches: nativeResult.matchedCandidates,
       recentHistory: input.recentHistory ?? [],
     });
+
+    // Post-Generation Fact Verifier: block hallucinated prices and fall back to verified Native reply
+    const factCheck = verifyEnhancedReplyFacts(enhanced.reply, input.knowledge);
+    if (!factCheck.verified) {
+      return {
+        suppressed: false,
+        suppressionReason: null,
+        reply: nativeResult.reply,
+        intelligenceModeUsed: "native",
+        fallbackTriggered: true,
+        fallbackError: `Fact verifier blocked unverified Enhanced AI response: ${factCheck.violations.join(" ")}`,
+        intent: nativeResult.intent,
+        confidence: nativeResult.confidence,
+        sources: nativeResult.sources,
+        extractedEntities: nativeResult.extractedEntities,
+        shouldEscalate: nativeResult.shouldEscalate,
+        escalationReason: nativeResult.escalationReason,
+        isUnanswered: nativeResult.isUnanswered,
+        updatedState: nativeResult.updatedState,
+        tokensUsed: enhanced.tokensUsed,
+        estimatedCostUsd: enhanced.estimatedCostUsd,
+      };
+    }
 
     return {
       suppressed: false,

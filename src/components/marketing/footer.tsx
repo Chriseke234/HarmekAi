@@ -42,6 +42,11 @@ export function MarketingFooter() {
                   Pricing
                 </Link>
               </li>
+              <li>
+                <Link href="/cookies" className="hover:text-[#F5F2EB]">
+                  Cookies Policy
+                </Link>
+              </li>
             </ul>
           </div>
 

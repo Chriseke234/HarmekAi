@@ -31,6 +31,18 @@ interface InternalNote {
   profiles?: { full_name?: string; email?: string } | null;
 }
 
+interface HandoffBrief {
+  customerGoal: string;
+  factsAlreadyShared: string[];
+  recommendedAction: string;
+  suggestedReplies: string[];
+}
+
+interface FaqDraft {
+  question: string;
+  answer: string;
+}
+
 export default function ConversationsPage() {
   const [list, setList] = useState<ConversationListItem[]>([]);
   const [loadingList, setLoadingList] = useState(true);
@@ -41,6 +53,9 @@ export default function ConversationsPage() {
   const [selectedConv, setSelectedConv] = useState<ConversationListItem | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [notes, setNotes] = useState<InternalNote[]>([]);
+  const [handoffBrief, setHandoffBrief] = useState<HandoffBrief | null>(null);
+  const [faqDraft, setFaqDraft] = useState<FaqDraft | null>(null);
+  const [faqSavedNotice, setFaqSavedNotice] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const [noteText, setNoteText] = useState("");
   const [sending, setSending] = useState(false);
@@ -68,6 +83,9 @@ export default function ConversationsPage() {
       setSelectedConv(data.conversation);
       setMessages(data.messages ?? []);
       setNotes(data.notes ?? []);
+      setHandoffBrief(data.handoffBrief ?? null);
+      setFaqDraft(data.suggestedFaqDraft ?? null);
+      setFaqSavedNotice(null);
     }
   }
 
@@ -372,6 +390,75 @@ export default function ConversationsPage() {
                     <p className="mt-1.5 text-xs leading-relaxed text-[#D6D0C4]">
                       {selectedConv.summary}
                     </p>
+                  </div>
+                ) : null}
+
+                {handoffBrief ? (
+                  <div className="space-y-2 border-t border-[#2B2722] pt-4 text-xs">
+                    <h3 className="font-semibold uppercase tracking-wider text-[#D97745]">
+                      Agent Handoff Brief
+                    </h3>
+                    <p className="text-[#D6D0C4]">
+                      <strong className="text-[#F5F2EB]">Goal:</strong> {handoffBrief.customerGoal}
+                    </p>
+                    <p className="text-[#B5AEA2]">
+                      <strong className="text-[#F5F2EB]">Next step:</strong>{" "}
+                      {handoffBrief.recommendedAction}
+                    </p>
+                    <div className="space-y-1.5 pt-1">
+                      <p className="text-[11px] font-medium text-[#968E82]">
+                        1-Click Suggested Replies:
+                      </p>
+                      {handoffBrief.suggestedReplies.map((sr, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          onClick={() => setReplyText(sr)}
+                          className="w-full rounded-lg border border-[#2B2722] bg-[#141210] p-2 text-left text-[11px] text-[#D6D0C4] transition-colors hover:border-[#D97745]/50 hover:text-[#F5F2EB] cursor-pointer"
+                        >
+                          {sr}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                {faqDraft ? (
+                  <div className="space-y-2 border-t border-[#2B2722] pt-4 text-xs">
+                    <h3 className="font-semibold uppercase tracking-wider text-[#84A98C]">
+                      Self-Healing KB Suggestion
+                    </h3>
+                    <p className="text-[#B5AEA2]">
+                      Teach Harmek this verified human answer permanently:
+                    </p>
+                    <div className="rounded-lg border border-[#84A98C]/35 bg-[#141210] p-2.5">
+                      <p className="font-medium text-[#F5F2EB]">Q: {faqDraft.question}</p>
+                      <p className="mt-1 text-[#B5AEA2]">A: {faqDraft.answer}</p>
+                    </div>
+                    {faqSavedNotice ? (
+                      <p className="text-[#84A98C]">{faqSavedNotice}</p>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        className="w-full"
+                        onClick={async () => {
+                          const r = await fetch("/api/knowledge", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              kind: "faq",
+                              question: faqDraft.question,
+                              answer: faqDraft.answer,
+                              category: "Learned from Handoff",
+                            }),
+                          });
+                          if (r.ok) setFaqSavedNotice("Approved & added to Knowledge Base.");
+                        }}
+                      >
+                        Approve &amp; Add to FAQ
+                      </Button>
+                    )}
                   </div>
                 ) : null}
 

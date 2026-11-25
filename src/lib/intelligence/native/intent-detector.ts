@@ -1,5 +1,6 @@
 /**
- * Deterministic intent classifier for the Native Harmek Intelligence Engine.
+ * Deterministic single- and multi-intent classifier for the Native Harmek Engine.
+ * Supports compound customer questions (e.g. "How much is Vitamin C Serum and when do you close?").
  */
 
 export type NativeIntent =
@@ -8,6 +9,7 @@ export type NativeIntent =
   | "gratitude"
   | "human_handoff"
   | "complaint_urgent"
+  | "recommendation"
   | "product_price"
   | "product_availability"
   | "product_info"
@@ -51,6 +53,13 @@ const INTENT_RULES: IntentRule[] = [
     ],
   },
   {
+    intent: "recommendation",
+    priority: 88,
+    patterns: [
+      /\b(recommend|recommendation|suggest|which one|what should i (buy|get|choose|try)|best for|help me choose)\b/i,
+    ],
+  },
+  {
     intent: "product_price",
     priority: 85,
     patterns: [
@@ -69,7 +78,7 @@ const INTENT_RULES: IntentRule[] = [
     intent: "delivery_info",
     priority: 80,
     patterns: [
-      /\b(deliver|delivery|shipping|ship|dispatch|courier|pickup|pick up|how long.*take|same day|next day)\b/i,
+      /\b(deliver|delivery|shipping|ship|dispatch|courier|waybill|pickup|pick up|how long.*take|same day|next day)\b/i,
     ],
   },
   {
@@ -137,56 +146,77 @@ const INTENT_RULES: IntentRule[] = [
   },
 ];
 
-export function detectIntent(
+/**
+ * Returns ALL matching intents ordered by priority (for multi-intent compound queries).
+ */
+export function detectMultipleIntents(
   message: string,
   customEscalationKeywords: string[] = []
-): IntentResult {
+): IntentResult[] {
   const trimmed = message.trim();
   const lower = trimmed.toLowerCase();
 
-  // Check business-configured escalation keywords first
   for (const rawKw of customEscalationKeywords) {
     const kw = rawKw.trim().toLowerCase();
     if (kw && lower.includes(kw)) {
-      return {
-        intent: "human_handoff",
-        confidence: 0.95,
-        matchedSignals: [`escalation_keyword:${rawKw}`],
-      };
+      return [
+        {
+          intent: "human_handoff",
+          confidence: 0.95,
+          matchedSignals: [`escalation_keyword:${rawKw}`],
+        },
+      ];
     }
   }
 
+  const matched: IntentResult[] = [];
   for (const rule of INTENT_RULES) {
     const signals: string[] = [];
     for (const pattern of rule.patterns) {
-      const match = trimmed.match(pattern);
-      if (match) signals.push(match[0]);
+      const m = trimmed.match(pattern);
+      if (m) signals.push(m[0]);
     }
     if (signals.length > 0) {
-      const confidence = Math.min(0.95, 0.72 + signals.length * 0.1);
-      return {
+      matched.push({
         intent: rule.intent,
-        confidence,
+        confidence: Math.min(0.95, 0.72 + signals.length * 0.1),
         matchedSignals: signals,
-      };
+      });
     }
   }
 
-  // Detect email or phone sharing as lead submission
+  if (matched.length > 0) {
+    return matched;
+  }
+
   if (
     /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/.test(trimmed) ||
     /(?:\+?\d{1,3}[\s.-]?)?(?:\(?\d{3}\)?[\s.-]?)\d{3}[\s.-]?\d{4}\b/.test(trimmed)
   ) {
-    return {
-      intent: "lead_submission",
-      confidence: 0.85,
-      matchedSignals: ["contact_detail_provided"],
-    };
+    return [
+      {
+        intent: "lead_submission",
+        confidence: 0.85,
+        matchedSignals: ["contact_detail_provided"],
+      },
+    ];
   }
 
-  return {
-    intent: "faq_query",
-    confidence: 0.45,
-    matchedSignals: [],
-  };
+  return [
+    {
+      intent: "faq_query",
+      confidence: 0.45,
+      matchedSignals: [],
+    },
+  ];
+}
+
+/**
+ * Returns the primary (highest-priority) intent.
+ */
+export function detectIntent(
+  message: string,
+  customEscalationKeywords: string[] = []
+): IntentResult {
+  return detectMultipleIntents(message, customEscalationKeywords)[0];
 }

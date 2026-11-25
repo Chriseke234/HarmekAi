@@ -201,7 +201,16 @@ export default function WidgetEmbedPage({
             <h2 className="text-sm font-semibold text-white">Chat Privacy Preference</h2>
             <p className="mt-1.5 text-xs leading-relaxed text-[#B5AEA2]">
               Would you like to save your conversation in this browser so you can continue it
-              later, or chat for this session only?
+              later, or chat for this session only? See our{" "}
+              <a
+                href="/cookies"
+                target="_blank"
+                rel="noreferrer"
+                className="text-[#D97745] underline"
+              >
+                Cookies Policy
+              </a>
+              .
             </p>
             <div className="mt-4 flex flex-col gap-2">
               <Button size="sm" onClick={() => startSession(true)}>

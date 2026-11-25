@@ -6,7 +6,7 @@ import type {
   Product,
   Service,
 } from "@/types/database";
-import { computeTextMatchScore } from "./tokenizer";
+import { buildIdfMap, computeTextMatchScore } from "./tokenizer";
 import type { NativeIntent } from "./intent-detector";
 import { formatCurrency } from "@/lib/utils";
 
@@ -63,6 +63,14 @@ export function matchWorkspaceKnowledge(
 ): KnowledgeMatchCandidate[] {
   const candidates: KnowledgeMatchCandidate[] = [];
   const bp = bundle.businessProfile;
+
+  // Build corpus-wide BM25 IDF weights across all active structured items
+  const idfMap = buildIdfMap([
+    ...bundle.products.filter((p) => p.is_active).map((p) => `${p.name} ${p.description}`),
+    ...bundle.services.filter((s) => s.is_active).map((s) => `${s.name} ${s.description}`),
+    ...bundle.faqs.filter((f) => f.is_active).map((f) => `${f.question} ${f.answer}`),
+    ...bundle.knowledgeSources.filter((s) => s.status === "indexed").map((s) => `${s.title} ${s.content.slice(0, 400)}`),
+  ]);
 
   // 1. Direct Business Profile structured intents
   if (bp) {
@@ -129,11 +137,12 @@ export function matchWorkspaceKnowledge(
 
   // 2. Structured Products
   for (const product of bundle.products.filter((p) => p.is_active)) {
-    const nameScore = computeTextMatchScore(query, product.name, product.keywords);
+    const nameScore = computeTextMatchScore(query, product.name, product.keywords, idfMap);
     const fullScore = computeTextMatchScore(
       query,
       `${product.name} ${product.category} ${product.description}`,
-      product.keywords
+      product.keywords,
+      idfMap
     );
     let score = Math.max(nameScore, fullScore * 0.9);
     if (

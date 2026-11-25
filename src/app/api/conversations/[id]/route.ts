@@ -2,6 +2,11 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireWorkspaceAccess } from "@/lib/security/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import {
+  buildAgentHandoffBrief,
+  extractFaqDraftFromResolution,
+} from "@/lib/intelligence/native/engine";
+import type { Message } from "@/types/database";
 
 const ActionSchema = z.discriminatedUnion("action", [
   z.object({
@@ -79,10 +84,16 @@ export async function GET(
       .eq("workspace_id", workspaceId);
   }
 
+  const messages = (msgRes.data ?? []) as Message[];
+  const handoffBrief = buildAgentHandoffBrief(messages, auth.context.workspace.name);
+  const suggestedFaqDraft = extractFaqDraftFromResolution(messages);
+
   return NextResponse.json({
     conversation: convRes.data,
-    messages: msgRes.data ?? [],
+    messages,
     notes: notesRes.data ?? [],
+    handoffBrief,
+    suggestedFaqDraft,
   });
 }
 

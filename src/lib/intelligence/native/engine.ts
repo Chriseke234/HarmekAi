@@ -11,12 +11,13 @@ import {
   sanitizeUserText,
 } from "@/lib/security/sanitize";
 import { extractEntities, type ExtractedEntities } from "./entity-extractor";
-import { detectIntent, type NativeIntent } from "./intent-detector";
+import { detectMultipleIntents, type NativeIntent } from "./intent-detector";
 import {
   matchWorkspaceKnowledge,
   type KnowledgeMatchCandidate,
   type WorkspaceKnowledgeBundle,
 } from "./knowledge-matcher";
+import { formatCurrency } from "@/lib/utils";
 import {
   getToneProfile,
   renderClarification,
@@ -98,8 +99,12 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
     };
   }
 
-  // 3. Intent classification
-  const intentResult = detectIntent(cleanMessage, input.settings.escalation_keywords ?? []);
+  // 3. Multi-intent classification (handles compound customer questions)
+  const detectedIntents = detectMultipleIntents(
+    cleanMessage,
+    input.settings.escalation_keywords ?? []
+  );
+  const intentResult = detectedIntents[0];
 
   // 4. Direct human handoff or urgent complaint escalation
   if (intentResult.intent === "human_handoff" || intentResult.intent === "complaint_urgent") {
@@ -122,6 +127,70 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
         awaitingClarification: false,
       },
     };
+  }
+
+  // 4b. Guided catalog recommendation flow (zero-LLM consultative selling)
+  if (intentResult.intent === "recommendation") {
+    const activeProducts = input.knowledge.products.filter((p) => p.is_active);
+    const activeServices = input.knowledge.services.filter((s) => s.is_active);
+    const catalogMatches = matchWorkspaceKnowledge(cleanMessage, "product_info", input.knowledge)
+      .filter((c) => c.type === "product" || c.type === "service")
+      .slice(0, 3);
+
+    if (catalogMatches.length > 0) {
+      const lines = catalogMatches.map((m) => `• ${m.title}: ${m.answerText}`);
+      return {
+        reply: renderGroundedAnswer(
+          `Based on what you mentioned, here are our best matching options:\n${lines.join("\n")}\n\nWould you like details on any of these, or prefer to leave your email so our team can tailor a recommendation?`,
+          renderOpts
+        ),
+        intent: "recommendation",
+        confidence: Math.max(0.75, catalogMatches[0].score),
+        sources: catalogMatches.map((m) => ({
+          type: m.type,
+          id: m.id,
+          title: m.title,
+          score: m.score,
+        })),
+        matchedCandidates: catalogMatches,
+        extractedEntities: entities,
+        shouldEscalate: false,
+        escalationReason: null,
+        isUnanswered: false,
+        updatedState: {
+          ...prevState,
+          lastIntent: "recommendation",
+          lastReferencedItem: {
+            type: catalogMatches[0].type as "product" | "service",
+            id: catalogMatches[0].id,
+            name: catalogMatches[0].title,
+          },
+          consecutiveFallbacks: 0,
+        },
+      };
+    }
+
+    if (activeProducts.length > 0 || activeServices.length > 0) {
+      const topOptions = [
+        ...activeProducts.slice(0, 2).map((p) => `${p.name} (${formatCurrency(p.price, p.currency)})`),
+        ...activeServices.slice(0, 2).map((s) => `${s.name} (${formatCurrency(s.price, s.currency)})`),
+      ];
+      return {
+        reply: renderGroundedAnswer(
+          `I would be glad to help you choose! Popular options at ${businessName} include: ${topOptions.join(", ")}. What specific goal or preference are you looking for?`,
+          renderOpts
+        ),
+        intent: "recommendation",
+        confidence: 0.72,
+        sources: [],
+        matchedCandidates: [],
+        extractedEntities: entities,
+        shouldEscalate: false,
+        escalationReason: null,
+        isUnanswered: false,
+        updatedState: { ...prevState, lastIntent: "recommendation", consecutiveFallbacks: 0 },
+      };
+    }
   }
 
   // 5. Simple conversational intents
@@ -207,23 +276,52 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
     effectiveQuery = `${cleanMessage} ${prevState.lastReferencedItem.name}`;
   }
 
-  // 7. Match against structured business knowledge
-  const candidates = matchWorkspaceKnowledge(effectiveQuery, intentResult.intent, input.knowledge);
-  const top = candidates[0];
+  // 7. Match against structured business knowledge (with multi-intent synthesis for compound queries)
+  const primaryCandidates = matchWorkspaceKnowledge(
+    effectiveQuery,
+    intentResult.intent,
+    input.knowledge
+  );
+  const top = primaryCandidates[0];
   const autoThreshold = Number(input.settings.auto_answer_threshold ?? 0.65);
   const clarifyThreshold = Number(input.settings.clarification_threshold ?? 0.35);
 
-  // High confidence: return grounded answer
+  // Check if a secondary distinct business intent was also asked in the same message
+  const secondaryIntent = detectedIntents.find(
+    (d) =>
+      d.intent !== intentResult.intent &&
+      [
+        "business_hours",
+        "delivery_info",
+        "booking_info",
+        "location_contact",
+        "policy_query",
+      ].includes(d.intent)
+  );
+  const secondaryTop = secondaryIntent
+    ? matchWorkspaceKnowledge(effectiveQuery, secondaryIntent.intent, input.knowledge).find(
+        (c) => c.id !== top?.id && c.title !== top?.title && c.score >= autoThreshold
+      )
+    : undefined;
+
+  const candidates = primaryCandidates;
+
+  // High confidence: return grounded answer (combining secondary verified intent when present)
   if (top && top.score >= autoThreshold) {
-    const topSources: KnowledgeSourceRef[] = candidates.slice(0, 3).map((c) => ({
+    const combinedCandidates = secondaryTop ? [top, secondaryTop] : candidates.slice(0, 3);
+    const topSources: KnowledgeSourceRef[] = combinedCandidates.map((c) => ({
       type: c.type,
       id: c.id,
       title: c.title,
       score: c.score,
     }));
 
+    const answerCore = secondaryTop
+      ? `${top.answerText}\n\nAdditionally — ${secondaryTop.answerText}`
+      : top.answerText;
+
     return {
-      reply: renderGroundedAnswer(top.answerText, renderOpts),
+      reply: renderGroundedAnswer(answerCore, renderOpts),
       intent: intentResult.intent,
       confidence: top.score,
       sources: topSources,
@@ -331,4 +429,75 @@ export function buildNativeConversationSummary(messages: Pick<Message, "sender_t
   const topicPart = intents.length > 0 ? `Topics: ${intents.join(", ").replace(/_/g, " ")}. ` : "";
   const latestPart = latestQuestion ? ` Latest message: "${latestQuestion}"` : "";
   return `${topicPart}Started with: "${firstQuestion}"${latestPart} (${customerMessages.length} customer message${customerMessages.length === 1 ? "" : "s"}).`;
+}
+
+export interface AgentHandoffBrief {
+  customerGoal: string;
+  factsAlreadyShared: string[];
+  recommendedAction: string;
+  suggestedReplies: string[];
+}
+
+/**
+ * Generates an instant 3-point Agent Handoff Brief + grounded 1-click Suggested Replies
+ * when a human takes over a conversation (zero LLM required).
+ */
+export function buildAgentHandoffBrief(
+  messages: Pick<Message, "sender_type" | "content" | "intent" | "knowledge_source_refs">[],
+  businessName: string
+): AgentHandoffBrief {
+  const customerMsgs = messages.filter((m) => m.sender_type === "customer");
+  const assistantMsgs = messages.filter((m) => m.sender_type === "assistant");
+  const lastCustomer = customerMsgs[customerMsgs.length - 1]?.content ?? "General enquiry";
+
+  const sharedTitles = Array.from(
+    new Set(
+      assistantMsgs.flatMap((m) =>
+        Array.isArray(m.knowledge_source_refs)
+          ? m.knowledge_source_refs.map((r) => r.title)
+          : []
+      )
+    )
+  ).slice(0, 4);
+
+  const suggestedReplies = [
+    `Hello! I am stepping in personally from the ${businessName} team to help with your question about "${lastCustomer.slice(0, 60)}".`,
+    `Thanks for your patience — let me verify those exact details for you right now and follow up immediately.`,
+    `Could you share your preferred contact email or phone number so we can send you a direct confirmation?`,
+  ];
+
+  return {
+    customerGoal: lastCustomer.slice(0, 180),
+    factsAlreadyShared:
+      sharedTitles.length > 0 ? sharedTitles : ["No verified catalog items matched yet"],
+    recommendedAction:
+      sharedTitles.length === 0
+        ? "Answer the customer directly and consider approving this reply as a new FAQ."
+        : "Confirm order/booking specifics or address the customer's custom request.",
+    suggestedReplies,
+  };
+}
+
+/**
+ * Self-Healing Knowledge Loop: extracts a clean FAQ draft from an escalated/unanswered
+ * conversation once a human agent resolves it with a verified answer.
+ */
+export function extractFaqDraftFromResolution(
+  messages: Pick<Message, "sender_type" | "content">[]
+): { question: string; answer: string } | null {
+  const lastAgent = [...messages].reverse().find((m) => m.sender_type === "agent");
+  if (!lastAgent || lastAgent.content.trim().length < 10) return null;
+
+  const lastAgentIdx = messages.lastIndexOf(lastAgent);
+  const precedingCustomer = messages
+    .slice(0, lastAgentIdx)
+    .reverse()
+    .find((m) => m.sender_type === "customer" && m.content.trim().length >= 8);
+
+  if (!precedingCustomer) return null;
+
+  return {
+    question: precedingCustomer.content.trim().slice(0, 400),
+    answer: lastAgent.content.trim().slice(0, 1800),
+  };
 }

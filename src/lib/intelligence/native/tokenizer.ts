@@ -1,6 +1,7 @@
 /**
- * Lexical normalization, tokenization, and fuzzy similarity utilities
- * for the Native Harmek Intelligence Engine (zero external LLM dependency).
+ * Lexical normalization, tokenization, business-domain synonym expansion,
+ * fuzzy Levenshtein similarity, and BM25-inspired IDF scoring for the
+ * Native Harmek Intelligence Engine (zero external LLM dependency).
  */
 
 const STOP_WORDS = new Set([
@@ -14,8 +15,28 @@ const STOP_WORDS = new Set([
 ]);
 
 /**
- * Normalizes text to lowercase alphanumeric tokens with punctuation removed.
+ * Business-domain synonym groups so everyday customer phrasing matches
+ * structured catalog and policy entries without requiring embeddings.
  */
+const SYNONYM_GROUPS: string[][] = [
+  ["price", "cost", "rate", "fee", "charge", "pricing", "amount", "expensive", "cheap"],
+  ["delivery", "shipping", "dispatch", "courier", "waybill", "ship", "deliver", "dropoff"],
+  ["book", "booking", "appointment", "reserve", "reservation", "schedule", "slot"],
+  ["open", "opening", "hour", "close", "closing", "schedule", "weekend"],
+  ["return", "refund", "exchange", "warranty", "cancel", "cancellation", "policy"],
+  ["available", "availability", "stock", "instock", "carry", "sell"],
+  ["location", "address", "branch", "store", "shop", "direction", "office"],
+  ["wash", "laundry", "clean", "cleaning", "iron", "ironing", "dryclean"],
+  ["recommend", "suggest", "best", "advice", "suitable", "good"],
+];
+
+const SYNONYM_MAP = new Map<string, string[]>();
+for (const group of SYNONYM_GROUPS) {
+  for (const term of group) {
+    SYNONYM_MAP.set(term, group);
+  }
+}
+
 export function normalizeText(text: string): string {
   return text
     .toLowerCase()
@@ -25,9 +46,6 @@ export function normalizeText(text: string): string {
     .trim();
 }
 
-/**
- * Lightweight English suffix stemmer for common plurals and verb forms.
- */
 export function stemToken(token: string): string {
   if (token.length <= 3) return token;
   if (token.endsWith("ies") && token.length > 4) return `${token.slice(0, -3)}y`;
@@ -40,9 +58,6 @@ export function stemToken(token: string): string {
   return token;
 }
 
-/**
- * Extracts meaningful stemmed tokens (filtering stop-words).
- */
 export function tokenize(text: string): string[] {
   const normalized = normalizeText(text);
   if (!normalized) return [];
@@ -54,8 +69,19 @@ export function tokenize(text: string): string[] {
 }
 
 /**
- * Computes Levenshtein edit distance between two strings (bounded for speed).
+ * Expands a token list with business-domain synonyms (weighted lightly during scoring).
  */
+export function expandWithSynonyms(tokens: string[]): Set<string> {
+  const expanded = new Set<string>(tokens);
+  for (const t of tokens) {
+    const syns = SYNONYM_MAP.get(t);
+    if (syns) {
+      for (const s of syns) expanded.add(stemToken(s));
+    }
+  }
+  return expanded;
+}
+
 export function levenshteinDistance(a: string, b: string): number {
   if (a === b) return 0;
   if (a.length === 0) return b.length;
@@ -76,9 +102,6 @@ export function levenshteinDistance(a: string, b: string): number {
   return prev[b.length];
 }
 
-/**
- * Fuzzy token match score (0 to 1). Handles minor customer typos cleanly.
- */
 export function fuzzyTokenSimilarity(a: string, b: string): number {
   if (a === b) return 1;
   if (a.length < 3 || b.length < 3) return 0;
@@ -93,19 +116,44 @@ export function fuzzyTokenSimilarity(a: string, b: string): number {
 }
 
 /**
- * Scores lexical + fuzzy overlap between a customer query and a target document string.
+ * Computes corpus-wide inverse document frequency (IDF) weights for BM25 scoring.
+ * Rare, specific product words ("retinol", "vitamin", "duvet") receive higher weight
+ * than generic words ("product", "service", "item").
+ */
+export function buildIdfMap(documents: string[]): Map<string, number> {
+  const docFreq = new Map<string, number>();
+  const totalDocs = Math.max(1, documents.length);
+
+  for (const doc of documents) {
+    const uniqueTokens = new Set(tokenize(doc));
+    for (const t of uniqueTokens) {
+      docFreq.set(t, (docFreq.get(t) ?? 0) + 1);
+    }
+  }
+
+  const idf = new Map<string, number>();
+  for (const [token, df] of docFreq.entries()) {
+    // Standard BM25+ smoothed IDF
+    const weight = Math.log(1 + (totalDocs - df + 0.5) / (df + 0.5)) + 0.5;
+    idf.set(token, Number(weight.toFixed(3)));
+  }
+  return idf;
+}
+
+/**
+ * Scores lexical + synonym + fuzzy + BM25-IDF overlap between a customer query and target text.
  * Returns a normalized confidence score in [0, 1].
  */
 export function computeTextMatchScore(
   query: string,
   targetText: string,
-  extraKeywords: string[] = []
+  extraKeywords: string[] = [],
+  idfMap?: Map<string, number>
 ): number {
   const normQuery = normalizeText(query);
   const normTarget = normalizeText(targetText);
   if (!normQuery || !normTarget) return 0;
 
-  // Direct substring boost (e.g. exact product name mentioned in query)
   let exactPhraseBoost = 0;
   if (normQuery.includes(normTarget) && normTarget.length >= 4) {
     exactPhraseBoost = 0.45;
@@ -114,30 +162,39 @@ export function computeTextMatchScore(
   }
 
   const queryTokens = tokenize(query);
-  const targetTokens = new Set([
+  const rawTargetTokens = [
     ...tokenize(targetText),
     ...extraKeywords.flatMap((kw) => tokenize(kw)),
-  ]);
+  ];
+  const expandedTargetSet = expandWithSynonyms(rawTargetTokens);
 
-  if (queryTokens.length === 0 || targetTokens.size === 0) return exactPhraseBoost;
+  if (queryTokens.length === 0 || expandedTargetSet.size === 0) return exactPhraseBoost;
 
-  const targetList = Array.from(targetTokens);
-  let matchedScoreSum = 0;
+  const targetList = Array.from(expandedTargetSet);
+  const directTargetSet = new Set(rawTargetTokens);
+
+  let weightedMatchSum = 0;
+  let totalWeight = 0;
+
   for (const qt of queryTokens) {
+    const idfWeight = idfMap?.get(qt) ?? 1.0;
+    totalWeight += idfWeight;
+
     let best = 0;
     for (const tt of targetList) {
       const sim = fuzzyTokenSimilarity(qt, tt);
-      if (sim > best) best = sim;
+      // Slight discount if matched only via synonym expansion rather than direct word
+      const adjusted = directTargetSet.has(tt) ? sim : sim * 0.85;
+      if (adjusted > best) best = adjusted;
       if (best === 1) break;
     }
-    matchedScoreSum += best;
+    weightedMatchSum += best * idfWeight;
   }
 
-  const queryCoverage = matchedScoreSum / queryTokens.length;
-  // Also measure how much of a short target title (like a product name) was covered
+  const queryCoverage = totalWeight > 0 ? weightedMatchSum / totalWeight : 0;
   const targetCoverage =
-    targetList.length <= 6
-      ? Math.min(1, matchedScoreSum / targetList.length)
+    rawTargetTokens.length > 0 && rawTargetTokens.length <= 6
+      ? Math.min(1, weightedMatchSum / rawTargetTokens.length)
       : queryCoverage;
 
   const combined = queryCoverage * 0.65 + targetCoverage * 0.35 + exactPhraseBoost;

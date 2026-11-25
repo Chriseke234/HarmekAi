@@ -251,6 +251,18 @@ export default function IntegrationsPage() {
                 <CardDescription>{ch.description}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
+                {ch.provider === "whatsapp" ? (
+                  <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-3 text-xs text-[#B5AEA2]">
+                    <p className="font-medium text-[#F5F2EB]">Official Meta Webhook Callback URL:</p>
+                    <code className="mt-1 block break-all font-mono text-[11px] text-[#D97745]">
+                      {origin}/api/webhooks/whatsapp
+                    </code>
+                    <p className="mt-1.5 text-[11px] text-[#968E82]">
+                      Set WHATSAPP_ACCESS_TOKEN, WHATSAPP_WEBHOOK_VERIFY_TOKEN, and META_APP_SECRET
+                      in your server environment, then enter your Phone Number ID below.
+                    </p>
+                  </div>
+                ) : null}
                 <Input
                   placeholder={ch.fieldLabel}
                   value={channelInputs[ch.provider] ?? ""}

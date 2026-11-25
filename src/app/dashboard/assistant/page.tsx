@@ -54,6 +54,19 @@ export default function AssistantPage() {
   const [simLoading, setSimLoading] = useState(false);
   const [simMessages, setSimMessages] = useState<SimMessage[]>([]);
 
+  // Built-in Golden Test Suite ("Accuracy Check")
+  const [evalCases, setEvalCases] = useState<Array<{ question: string; expectedKeyword: string }>>([
+    { question: "What are your opening hours?", expectedKeyword: "hours" },
+    { question: "Do you offer delivery?", expectedKeyword: "delivery" },
+  ]);
+  const [evalLoading, setEvalLoading] = useState(false);
+  const [evalReport, setEvalReport] = useState<{
+    accuracyPercent: number;
+    passed: number;
+    total: number;
+    results: Array<{ question: string; passed: boolean; reply: string }>;
+  } | null>(null);
+
   async function loadData() {
     setLoading(true);
     const res = await fetch("/api/assistant");
@@ -545,6 +558,84 @@ export default function AssistantPage() {
                   )}
                 </Button>
               </form>
+
+              {/* Built-in Accuracy Check (Golden Test Suite) */}
+              <div className="space-y-3 border-t border-[#2B2722] pt-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-[#D97745]">
+                      Accuracy Check (Golden Test Suite)
+                    </h4>
+                    <p className="text-[11px] text-[#968E82]">
+                      Verify real customer questions against your Knowledge Base in 1 click.
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    disabled={evalLoading}
+                    onClick={async () => {
+                      setEvalLoading(true);
+                      const res = await fetch("/api/assistant/evaluate", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ cases: evalCases }),
+                      });
+                      setEvalLoading(false);
+                      if (res.ok) setEvalReport(await res.json());
+                    }}
+                  >
+                    {evalLoading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : "Run Check"}
+                  </Button>
+                </div>
+
+                {evalCases.map((tc, idx) => (
+                  <div key={idx} className="grid grid-cols-12 gap-1.5">
+                    <Input
+                      className="col-span-7 h-8 text-xs"
+                      value={tc.question}
+                      onChange={(e) =>
+                        setEvalCases((prev) =>
+                          prev.map((c, i) => (i === idx ? { ...c, question: e.target.value } : c))
+                        )
+                      }
+                      placeholder="Customer question"
+                    />
+                    <Input
+                      className="col-span-5 h-8 text-xs"
+                      value={tc.expectedKeyword}
+                      onChange={(e) =>
+                        setEvalCases((prev) =>
+                          prev.map((c, i) =>
+                            i === idx ? { ...c, expectedKeyword: e.target.value } : c
+                          )
+                        )
+                      }
+                      placeholder="Expected word"
+                    />
+                  </div>
+                ))}
+
+                {evalReport ? (
+                  <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-3 text-xs">
+                    <p className="font-semibold text-[#F5F2EB]">
+                      Score: {evalReport.accuracyPercent}% ({evalReport.passed}/{evalReport.total}{" "}
+                      passed)
+                    </p>
+                    <div className="mt-2 space-y-1">
+                      {evalReport.results.map((r, i) => (
+                        <p
+                          key={i}
+                          className={r.passed ? "text-[#84A98C]" : "text-[#EB9494]"}
+                        >
+                          {r.passed ? "PASS" : "MISS"} — {r.question}
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+              </div>
             </CardContent>
           </Card>
         </div>
