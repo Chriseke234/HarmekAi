@@ -31,6 +31,7 @@ export async function loadWorkspaceIntelligenceContext(workspaceId: string) {
     { data: services },
     { data: faqs },
     { data: knowledgeSources },
+    { data: knowledgeChunks },
     { data: trialRecord },
   ] = await Promise.all([
     admin.from("assistants").select("*").eq("workspace_id", workspaceId).single<Assistant>(),
@@ -52,6 +53,11 @@ export async function loadWorkspaceIntelligenceContext(workspaceId: string) {
       .select("*")
       .eq("workspace_id", workspaceId)
       .eq("status", "indexed"),
+    admin
+      .from("knowledge_chunks")
+      .select("id, source_id, chunk_index, content")
+      .eq("workspace_id", workspaceId)
+      .limit(500),
     admin
       .from("trial_records")
       .select("*")
@@ -94,6 +100,12 @@ export async function loadWorkspaceIntelligenceContext(workspaceId: string) {
       services: (services ?? []) as Service[],
       faqs: (faqs ?? []) as FaqItem[],
       knowledgeSources: (knowledgeSources ?? []) as KnowledgeSource[],
+      knowledgeChunks: (knowledgeChunks ?? []) as Array<{
+        id: string;
+        source_id: string;
+        chunk_index: number;
+        content: string;
+      }>,
     },
     trialRecord: trialRecord ?? null,
     enhancedApiKey,

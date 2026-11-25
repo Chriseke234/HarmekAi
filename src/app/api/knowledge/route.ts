@@ -3,6 +3,14 @@ import { z } from "zod";
 import { requireWorkspaceAccess } from "@/lib/security/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { chunkKnowledgeText, computeContentHash } from "@/lib/knowledge/service";
+import { auditKnowledgeHealth } from "@/lib/knowledge/importer";
+import type {
+  BusinessProfile,
+  FaqItem,
+  KnowledgeSource,
+  Product,
+  Service,
+} from "@/types/database";
 
 const CreateKnowledgeSchema = z.discriminatedUnion("kind", [
   z.object({
@@ -61,7 +69,12 @@ export async function GET() {
   const supabase = await createSupabaseServerClient();
   const workspaceId = auth.context.workspace.id;
 
-  const [products, services, faqs, sources] = await Promise.all([
+  const [bpRes, products, services, faqs, sources] = await Promise.all([
+    supabase
+      .from("business_profiles")
+      .select("*")
+      .eq("workspace_id", workspaceId)
+      .maybeSingle<BusinessProfile>(),
     supabase
       .from("products")
       .select("*")
@@ -84,11 +97,25 @@ export async function GET() {
       .order("created_at", { ascending: false }),
   ]);
 
+  const productList = (products.data ?? []) as Product[];
+  const serviceList = (services.data ?? []) as Service[];
+  const faqList = (faqs.data ?? []) as FaqItem[];
+  const sourceList = (sources.data ?? []) as KnowledgeSource[];
+
+  const health = auditKnowledgeHealth({
+    businessProfile: bpRes.data ?? null,
+    products: productList,
+    services: serviceList,
+    faqs: faqList,
+    knowledgeSources: sourceList,
+  });
+
   return NextResponse.json({
-    products: products.data ?? [],
-    services: services.data ?? [],
-    faqs: faqs.data ?? [],
-    sources: sources.data ?? [],
+    products: productList,
+    services: serviceList,
+    faqs: faqList,
+    sources: sourceList,
+    health,
   });
 }
 
@@ -207,6 +234,122 @@ export async function POST(request: Request) {
     return NextResponse.json({ item: source, chunksIndexed: chunks.length }, { status: 201 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to save knowledge item.";
+    return NextResponse.json({ error: message }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  const auth = await requireWorkspaceAccess(["owner", "admin", "agent"]);
+  if (!auth.ok) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status });
+  }
+
+  try {
+    const body = await request.json();
+    const kind = body?.kind as string | undefined;
+    const id = body?.id as string | undefined;
+    if (!kind || !id) {
+      return NextResponse.json({ error: "kind and id are required." }, { status: 400 });
+    }
+
+    const supabase = await createSupabaseServerClient();
+    const workspaceId = auth.context.workspace.id;
+
+    if (kind === "product") {
+      const { data, error } = await supabase
+        .from("products")
+        .update({
+          name: String(body.name ?? "").trim(),
+          price: body.price === "" || body.price === null ? null : Number(body.price),
+          category: String(body.category ?? "General").trim(),
+          description: String(body.description ?? "").trim(),
+        })
+        .eq("id", id)
+        .eq("workspace_id", workspaceId)
+        .select("*")
+        .single();
+      if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ item: data });
+    }
+
+    if (kind === "service") {
+      const { data, error } = await supabase
+        .from("services")
+        .update({
+          name: String(body.name ?? "").trim(),
+          price: body.price === "" || body.price === null ? null : Number(body.price),
+          duration_label: body.duration_label ? String(body.duration_label).trim() : null,
+          category: String(body.category ?? "General").trim(),
+          description: String(body.description ?? "").trim(),
+        })
+        .eq("id", id)
+        .eq("workspace_id", workspaceId)
+        .select("*")
+        .single();
+      if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ item: data });
+    }
+
+    if (kind === "faq") {
+      const { data, error } = await supabase
+        .from("faqs")
+        .update({
+          question: String(body.question ?? "").trim(),
+          answer: String(body.answer ?? "").trim(),
+          category: String(body.category ?? "General").trim(),
+        })
+        .eq("id", id)
+        .eq("workspace_id", workspaceId)
+        .select("*")
+        .single();
+      if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+      return NextResponse.json({ item: data });
+    }
+
+    if (kind === "source") {
+      const title = String(body.title ?? "").trim();
+      const content = String(body.content ?? "").trim();
+      const chunks = chunkKnowledgeText(content);
+      const contentHash = computeContentHash(title, content);
+
+      const { data, error } = await supabase
+        .from("knowledge_sources")
+        .update({
+          title,
+          content,
+          content_hash: contentHash,
+          status: chunks.length > 0 ? "indexed" : "failed",
+          error_message: chunks.length > 0 ? null : "Document content is empty.",
+        })
+        .eq("id", id)
+        .eq("workspace_id", workspaceId)
+        .select("*")
+        .single();
+      if (error) return NextResponse.json({ error: error.message }, { status: 400 });
+
+      await supabase
+        .from("knowledge_chunks")
+        .delete()
+        .eq("source_id", id)
+        .eq("workspace_id", workspaceId);
+
+      if (chunks.length > 0) {
+        await supabase.from("knowledge_chunks").insert(
+          chunks.map((chunk, idx) => ({
+            workspace_id: workspaceId,
+            source_id: id,
+            chunk_index: idx,
+            content: chunk,
+            token_count: chunk.split(/\s+/).length,
+          }))
+        );
+      }
+      return NextResponse.json({ item: data, chunksIndexed: chunks.length });
+    }
+
+    return NextResponse.json({ error: "Unsupported knowledge kind." }, { status: 400 });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : "Failed to update item.";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -10,12 +10,20 @@ import { buildIdfMap, computeTextMatchScore } from "./tokenizer";
 import type { NativeIntent } from "./intent-detector";
 import { formatCurrency } from "@/lib/utils";
 
+export interface KnowledgeChunkRecord {
+  id: string;
+  source_id: string;
+  chunk_index: number;
+  content: string;
+}
+
 export interface WorkspaceKnowledgeBundle {
   businessProfile: BusinessProfile | null;
   products: Product[];
   services: Service[];
   faqs: FaqItem[];
   knowledgeSources: KnowledgeSource[];
+  knowledgeChunks?: KnowledgeChunkRecord[];
 }
 
 export interface KnowledgeMatchCandidate {
@@ -70,6 +78,7 @@ export function matchWorkspaceKnowledge(
     ...bundle.services.filter((s) => s.is_active).map((s) => `${s.name} ${s.description}`),
     ...bundle.faqs.filter((f) => f.is_active).map((f) => `${f.question} ${f.answer}`),
     ...bundle.knowledgeSources.filter((s) => s.status === "indexed").map((s) => `${s.title} ${s.content.slice(0, 400)}`),
+    ...(bundle.knowledgeChunks ?? []).map((c) => c.content),
   ]);
 
   // 1. Direct Business Profile structured intents
@@ -237,31 +246,62 @@ export function matchWorkspaceKnowledge(
     }
   }
 
-  // 5. Additional Knowledge Sources (policies, delivery docs, uploaded text)
-  for (const source of bundle.knowledgeSources.filter((s) => s.status === "indexed")) {
-    const titleScore = computeTextMatchScore(query, source.title);
-    const bodyScore = computeTextMatchScore(query, `${source.title} ${source.content.slice(0, 600)}`);
-    let score = Math.max(titleScore, bodyScore * 0.9);
+  // 5. Additional Knowledge Sources + Deep Chunk-Level Retrieval
+  const indexedSources = bundle.knowledgeSources.filter((s) => s.status === "indexed");
+  const sourceById = new Map(indexedSources.map((s) => [s.id, s]));
+  const chunksBySource = new Map<string, KnowledgeChunkRecord[]>();
+
+  for (const chunk of bundle.knowledgeChunks ?? []) {
+    if (!sourceById.has(chunk.source_id)) continue;
+    const list = chunksBySource.get(chunk.source_id) ?? [];
+    list.push(chunk);
+    chunksBySource.set(chunk.source_id, list);
+  }
+
+  for (const source of indexedSources) {
+    const titleScore = computeTextMatchScore(query, source.title, [], idfMap);
+    const sourceChunks = chunksBySource.get(source.id) ?? [];
+
+    let bestExcerpt =
+      source.content.length > 420
+        ? `${source.content.slice(0, 417).trim()}...`
+        : source.content.trim();
+    let bestBodyScore = computeTextMatchScore(
+      query,
+      `${source.title} ${source.content.slice(0, 600)}`,
+      [],
+      idfMap
+    );
+
+    // Search every indexed chunk so long handbooks & scraped web pages return the exact matching paragraph
+    for (const chunk of sourceChunks) {
+      const chunkScore = computeTextMatchScore(query, chunk.content, [source.title], idfMap);
+      if (chunkScore > bestBodyScore) {
+        bestBodyScore = chunkScore;
+        bestExcerpt =
+          chunk.content.length > 480
+            ? `${chunk.content.slice(0, 477).trim()}...`
+            : chunk.content.trim();
+      }
+    }
+
+    let score = Math.max(titleScore, bestBodyScore * 0.95);
 
     if (
       (intent === "policy_query" && source.source_type === "policy") ||
       (intent === "delivery_info" && source.source_type === "delivery") ||
       (intent === "booking_info" && source.source_type === "booking")
     ) {
-      score = Math.min(0.95, score + 0.2);
+      score = Math.min(0.95, score + 0.18);
     }
 
     if (score >= 0.32) {
-      const excerpt =
-        source.content.length > 420
-          ? `${source.content.slice(0, 417).trim()}...`
-          : source.content.trim();
       candidates.push({
         type: "knowledge_source",
         id: source.id,
         title: source.title,
         score: Number(score.toFixed(3)),
-        answerText: excerpt,
+        answerText: bestExcerpt,
         source,
       });
     }
