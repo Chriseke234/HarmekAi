@@ -40,6 +40,12 @@ interface AnalyticsPayload {
     confidence: number | null;
     status: string;
   }>;
+  customerInsights?: Array<{
+    theme: string;
+    mentions: number;
+    businessOutcomeRecommendation: string;
+    sampleCustomerQuote: string;
+  }>;
 }
 
 export default function AnalyticsPage() {
@@ -171,6 +177,49 @@ export default function AnalyticsPage() {
                   <Bar dataKey="human" name="Human-Handled" fill="#84A98C" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Customer Challenges & Business Outcome Insights */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Customer Challenges &amp; Business Outcome Insights</CardTitle>
+          <CardDescription>
+            Interprets real customer messages to uncover recurring pain points and connect them
+            to actionable growth improvements.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {!data?.customerInsights || data.customerInsights.length === 0 ? (
+            <EmptyState
+              icon={<BarChart3 className="h-5 w-5" />}
+              title="No recurring customer challenges detected yet"
+              description="As customers share goals, hesitations, or problems in chat, Harmek interprets the patterns and recommends business improvements here."
+            />
+          ) : (
+            <div className="space-y-3">
+              {data.customerInsights.map((ins) => (
+                <div
+                  key={ins.theme}
+                  className="rounded-lg border border-[#2B2722] bg-[#141210] p-4"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-sm font-semibold text-[#F5F2EB]">{ins.theme}</h3>
+                    <Badge variant="default">
+                      {ins.mentions} mention{ins.mentions === 1 ? "" : "s"}
+                    </Badge>
+                  </div>
+                  <p className="mt-1.5 text-xs italic text-[#968E82]">
+                    &ldquo;{ins.sampleCustomerQuote}&rdquo;
+                  </p>
+                  <p className="mt-2 text-xs leading-relaxed text-[#D6D0C4]">
+                    <strong className="text-[#84A98C]">Business Action:</strong>{" "}
+                    {ins.businessOutcomeRecommendation}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
         </CardContent>

@@ -24,6 +24,10 @@ import {
   renderGroundedAnswer,
   type RenderOptions,
 } from "./response-renderer";
+import {
+  connectChallengeToVerifiedValue,
+  detectCustomerChallenge,
+} from "./consultative";
 
 export interface NativeEngineInput {
   message: string;
@@ -375,7 +379,116 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
     }
   }
 
-  // 4e. Guided catalog recommendation flow (zero-LLM consultative selling)
+  // 4e. Consultative Problem Discovery & Active Listening
+  const detectedChallenge = detectCustomerChallenge(cleanMessage);
+  if (intentResult.intent === "problem_discovery" && detectedChallenge) {
+    const matchedCatalog = matchWorkspaceKnowledge(cleanMessage, "product_info", input.knowledge)
+      .filter((c) => c.type === "product" || c.type === "service")
+      .slice(0, 3);
+
+    const consultativeReply = connectChallengeToVerifiedValue(
+      detectedChallenge,
+      matchedCatalog,
+      input.knowledge
+    );
+
+    return {
+      reply: consultativeReply,
+      intent: "problem_discovery",
+      confidence: Math.max(0.82, matchedCatalog[0]?.score ?? 0.82),
+      sources: matchedCatalog.map((m) => ({
+        type: m.type,
+        id: m.id,
+        title: m.title,
+        score: m.score,
+      })),
+      matchedCandidates: matchedCatalog,
+      extractedEntities: entities,
+      shouldEscalate: false,
+      escalationReason: null,
+      isUnanswered: false,
+      updatedState: {
+        ...prevState,
+        lastIntent: "problem_discovery",
+        lastReferencedItem: matchedCatalog[0]
+          ? {
+              type: matchedCatalog[0].type as "product" | "service",
+              id: matchedCatalog[0].id,
+              name: matchedCatalog[0].title,
+            }
+          : prevState.lastReferencedItem,
+        discovery: {
+          stage: "awaiting_details",
+          challengeTheme: detectedChallenge.theme,
+          challengePhrase: detectedChallenge.rawPhrase,
+        },
+        consecutiveFallbacks: 0,
+      },
+      suggestedActions: buildSuggestedActions(
+        input.knowledge,
+        "problem_discovery",
+        matchedCatalog[0]?.title
+      ),
+    };
+  }
+
+  // 4f. Follow-up after a discovery question: connect their newly shared details to verified catalog value
+  if (
+    prevState.discovery?.stage === "awaiting_details" &&
+    !["greeting", "farewell", "gratitude", "human_handoff", "order_intent"].includes(
+      intentResult.intent
+    )
+  ) {
+    const refinedMatches = matchWorkspaceKnowledge(cleanMessage, "product_info", input.knowledge)
+      .filter((c) => c.type === "product" || c.type === "service")
+      .slice(0, 2);
+
+    if (refinedMatches.length > 0) {
+      const valueSummary = refinedMatches
+        .map((m) => `• ${m.title}: ${m.answerText}`)
+        .join("\n");
+      return {
+        reply: renderGroundedAnswer(
+          `Thank you for sharing those details — that gives me a much clearer picture of your goal around "${prevState.discovery.challengePhrase}". Here is the strongest verified match for you:\n${valueSummary}\n\nWould you like me to prepare an order or booking enquiry for ${refinedMatches[0].title}?`,
+          renderOpts
+        ),
+        intent: "recommendation",
+        confidence: Math.max(0.82, refinedMatches[0].score),
+        sources: refinedMatches.map((m) => ({
+          type: m.type,
+          id: m.id,
+          title: m.title,
+          score: m.score,
+        })),
+        matchedCandidates: refinedMatches,
+        extractedEntities: entities,
+        shouldEscalate: false,
+        escalationReason: null,
+        isUnanswered: false,
+        updatedState: {
+          ...prevState,
+          lastIntent: "recommendation",
+          lastReferencedItem: {
+            type: refinedMatches[0].type as "product" | "service",
+            id: refinedMatches[0].id,
+            name: refinedMatches[0].title,
+          },
+          discovery: {
+            ...prevState.discovery,
+            stage: "value_presented",
+          },
+          consecutiveFallbacks: 0,
+        },
+        suggestedActions: [
+          `I want to order ${refinedMatches[0].title}`,
+          "Delivery info",
+          "Speak to a human",
+        ],
+      };
+    }
+  }
+
+  // 4g. Guided catalog recommendation flow (zero-LLM consultative selling)
   if (intentResult.intent === "recommendation") {
     const activeProducts = input.knowledge.products.filter((p) => p.is_active);
     const activeServices = input.knowledge.services.filter((s) => s.is_active);

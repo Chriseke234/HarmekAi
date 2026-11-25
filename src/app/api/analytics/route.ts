@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { requireWorkspaceAccess } from "@/lib/security/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { buildTrialPerformanceReport, evaluateTrialStatus } from "@/lib/billing/trial";
+import { interpretCustomerChallenges } from "@/lib/intelligence/native/consultative";
 import type { TrialRecord } from "@/types/database";
 
 export async function GET(request: Request) {
@@ -28,7 +29,7 @@ export async function GET(request: Request) {
       .gte("created_at", sinceIso),
     supabase
       .from("messages")
-      .select("id, sender_type, intelligence_mode, intent, created_at")
+      .select("id, sender_type, content, intelligence_mode, intent, created_at")
       .eq("workspace_id", workspaceId)
       .gte("created_at", sinceIso),
     supabase
@@ -128,6 +129,12 @@ export async function GET(request: Request) {
     commonIntents,
   });
 
+  const customerInsights = interpretCustomerChallenges(
+    messages
+      .filter((m) => m.sender_type === "customer" && typeof m.content === "string")
+      .map((m) => ({ content: m.content as string }))
+  );
+
   return NextResponse.json({
     rangeDays: days,
     summary: {
@@ -146,6 +153,7 @@ export async function GET(request: Request) {
     },
     dailySeries,
     unansweredQuestions: unanswered,
+    customerInsights,
     trialStatus: trialSummary,
     trialReport,
   });

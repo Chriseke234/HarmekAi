@@ -15,6 +15,7 @@ export type NativeIntent =
   | "compare_items"
   | "budget_query"
   | "catalog_browse"
+  | "problem_discovery"
   | "recommendation"
   | "product_price"
   | "product_availability"
@@ -84,6 +85,13 @@ const INTENT_RULES: IntentRule[] = [
     priority: 88,
     patterns: [
       /\b(recommend|recommendation|suggest|which one|what should i (buy|get|choose|try)|best for|help me choose)\b/i,
+    ],
+  },
+  {
+    intent: "problem_discovery",
+    priority: 87,
+    patterns: [
+      /\b(struggling with|problem with|issue with|trouble with|suffering from|dealing with|trying to fix|want to improve|feels dry|dull skin|no time|too busy|takes too long|not sure which|confused|overwhelmed|tired of|worried about|too expensive|tight budget)\b/i,
     ],
   },
   {

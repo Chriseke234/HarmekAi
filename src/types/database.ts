@@ -224,6 +224,11 @@ export interface ConversationStateContext {
   clarificationCandidates?: Array<{ id: string; name: string; type: string }>;
   consecutiveFallbacks?: number;
   leadCaptureStep?: "name" | "email" | "phone" | "complete" | null;
+  discovery?: {
+    stage: "awaiting_details" | "value_presented";
+    challengeTheme: string;
+    challengePhrase: string;
+  } | null;
 }
 
 export interface Conversation {
