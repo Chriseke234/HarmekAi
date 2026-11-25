@@ -98,8 +98,26 @@ export async function requireWorkspaceAccess(
   };
 }
 
+const DEFAULT_PLATFORM_OWNER_EMAIL = "ekechristopher56@gmail.com";
+
+/**
+ * Checks whether an email belongs to an authorized Harmek AI platform owner.
+ * Additional owners may only be granted by the owner via the server-only
+ * PLATFORM_OWNER_EMAILS environment variable + database is_platform_admin flag.
+ */
+export function isAuthorizedPlatformOwnerEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const normalized = email.trim().toLowerCase();
+  const configured = (process.env.PLATFORM_OWNER_EMAILS ?? DEFAULT_PLATFORM_OWNER_EMAIL)
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  return configured.includes(normalized);
+}
+
 /**
  * Enforces platform administrator authorization for /admin routes and APIs.
+ * Requires BOTH database is_platform_admin = true AND server-side owner email allowlist.
  */
 export async function requirePlatformAdmin(): Promise<
   | { ok: true; context: AuthenticatedContext }
@@ -109,7 +127,7 @@ export async function requirePlatformAdmin(): Promise<
   if (!ctx) {
     return { ok: false, status: 401, error: "Authentication required." };
   }
-  if (!ctx.profile?.is_platform_admin) {
+  if (!ctx.profile?.is_platform_admin || !isAuthorizedPlatformOwnerEmail(ctx.email)) {
     return { ok: false, status: 403, error: "Platform administrator privileges required." };
   }
   return { ok: true, context: ctx };

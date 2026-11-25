@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getAuthenticatedContext } from "@/lib/security/auth";
+import { getAuthenticatedContext, isAuthorizedPlatformOwnerEmail } from "@/lib/security/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { evaluateTrialStatus } from "@/lib/billing/trial";
 import { DashboardShell } from "@/components/dashboard/shell";
@@ -39,7 +39,9 @@ export default async function DashboardLayout({
       intelligenceMode={(settings?.intelligence_mode as IntelligenceMode) ?? "native"}
       trialStatus={trialSummary.status}
       trialDaysRemaining={trialSummary.daysRemaining}
-      isPlatformAdmin={Boolean(ctx.profile?.is_platform_admin)}
+      isPlatformAdmin={
+        Boolean(ctx.profile?.is_platform_admin) && isAuthorizedPlatformOwnerEmail(ctx.email)
+      }
     >
       {children}
     </DashboardShell>

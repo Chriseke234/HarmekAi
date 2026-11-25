@@ -5,7 +5,7 @@ import {
   evaluateTrialStatus,
 } from "@/lib/billing/trial";
 import { decryptSecret, encryptSecret, maskSecret } from "@/lib/security/crypto";
-import { hasRequiredRole } from "@/lib/security/auth";
+import { hasRequiredRole, isAuthorizedPlatformOwnerEmail } from "@/lib/security/auth";
 import { checkRateLimit, resetRateLimiterForTests } from "@/lib/security/rate-limit";
 import { chunkKnowledgeText, computeContentHash } from "@/lib/knowledge/service";
 
@@ -90,6 +90,13 @@ describe("Security, Encryption, RBAC, Rate Limiting & Knowledge Hashing", () => 
     expect(hasRequiredRole("owner", ["owner", "admin"])).toBe(true);
     expect(hasRequiredRole("agent", ["owner", "admin"])).toBe(false);
     expect(hasRequiredRole(null, ["owner", "admin", "agent"])).toBe(false);
+  });
+
+  it("restricts Platform Admin strictly to the official owner email", () => {
+    expect(isAuthorizedPlatformOwnerEmail("ekechristopher56@gmail.com")).toBe(true);
+    expect(isAuthorizedPlatformOwnerEmail("EKECHRISTOPHER56@GMAIL.COM")).toBe(true);
+    expect(isAuthorizedPlatformOwnerEmail("randomuser@gmail.com")).toBe(false);
+    expect(isAuthorizedPlatformOwnerEmail(null)).toBe(false);
   });
 
   it("rate limits excessive public widget requests", () => {
