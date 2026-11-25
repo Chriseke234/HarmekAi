@@ -32,7 +32,7 @@ const SECTIONS = [
   },
   {
     title: "7. Contact",
-    body: "Questions about these Terms of Service may be sent to harmekai@gmail.com or submitted through our Contact & Support page.",
+    body: "Questions about these Terms of Service may be sent to ai.harmek.build@gmail.com or submitted through our Contact & Support page.",
   },
 ];
 

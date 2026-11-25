@@ -8,7 +8,7 @@ export const metadata = {
 const SECTIONS = [
   {
     title: "1. Who We Are",
-    body: "Harmek AI is operated by ChrisBuilds. For privacy enquiries or data deletion requests, contact us at harmekai@gmail.com.",
+    body: "Harmek AI is operated by ChrisBuilds. For privacy enquiries or data deletion requests, contact us at ai.harmek.build@gmail.com.",
   },
   {
     title: "2. Information We Collect",
@@ -28,7 +28,7 @@ const SECTIONS = [
   },
   {
     title: "6. Data Retention & Deletion",
-    body: "We retain workspace data while your account is active and preserve it in read-only mode if a 14-day trial expires so you never lose business records unexpectedly. Workspace Owners may delete knowledge items or request full workspace deletion at any time by emailing harmekai@gmail.com.",
+    body: "We retain workspace data while your account is active and preserve it in read-only mode if a 14-day trial expires so you never lose business records unexpectedly. Workspace Owners may delete knowledge items or request full workspace deletion at any time by emailing ai.harmek.build@gmail.com.",
   },
 ];
 
@@ -59,8 +59,8 @@ export default function PrivacyPage() {
 
       <p className="mt-8 text-xs text-[#968E82]">
         Questions or deletion requests? Email{" "}
-        <a href="mailto:harmekai@gmail.com" className="text-[#D97745] hover:underline">
-          harmekai@gmail.com
+        <a href="mailto:ai.harmek.build@gmail.com" className="text-[#D97745] hover:underline">
+          ai.harmek.build@gmail.com
         </a>{" "}
         or visit{" "}
         <Link href="/contact" className="text-[#D97745] hover:underline">

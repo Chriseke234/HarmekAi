@@ -67,10 +67,10 @@ export default function ContactPage() {
               <div>
                 <p className="font-semibold text-[#F5F2EB]">Direct Email</p>
                 <a
-                  href="mailto:harmekai@gmail.com"
+                  href="mailto:ai.harmek.build@gmail.com"
                   className="text-[#B5AEA2] hover:text-[#D97745]"
                 >
-                  harmekai@gmail.com
+                  ai.harmek.build@gmail.com
                 </a>
               </div>
             </div>

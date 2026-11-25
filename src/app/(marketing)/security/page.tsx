@@ -67,8 +67,8 @@ export default function SecurityPage() {
         <div className="flex items-center gap-2.5 text-sm text-[#B5AEA2]">
           <Check className="h-4 w-4 text-[#84A98C]" />
           Security enquiries or responsible disclosure:{" "}
-          <a href="mailto:harmekai@gmail.com" className="text-[#F5F2EB] underline">
-            harmekai@gmail.com
+          <a href="mailto:ai.harmek.build@gmail.com" className="text-[#F5F2EB] underline">
+            ai.harmek.build@gmail.com
           </a>
         </div>
         <Link href="/contact">

@@ -17,8 +17,8 @@ export function MarketingFooter() {
             </p>
             <p className="mt-3 text-xs text-[#968E82]">
               Support:{" "}
-              <a href="mailto:harmekai@gmail.com" className="text-[#D97745] hover:underline">
-                harmekai@gmail.com
+              <a href="mailto:ai.harmek.build@gmail.com" className="text-[#D97745] hover:underline">
+                ai.harmek.build@gmail.com
               </a>
             </p>
           </div>
