@@ -42,6 +42,7 @@ export interface RouterOutput {
   escalationReason: string | null;
   isUnanswered: boolean;
   updatedState: ConversationStateContext;
+  suggestedActions: string[];
   tokensUsed: number;
   estimatedCostUsd: number;
 }
@@ -76,6 +77,7 @@ export async function routeIntelligenceRequest(input: RouterInput): Promise<Rout
       escalationReason: null,
       isUnanswered: false,
       updatedState: conv.state_context ?? {},
+      suggestedActions: [],
       tokensUsed: 0,
       estimatedCostUsd: 0,
     };
@@ -117,6 +119,7 @@ export async function routeIntelligenceRequest(input: RouterInput): Promise<Rout
       escalationReason: nativeResult.escalationReason,
       isUnanswered: nativeResult.isUnanswered,
       updatedState: nativeResult.updatedState,
+      suggestedActions: nativeResult.suggestedActions,
       tokensUsed: 0,
       estimatedCostUsd: 0,
     };
@@ -156,6 +159,7 @@ export async function routeIntelligenceRequest(input: RouterInput): Promise<Rout
         escalationReason: nativeResult.escalationReason,
         isUnanswered: nativeResult.isUnanswered,
         updatedState: nativeResult.updatedState,
+        suggestedActions: nativeResult.suggestedActions,
         tokensUsed: enhanced.tokensUsed,
         estimatedCostUsd: enhanced.estimatedCostUsd,
       };
@@ -176,6 +180,7 @@ export async function routeIntelligenceRequest(input: RouterInput): Promise<Rout
       escalationReason: nativeResult.escalationReason,
       isUnanswered: nativeResult.isUnanswered,
       updatedState: nativeResult.updatedState,
+      suggestedActions: nativeResult.suggestedActions,
       tokensUsed: enhanced.tokensUsed,
       estimatedCostUsd: enhanced.estimatedCostUsd,
     };
@@ -196,6 +201,7 @@ export async function routeIntelligenceRequest(input: RouterInput): Promise<Rout
       escalationReason: nativeResult.escalationReason,
       isUnanswered: nativeResult.isUnanswered,
       updatedState: nativeResult.updatedState,
+      suggestedActions: nativeResult.suggestedActions,
       tokensUsed: 0,
       estimatedCostUsd: 0,
     };

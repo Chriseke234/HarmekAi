@@ -20,7 +20,9 @@ export async function GET(request: Request) {
   const [convRes, msgRes, unansweredRes, usageRes, trialRes] = await Promise.all([
     supabase
       .from("conversations")
-      .select("id, status, human_takeover, lead_captured, sale_completed, first_response_ms, created_at")
+      .select(
+        "id, status, human_takeover, lead_captured, sale_completed, verified_revenue_amount, first_response_ms, created_at"
+      )
       .eq("workspace_id", workspaceId)
       .neq("channel", "simulator")
       .gte("created_at", sinceIso),
@@ -62,6 +64,12 @@ export async function GET(request: Request) {
   const resolvedConversations = conversations.filter((c) => c.status === "resolved").length;
   const leadsCaptured = conversations.filter((c) => c.lead_captured).length;
   const salesCompleted = conversations.filter((c) => c.sale_completed).length;
+  const verifiedRevenueTotal = Number(
+    conversations
+      .filter((c) => c.sale_completed && typeof c.verified_revenue_amount === "number")
+      .reduce((sum, c) => sum + Number(c.verified_revenue_amount ?? 0), 0)
+      .toFixed(2)
+  );
 
   const responseTimes = conversations
     .map((c) => c.first_response_ms)
@@ -130,6 +138,7 @@ export async function GET(request: Request) {
       resolvedConversations,
       leadsCaptured,
       salesCompleted,
+      verifiedRevenueTotal,
       unansweredCount: unanswered.filter((u) => u.status === "open").length,
       avgFirstResponseMs,
       nativeMessagesUsed,

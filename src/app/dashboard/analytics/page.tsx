@@ -26,6 +26,7 @@ interface AnalyticsPayload {
     resolvedConversations: number;
     leadsCaptured: number;
     salesCompleted: number;
+    verifiedRevenueTotal?: number;
     unansweredCount: number;
     avgFirstResponseMs: number | null;
     nativeMessagesUsed: number;
@@ -89,12 +90,19 @@ export default function AnalyticsPage() {
       </div>
 
       {/* Distinct Outcome Metrics */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {[
-          { label: "Conversations Handled (AI)", value: s?.aiHandledConversations ?? 0 },
-          { label: "Conversations Resolved", value: s?.resolvedConversations ?? 0 },
-          { label: "Leads Captured", value: s?.leadsCaptured ?? 0 },
-          { label: "Sales Completed (Staff Verified)", value: s?.salesCompleted ?? 0 },
+          { label: "Conversations Handled (AI)", value: String(s?.aiHandledConversations ?? 0) },
+          { label: "Conversations Resolved", value: String(s?.resolvedConversations ?? 0) },
+          { label: "Leads Captured", value: String(s?.leadsCaptured ?? 0) },
+          { label: "Sales Completed (Verified)", value: String(s?.salesCompleted ?? 0) },
+          {
+            label: "Staff-Verified Revenue",
+            value: `$${(s?.verifiedRevenueTotal ?? 0).toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}`,
+          },
         ].map((m) => (
           <Card key={m.label}>
             <CardContent className="p-5">

@@ -1,14 +1,20 @@
 /**
  * Deterministic single- and multi-intent classifier for the Native Harmek Engine.
- * Supports compound customer questions (e.g. "How much is Vitamin C Serum and when do you close?").
+ * Supports compound questions, buying/order intent, comparisons, budget queries,
+ * catalog browsing, and natural conversational acknowledgements.
  */
 
 export type NativeIntent =
   | "greeting"
   | "farewell"
   | "gratitude"
+  | "acknowledgement"
   | "human_handoff"
   | "complaint_urgent"
+  | "order_intent"
+  | "compare_items"
+  | "budget_query"
+  | "catalog_browse"
   | "recommendation"
   | "product_price"
   | "product_availability"
@@ -53,10 +59,38 @@ const INTENT_RULES: IntentRule[] = [
     ],
   },
   {
+    intent: "order_intent",
+    priority: 92,
+    patterns: [
+      /\b(i want to buy|i'd like to buy|want to order|how do i order|place an order|i'll take|ill take|add to cart|checkout|buy \d+|order \d+|purchase)\b/i,
+    ],
+  },
+  {
+    intent: "compare_items",
+    priority: 90,
+    patterns: [
+      /\b(compare|comparison|difference between|better between|\bvs\b|versus)\b/i,
+    ],
+  },
+  {
+    intent: "budget_query",
+    priority: 89,
+    patterns: [
+      /\b(cheaper|cheapest|most affordable|budget|under \$?\d+|below \$?\d+|less than \$?\d+)\b/i,
+    ],
+  },
+  {
     intent: "recommendation",
     priority: 88,
     patterns: [
       /\b(recommend|recommendation|suggest|which one|what should i (buy|get|choose|try)|best for|help me choose)\b/i,
+    ],
+  },
+  {
+    intent: "catalog_browse",
+    priority: 86,
+    patterns: [
+      /\b(what do you sell|what else do you (sell|have|offer)|show me your (products|services|catalog|menu)|list your (products|services)|view prices|see your catalog)\b/i,
     ],
   },
   {
@@ -131,24 +165,29 @@ const INTENT_RULES: IntentRule[] = [
     ],
   },
   {
+    intent: "acknowledgement",
+    priority: 48,
+    patterns: [
+      /^(ok|okay|alright|got it|sounds good|cool|nice|great|awesome|perfect)[\s!.,?]*$/i,
+      /\b(are you there|anyone there|still there)\b/i,
+    ],
+  },
+  {
     intent: "gratitude",
     priority: 45,
     patterns: [
-      /^(thanks|thank you|thx|appreciate it|much appreciated|cheers)[\s!.,]*$/i,
+      /^(thanks|thank you|thx|appreciate it|much appreciated|cheers)[\s!.,?]*$/i,
     ],
   },
   {
     intent: "farewell",
     priority: 40,
     patterns: [
-      /^(bye|goodbye|see you|take care|have a good day|talk later)[\s!.,]*$/i,
+      /^(bye|goodbye|see you|take care|have a good day|talk later)[\s!.,?]*$/i,
     ],
   },
 ];
 
-/**
- * Returns ALL matching intents ordered by priority (for multi-intent compound queries).
- */
 export function detectMultipleIntents(
   message: string,
   customEscalationKeywords: string[] = []
@@ -185,9 +224,7 @@ export function detectMultipleIntents(
     }
   }
 
-  if (matched.length > 0) {
-    return matched;
-  }
+  if (matched.length > 0) return matched;
 
   if (
     /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/.test(trimmed) ||
@@ -211,9 +248,6 @@ export function detectMultipleIntents(
   ];
 }
 
-/**
- * Returns the primary (highest-priority) intent.
- */
 export function detectIntent(
   message: string,
   customEscalationKeywords: string[] = []

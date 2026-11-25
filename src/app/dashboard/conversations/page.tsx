@@ -58,6 +58,7 @@ export default function ConversationsPage() {
   const [faqSavedNotice, setFaqSavedNotice] = useState<string | null>(null);
   const [replyText, setReplyText] = useState("");
   const [noteText, setNoteText] = useState("");
+  const [saleAmountInput, setSaleAmountInput] = useState("");
   const [sending, setSending] = useState(false);
 
   async function loadConversations() {
@@ -364,20 +365,38 @@ export default function ConversationsPage() {
                   <p className="text-[#D6D0C4]">
                     Phone: {selectedConv.contacts?.phone || "Not provided"}
                   </p>
-                  <div className="pt-2">
+                  <div className="space-y-2 pt-2">
+                    <Input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      className="h-8 text-xs"
+                      placeholder="Verified order value (optional)"
+                      value={saleAmountInput}
+                      onChange={(e) => setSaleAmountInput(e.target.value)}
+                    />
                     <Button
                       size="sm"
                       variant={selectedConv.sale_completed ? "default" : "outline"}
                       className="w-full"
-                      onClick={() =>
+                      onClick={() => {
+                        const parsedAmt = saleAmountInput
+                          ? Number.parseFloat(saleAmountInput)
+                          : null;
                         runAction({
                           action: "mark_sale_completed",
                           sale_completed: !selectedConv.sale_completed,
-                        })
-                      }
+                          verified_revenue_amount:
+                            parsedAmt !== null && !Number.isNaN(parsedAmt) ? parsedAmt : null,
+                        });
+                      }}
                     >
                       <CheckCircle2 className="h-3.5 w-3.5" />
-                      {selectedConv.sale_completed ? "Sale Recorded" : "Mark Sale Completed"}
+                      {selectedConv.sale_completed
+                        ? selectedConv.verified_revenue_amount
+                          ? `Sale Recorded ($${selectedConv.verified_revenue_amount})`
+                          : "Sale Recorded"
+                        : "Mark Sale Completed"}
                     </Button>
                   </div>
                 </div>

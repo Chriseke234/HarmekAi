@@ -34,6 +34,7 @@ const ActionSchema = z.discriminatedUnion("action", [
   z.object({
     action: z.literal("mark_sale_completed"),
     sale_completed: z.boolean(),
+    verified_revenue_amount: z.number().nonnegative().nullable().optional(),
   }),
 ]);
 
@@ -251,7 +252,12 @@ export async function POST(
     if (d.action === "mark_sale_completed") {
       await supabase
         .from("conversations")
-        .update({ sale_completed: d.sale_completed })
+        .update({
+          sale_completed: d.sale_completed,
+          verified_revenue_amount: d.sale_completed
+            ? d.verified_revenue_amount ?? null
+            : null,
+        })
         .eq("id", id)
         .eq("workspace_id", workspaceId);
       return NextResponse.json({ ok: true });

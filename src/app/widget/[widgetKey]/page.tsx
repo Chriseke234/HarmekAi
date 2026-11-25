@@ -13,6 +13,7 @@ interface WidgetConfig {
   welcomeMessage: string;
   primaryColor: string;
   requireConsent: boolean;
+  starterPrompts?: string[];
 }
 
 interface WidgetMessage {
@@ -36,6 +37,7 @@ export default function WidgetEmbedPage({
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [humanHandling, setHumanHandling] = useState(false);
   const [messages, setMessages] = useState<WidgetMessage[]>([]);
+  const [quickReplies, setQuickReplies] = useState<string[]>([]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -51,6 +53,7 @@ export default function WidgetEmbedPage({
       })
       .then((cfg: WidgetConfig) => {
         setConfig(cfg);
+        setQuickReplies(cfg.starterPrompts ?? ["What do you sell?", "Opening hours", "Speak to a human"]);
         if (!cfg.requireConsent) {
           setConsentChoiceMade(true);
           startSession(false);
@@ -115,11 +118,10 @@ export default function WidgetEmbedPage({
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  async function handleSend(e: React.FormEvent) {
-    e.preventDefault();
-    if (!input.trim() || !conversationId || sending) return;
+  async function sendText(rawText: string) {
+    if (!rawText.trim() || !conversationId || sending) return;
 
-    const content = input.trim();
+    const content = rawText.trim();
     setInput("");
     setSending(true);
     setError(null);
@@ -144,7 +146,15 @@ export default function WidgetEmbedPage({
       if (data.assistantMessage) next.push(data.assistantMessage);
       return next;
     });
+    if (Array.isArray(data.suggestedActions)) {
+      setQuickReplies(data.suggestedActions);
+    }
     if (data.humanHandling) setHumanHandling(true);
+  }
+
+  async function handleSend(e: React.FormEvent) {
+    e.preventDefault();
+    await sendText(input);
   }
 
   if (loading) {
@@ -263,6 +273,23 @@ export default function WidgetEmbedPage({
             {error ? <p className="text-xs text-rose-400">{error}</p> : null}
             <div ref={bottomRef} />
           </div>
+
+          {/* Interactive Quick-Reply Chips */}
+          {!humanHandling && quickReplies.length > 0 ? (
+            <div className="flex flex-wrap gap-1.5 border-t border-[#2B2722] bg-[#141210] px-3 pt-2.5 pb-1">
+              {quickReplies.map((chip) => (
+                <button
+                  key={chip}
+                  type="button"
+                  disabled={sending}
+                  onClick={() => sendText(chip)}
+                  className="rounded-full border border-[#3D3730] bg-[#181613] px-3 py-1 text-xs text-[#F5F2EB] transition-colors hover:border-[#D97745] hover:text-[#F0A47A] disabled:opacity-50 cursor-pointer"
+                >
+                  {chip}
+                </button>
+              ))}
+            </div>
+          ) : null}
 
           {/* Input */}
           <form

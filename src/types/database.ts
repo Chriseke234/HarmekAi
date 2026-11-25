@@ -240,6 +240,8 @@ export interface Conversation {
   unread_count: number;
   lead_captured: boolean;
   sale_completed: boolean;
+  verified_revenue_amount?: number | null;
+  verified_revenue_currency?: string;
   first_response_ms: number | null;
   state_context: ConversationStateContext;
   last_message_at: string;

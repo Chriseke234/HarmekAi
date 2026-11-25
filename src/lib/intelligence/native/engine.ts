@@ -44,6 +44,38 @@ export interface NativeEngineOutput {
   escalationReason: string | null;
   isUnanswered: boolean;
   updatedState: ConversationStateContext;
+  suggestedActions: string[];
+}
+
+/**
+ * Generates contextual, tappable quick-reply chips tailored to the business's real catalog.
+ */
+export function buildSuggestedActions(
+  knowledge: WorkspaceKnowledgeBundle,
+  currentIntent: NativeIntent,
+  referencedItemName?: string
+): string[] {
+  const chips: string[] = [];
+  if (referencedItemName && currentIntent !== "order_intent") {
+    chips.push(`I want to order ${referencedItemName}`);
+  }
+  if (knowledge.products.some((p) => p.is_active) && currentIntent !== "catalog_browse") {
+    chips.push("What do you sell?");
+  }
+  if (knowledge.businessProfile?.delivery_info?.trim() && currentIntent !== "delivery_info") {
+    chips.push("Delivery info");
+  }
+  if (
+    knowledge.businessProfile &&
+    Object.keys(knowledge.businessProfile.operating_hours ?? {}).length > 0 &&
+    currentIntent !== "business_hours"
+  ) {
+    chips.push("Opening hours");
+  }
+  if (currentIntent !== "human_handoff") {
+    chips.push("Speak to a human");
+  }
+  return chips.slice(0, 3);
 }
 
 /**
@@ -79,6 +111,7 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
       escalationReason: null,
       isUnanswered: false,
       updatedState: { ...prevState, lastIntent: "unknown" },
+      suggestedActions: buildSuggestedActions(input.knowledge, "unknown"),
     };
   }
 
@@ -96,6 +129,7 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
       escalationReason: `Customer asked about avoided topic: ${avoided}`,
       isUnanswered: false,
       updatedState: { ...prevState, lastIntent: "avoided_topic" },
+      suggestedActions: ["Speak to a human"],
     };
   }
 
@@ -126,10 +160,222 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
         lastIntent: intentResult.intent,
         awaitingClarification: false,
       },
+      suggestedActions: [],
     };
   }
 
-  // 4b. Guided catalog recommendation flow (zero-LLM consultative selling)
+  // 4a. Guided Order / Buying Intent Flow (verified subtotal + out-of-stock waitlist + lead capture)
+  if (intentResult.intent === "order_intent") {
+    const queryWithContext = prevState.lastReferencedItem
+      ? `${cleanMessage} ${prevState.lastReferencedItem.name}`
+      : cleanMessage;
+    const itemMatch = matchWorkspaceKnowledge(queryWithContext, "product_info", input.knowledge).find(
+      (c) => c.type === "product" || c.type === "service"
+    );
+    const qty = entities.quantity ?? Number(cleanMessage.match(/\b(\d{1,2})\b/)?.[1] ?? 1);
+
+    if (itemMatch?.product && itemMatch.product.availability === "out_of_stock") {
+      return {
+        reply: renderGroundedAnswer(
+          `${itemMatch.product.name} is currently out of stock. If you share your email or phone number, our team at ${businessName} will notify you the moment it is back in stock.`,
+          renderOpts
+        ),
+        intent: "order_intent",
+        confidence: 0.9,
+        sources: [{ type: "product", id: itemMatch.product.id, title: itemMatch.product.name, score: 0.9 }],
+        matchedCandidates: [itemMatch],
+        extractedEntities: entities,
+        shouldEscalate: false,
+        escalationReason: null,
+        isUnanswered: false,
+        updatedState: {
+          ...prevState,
+          lastIntent: "order_intent",
+          leadCaptureStep: "email",
+          consecutiveFallbacks: 0,
+        },
+        suggestedActions: ["What else do you sell?", "Speak to a human"],
+      };
+    }
+
+    if (itemMatch) {
+      const unitPrice = itemMatch.product?.price ?? itemMatch.service?.price ?? null;
+      const currency = itemMatch.product?.currency ?? itemMatch.service?.currency ?? "USD";
+      const subtotalLine =
+        unitPrice !== null
+          ? ` for ${qty} × ${formatCurrency(unitPrice, currency)} = ${formatCurrency(unitPrice * qty, currency)}`
+          : "";
+      const hasContact = Boolean(entities.email || entities.phone);
+      const nextPrompt = hasContact
+        ? `I have recorded your contact details and flagged this order enquiry for our ${businessName} team to confirm payment and delivery shortly.`
+        : `To reserve this enquiry for our team to confirm payment and fulfillment, please reply with your name and email or phone number.`;
+
+      return {
+        reply: renderGroundedAnswer(
+          `Great choice! I can prepare an order enquiry for ${itemMatch.title}${subtotalLine}. ${nextPrompt}`,
+          renderOpts
+        ),
+        intent: "order_intent",
+        confidence: 0.92,
+        sources: [{ type: itemMatch.type, id: itemMatch.id, title: itemMatch.title, score: 0.92 }],
+        matchedCandidates: [itemMatch],
+        extractedEntities: entities,
+        shouldEscalate: hasContact,
+        escalationReason: hasContact
+          ? `High-intent order enquiry for ${itemMatch.title}${subtotalLine}`
+          : null,
+        isUnanswered: false,
+        updatedState: {
+          ...prevState,
+          lastIntent: "order_intent",
+          lastReferencedItem: {
+            type: itemMatch.type as "product" | "service",
+            id: itemMatch.id,
+            name: itemMatch.title,
+          },
+          leadCaptureStep: hasContact ? "complete" : "email",
+          consecutiveFallbacks: 0,
+        },
+        suggestedActions: ["Delivery info", "Speak to a human"],
+      };
+    }
+  }
+
+  // 4b. Side-by-Side Product / Service Comparison
+  if (intentResult.intent === "compare_items") {
+    const matchedItems = matchWorkspaceKnowledge(cleanMessage, "product_info", input.knowledge)
+      .filter((c) => c.type === "product" || c.type === "service")
+      .slice(0, 2);
+
+    if (matchedItems.length >= 2) {
+      const [first, second] = matchedItems;
+      return {
+        reply: renderGroundedAnswer(
+          `Here is a quick side-by-side comparison:\n• ${first.title}: ${first.answerText}\n• ${second.title}: ${second.answerText}\n\nWhich one feels like the better fit for you?`,
+          renderOpts
+        ),
+        intent: "compare_items",
+        confidence: 0.88,
+        sources: matchedItems.map((m) => ({
+          type: m.type,
+          id: m.id,
+          title: m.title,
+          score: m.score,
+        })),
+        matchedCandidates: matchedItems,
+        extractedEntities: entities,
+        shouldEscalate: false,
+        escalationReason: null,
+        isUnanswered: false,
+        updatedState: { ...prevState, lastIntent: "compare_items", consecutiveFallbacks: 0 },
+        suggestedActions: [
+          `I want to order ${first.title}`,
+          `I want to order ${second.title}`,
+        ],
+      };
+    }
+  }
+
+  // 4c. Budget / Affordable Options Filter
+  if (intentResult.intent === "budget_query") {
+    const capMatch = cleanMessage.match(/(?:under|below|less than)\s*[$£€₦]?\s*(\d+(?:\.\d{1,2})?)/i);
+    const budgetCap = capMatch ? Number.parseFloat(capMatch[1]) : null;
+    const pricedItems = [
+      ...input.knowledge.products
+        .filter((p) => p.is_active && p.price !== null)
+        .map((p) => ({
+          id: p.id,
+          type: "product" as const,
+          name: p.name,
+          price: p.price!,
+          currency: p.currency,
+        })),
+      ...input.knowledge.services
+        .filter((s) => s.is_active && s.price !== null)
+        .map((s) => ({
+          id: s.id,
+          type: "service" as const,
+          name: s.name,
+          price: s.price!,
+          currency: s.currency,
+        })),
+    ].sort((a, b) => a.price - b.price);
+
+    const matchingBudget =
+      budgetCap !== null
+        ? pricedItems.filter((item) => item.price <= budgetCap)
+        : pricedItems.slice(0, 3);
+
+    if (matchingBudget.length > 0) {
+      const list = matchingBudget
+        .slice(0, 4)
+        .map((it) => `• ${it.name} — ${formatCurrency(it.price, it.currency)}`)
+        .join("\n");
+      const intro =
+        budgetCap !== null
+          ? `Here are our verified options priced at or under ${budgetCap}:`
+          : `Here are our most affordable verified options:`;
+      return {
+        reply: renderGroundedAnswer(`${intro}\n${list}`, renderOpts),
+        intent: "budget_query",
+        confidence: 0.88,
+        sources: matchingBudget.slice(0, 3).map((it) => ({
+          type: it.type,
+          id: it.id,
+          title: it.name,
+          score: 0.88,
+        })),
+        matchedCandidates: [],
+        extractedEntities: entities,
+        shouldEscalate: false,
+        escalationReason: null,
+        isUnanswered: false,
+        updatedState: { ...prevState, lastIntent: "budget_query", consecutiveFallbacks: 0 },
+        suggestedActions: [
+          `I want to order ${matchingBudget[0].name}`,
+          "Delivery info",
+        ],
+      };
+    }
+  }
+
+  // 4d. Catalog Browse ("What do you sell?" / "Show me your prices")
+  if (intentResult.intent === "catalog_browse") {
+    const activeProducts = input.knowledge.products.filter((p) => p.is_active);
+    const activeServices = input.knowledge.services.filter((s) => s.is_active);
+    const lines = [
+      ...activeProducts
+        .slice(0, 4)
+        .map((p) => `• ${p.name} — ${formatCurrency(p.price, p.currency)}`),
+      ...activeServices
+        .slice(0, 3)
+        .map((s) => `• ${s.name} — ${formatCurrency(s.price, s.currency)}`),
+    ];
+    if (lines.length > 0) {
+      return {
+        reply: renderGroundedAnswer(
+          `Here is a look at what we offer at ${businessName}:\n${lines.join("\n")}\n\nLet me know which one you would like details on or want to order.`,
+          renderOpts
+        ),
+        intent: "catalog_browse",
+        confidence: 0.9,
+        sources: [],
+        matchedCandidates: [],
+        extractedEntities: entities,
+        shouldEscalate: false,
+        escalationReason: null,
+        isUnanswered: false,
+        updatedState: { ...prevState, lastIntent: "catalog_browse", consecutiveFallbacks: 0 },
+        suggestedActions: [
+          activeProducts[0] ? `How much is ${activeProducts[0].name}?` : "Opening hours",
+          "Delivery info",
+          "Speak to a human",
+        ],
+      };
+    }
+  }
+
+  // 4e. Guided catalog recommendation flow (zero-LLM consultative selling)
   if (intentResult.intent === "recommendation") {
     const activeProducts = input.knowledge.products.filter((p) => p.is_active);
     const activeServices = input.knowledge.services.filter((s) => s.is_active);
@@ -167,6 +413,11 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
           },
           consecutiveFallbacks: 0,
         },
+        suggestedActions: buildSuggestedActions(
+          input.knowledge,
+          "recommendation",
+          catalogMatches[0].title
+        ),
       };
     }
 
@@ -189,6 +440,7 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
         escalationReason: null,
         isUnanswered: false,
         updatedState: { ...prevState, lastIntent: "recommendation", consecutiveFallbacks: 0 },
+        suggestedActions: buildSuggestedActions(input.knowledge, "recommendation"),
       };
     }
   }
@@ -209,6 +461,27 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
       escalationReason: null,
       isUnanswered: false,
       updatedState: { ...prevState, lastIntent: "greeting", consecutiveFallbacks: 0 },
+      suggestedActions: buildSuggestedActions(input.knowledge, "greeting"),
+    };
+  }
+
+  if (intentResult.intent === "acknowledgement") {
+    return {
+      reply: `I am right here whenever you are ready! Would you like to explore our catalog, ask a question, or start an order enquiry?`,
+      intent: "acknowledgement",
+      confidence: 0.9,
+      sources: [],
+      matchedCandidates: [],
+      extractedEntities: entities,
+      shouldEscalate: false,
+      escalationReason: null,
+      isUnanswered: false,
+      updatedState: { ...prevState, lastIntent: "acknowledgement", consecutiveFallbacks: 0 },
+      suggestedActions: buildSuggestedActions(
+        input.knowledge,
+        "acknowledgement",
+        prevState.lastReferencedItem?.name
+      ),
     };
   }
 
@@ -224,6 +497,7 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
       escalationReason: null,
       isUnanswered: false,
       updatedState: { ...prevState, lastIntent: "gratitude", consecutiveFallbacks: 0 },
+      suggestedActions: buildSuggestedActions(input.knowledge, "gratitude"),
     };
   }
 
@@ -239,6 +513,7 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
       escalationReason: null,
       isUnanswered: false,
       updatedState: { ...prevState, lastIntent: "farewell", consecutiveFallbacks: 0 },
+      suggestedActions: [],
     };
   }
 
@@ -263,6 +538,7 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
         leadCaptureStep: "complete",
         consecutiveFallbacks: 0,
       },
+      suggestedActions: buildSuggestedActions(input.knowledge, "lead_submission"),
     };
   }
 
@@ -316,9 +592,26 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
       score: c.score,
     }));
 
+    // Smart Cross-Sell: when a customer enquires about an in-stock product, gently mention a complementary item
+    let crossSellSuffix = "";
+    if (top.type === "product" && top.product && top.product.availability !== "out_of_stock") {
+      const complementary = input.knowledge.products.find(
+        (p) => p.is_active && p.id !== top.product!.id && p.availability !== "out_of_stock"
+      );
+      if (complementary) {
+        crossSellSuffix = `\n\nCustomers also frequently pair this with ${complementary.name} (${formatCurrency(
+          complementary.price,
+          complementary.currency
+        )}).`;
+      }
+    } else if (top.type === "product" && top.product?.availability === "out_of_stock") {
+      crossSellSuffix =
+        "\n\nShare your email or phone if you would like us to notify you as soon as it restocks.";
+    }
+
     const answerCore = secondaryTop
-      ? `${top.answerText}\n\nAdditionally — ${secondaryTop.answerText}`
-      : top.answerText;
+      ? `${top.answerText}\n\nAdditionally — ${secondaryTop.answerText}${crossSellSuffix}`
+      : `${top.answerText}${crossSellSuffix}`;
 
     return {
       reply: renderGroundedAnswer(answerCore, renderOpts),
@@ -340,6 +633,11 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
         awaitingClarification: false,
         consecutiveFallbacks: 0,
       },
+      suggestedActions: buildSuggestedActions(
+        input.knowledge,
+        intentResult.intent,
+        top.type === "product" || top.type === "service" ? top.title : undefined
+      ),
     };
   }
 
@@ -375,6 +673,7 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
         })),
         consecutiveFallbacks: (prevState.consecutiveFallbacks ?? 0) + 1,
       },
+      suggestedActions: clarifyCandidates.map((c) => c.title).slice(0, 3),
     };
   }
 
@@ -401,6 +700,7 @@ export function runNativeSageEngine(input: NativeEngineInput): NativeEngineOutpu
       awaitingClarification: false,
       consecutiveFallbacks: nextFallbacks,
     },
+    suggestedActions: ["What do you sell?", "Speak to a human"],
   };
 }
 

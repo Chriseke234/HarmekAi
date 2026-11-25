@@ -98,6 +98,7 @@ export async function POST(request: Request) {
       assistantMessage: result.assistantMessage,
       suppressed: result.suppressed,
       humanHandling: result.suppressed || result.routeResult?.shouldEscalate || false,
+      suggestedActions: result.routeResult?.suggestedActions ?? [],
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Failed to send message.";
