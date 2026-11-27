@@ -20,11 +20,11 @@ export function MarketingNavbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-[#2B2722] bg-[#11100E]/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-[#262626] bg-[#0A0A0A]/95 backdrop-blur-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5">
           <HarmekLogo className="h-8 w-8" />
-          <span className="font-display text-xl font-medium tracking-tight text-[#F5F2EB]">
+          <span className="font-display text-xl font-medium tracking-tight text-[#FAFAFA]">
             Harmek AI
           </span>
         </Link>
@@ -37,8 +37,8 @@ export function MarketingNavbar() {
               className={cn(
                 "rounded-md px-3.5 py-2 text-sm font-medium transition-colors",
                 pathname === link.href
-                  ? "text-[#F5F2EB] bg-[#211E1A]"
-                  : "text-[#B5AEA2] hover:text-[#F5F2EB]"
+                  ? "text-[#FAFAFA] bg-[#1C1C1C]"
+                  : "text-[#A3A3A3] hover:text-[#FAFAFA]"
               )}
             >
               {link.label}
@@ -59,7 +59,7 @@ export function MarketingNavbar() {
 
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-lg p-2 text-[#B5AEA2] hover:bg-[#211E1A] hover:text-[#F5F2EB] md:hidden"
+          className="inline-flex items-center justify-center rounded-lg p-2 text-[#A3A3A3] hover:bg-[#1C1C1C] hover:text-[#FAFAFA] md:hidden"
           onClick={() => setMobileOpen(!mobileOpen)}
           aria-label="Toggle navigation menu"
         >
@@ -68,7 +68,7 @@ export function MarketingNavbar() {
       </div>
 
       {mobileOpen ? (
-        <div className="border-t border-[#2B2722] bg-[#181613] px-4 py-4 md:hidden">
+        <div className="border-t border-[#262626] bg-[#121212] px-4 py-4 md:hidden">
           <div className="flex flex-col space-y-1">
             {NAV_LINKS.map((link) => (
               <Link
@@ -78,14 +78,14 @@ export function MarketingNavbar() {
                 className={cn(
                   "rounded-lg px-3 py-2.5 text-sm font-medium",
                   pathname === link.href
-                    ? "bg-[#211E1A] text-[#F5F2EB]"
-                    : "text-[#B5AEA2] hover:bg-[#211E1A]"
+                    ? "bg-[#1C1C1C] text-[#FAFAFA]"
+                    : "text-[#A3A3A3] hover:bg-[#1C1C1C]"
                 )}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="mt-4 flex flex-col gap-2 border-t border-[#2B2722] pt-4">
+            <div className="mt-4 flex flex-col gap-2 border-t border-[#262626] pt-4">
               <Link href="/sign-in" onClick={() => setMobileOpen(false)}>
                 <Button variant="outline" className="w-full">
                   Sign In

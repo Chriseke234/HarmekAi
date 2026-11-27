@@ -65,7 +65,7 @@ export default function ForgotPasswordPage() {
               </div>
             ) : null}
             <div className="space-y-1.5">
-              <label htmlFor="email" className="text-xs font-medium text-[#D6D0C4]">
+              <label htmlFor="email" className="text-xs font-medium text-[#D4D4D4]">
                 Account Email
               </label>
               <Input
@@ -80,8 +80,8 @@ export default function ForgotPasswordPage() {
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send Recovery Link"}
             </Button>
-            <p className="text-center text-xs text-[#B5AEA2]">
-              <Link href="/sign-in" className="text-[#D97745] hover:underline">
+            <p className="text-center text-xs text-[#A3A3A3]">
+              <Link href="/sign-in" className="text-[#FFFFFF] hover:underline">
                 Return to Sign In
               </Link>
             </p>

@@ -135,13 +135,13 @@ export default function ConversationsPage() {
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Conversations</h1>
-          <p className="mt-1 text-sm text-[#B5AEA2]">
+          <p className="mt-1 text-sm text-[#A3A3A3]">
             Manage live chats, take over as a human agent, or return handling to Harmek AI.
           </p>
         </div>
         <div className="flex gap-2">
           <div className="relative">
-            <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-[#968E82]" />
+            <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-[#8F8F8F]" />
             <Input
               className="w-52 pl-9"
               placeholder="Search inbox..."
@@ -168,7 +168,7 @@ export default function ConversationsPage() {
       </div>
 
       {loadingList ? (
-        <div className="flex h-64 items-center justify-center text-[#B5AEA2]">
+        <div className="flex h-64 items-center justify-center text-[#A3A3A3]">
           <Loader2 className="h-5 w-5 animate-spin" />
         </div>
       ) : list.length === 0 ? (
@@ -191,19 +191,19 @@ export default function ConversationsPage() {
                     onClick={() => setSelectedId(c.id)}
                     className={`w-full rounded-lg border p-3 text-left transition-colors cursor-pointer ${
                       active
-                        ? "border-[#D97745]/50 bg-[#D97745]/15"
-                        : "border-transparent bg-[#141210] hover:border-[#2B2722]"
+                        ? "border-[#FFFFFF]/50 bg-[#FFFFFF]/15"
+                        : "border-transparent bg-[#0E0E0E] hover:border-[#262626]"
                     }`}
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="truncate text-sm font-medium text-white">
                         {c.contacts?.full_name || c.contacts?.email || "Website Visitor"}
                       </span>
-                      <span className="shrink-0 text-[11px] text-[#968E82]">
+                      <span className="shrink-0 text-[11px] text-[#8F8F8F]">
                         {formatRelativeTime(c.last_message_at)}
                       </span>
                     </div>
-                    <p className="mt-1 line-clamp-2 text-xs text-[#B5AEA2]">
+                    <p className="mt-1 line-clamp-2 text-xs text-[#A3A3A3]">
                       {c.summary || "New website conversation"}
                     </p>
                     <div className="mt-2 flex items-center justify-between">
@@ -219,7 +219,7 @@ export default function ConversationsPage() {
                         {c.status.replace(/_/g, " ")}
                       </Badge>
                       {c.unread_count > 0 ? (
-                        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#D97745] px-1.5 text-[11px] font-semibold text-white">
+                        <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-[#FFFFFF] px-1.5 text-[11px] font-semibold text-white">
                           {c.unread_count}
                         </span>
                       ) : null}
@@ -234,12 +234,12 @@ export default function ConversationsPage() {
           <Card className="flex h-[640px] flex-col lg:col-span-5">
             {selectedConv ? (
               <>
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#2B2722] p-4">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#262626] p-4">
                   <div>
                     <h2 className="text-sm font-semibold text-white">
                       {selectedConv.contacts?.full_name || "Website Visitor"}
                     </h2>
-                    <p className="text-xs text-[#B5AEA2]">
+                    <p className="text-xs text-[#A3A3A3]">
                       {selectedConv.human_takeover
                         ? "Human takeover active — Harmek AI is paused"
                         : "Harmek AI is actively handling this conversation"}
@@ -282,17 +282,17 @@ export default function ConversationsPage() {
                       }`}
                     >
                       {m.sender_type === "system" ? (
-                        <span className="rounded-full border border-[#2B2722] bg-[#141210] px-3 py-1 text-[11px] text-[#B5AEA2]">
+                        <span className="rounded-full border border-[#262626] bg-[#0E0E0E] px-3 py-1 text-[11px] text-[#A3A3A3]">
                           {m.content}
                         </span>
                       ) : (
                         <div
                           className={`max-w-[85%] rounded-xl px-3.5 py-2.5 text-sm ${
                             m.sender_type === "customer"
-                              ? "border border-[#2B2722] bg-[#211E1A] text-[#F5F2EB]"
+                              ? "border border-[#262626] bg-[#1C1C1C] text-[#FAFAFA]"
                               : m.sender_type === "agent"
                                 ? "bg-emerald-600/90 text-white"
-                                : "bg-[#D97745] text-white"
+                                : "bg-[#FFFFFF] text-[#0A0A0A]"
                           }`}
                         >
                           <p className="mb-1 text-[10px] uppercase tracking-wider opacity-75">
@@ -311,7 +311,7 @@ export default function ConversationsPage() {
 
                 <form
                   onSubmit={handleSendAgentReply}
-                  className="flex gap-2 border-t border-[#2B2722] p-3"
+                  className="flex gap-2 border-t border-[#262626] p-3"
                 >
                   <Input
                     placeholder="Reply as a human agent (automatically pauses AI)..."
@@ -331,7 +331,7 @@ export default function ConversationsPage() {
             {selectedConv ? (
               <>
                 <div>
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-[#B5AEA2]">
+                  <h3 className="text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]">
                     Conversation Status
                   </h3>
                   <Select
@@ -352,17 +352,17 @@ export default function ConversationsPage() {
                   </Select>
                 </div>
 
-                <div className="space-y-1.5 border-t border-[#2B2722] pt-4 text-xs">
-                  <h3 className="font-semibold uppercase tracking-wider text-[#B5AEA2]">
+                <div className="space-y-1.5 border-t border-[#262626] pt-4 text-xs">
+                  <h3 className="font-semibold uppercase tracking-wider text-[#A3A3A3]">
                     Customer Details
                   </h3>
-                  <p className="text-[#F5F2EB]">
+                  <p className="text-[#FAFAFA]">
                     Name: {selectedConv.contacts?.full_name || "Not provided"}
                   </p>
-                  <p className="text-[#D6D0C4]">
+                  <p className="text-[#D4D4D4]">
                     Email: {selectedConv.contacts?.email || "Not provided"}
                   </p>
-                  <p className="text-[#D6D0C4]">
+                  <p className="text-[#D4D4D4]">
                     Phone: {selectedConv.contacts?.phone || "Not provided"}
                   </p>
                   <div className="space-y-2 pt-2">
@@ -402,30 +402,30 @@ export default function ConversationsPage() {
                 </div>
 
                 {selectedConv.summary ? (
-                  <div className="border-t border-[#2B2722] pt-4">
-                    <h3 className="text-xs font-semibold uppercase tracking-wider text-[#B5AEA2]">
+                  <div className="border-t border-[#262626] pt-4">
+                    <h3 className="text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]">
                       Summary
                     </h3>
-                    <p className="mt-1.5 text-xs leading-relaxed text-[#D6D0C4]">
+                    <p className="mt-1.5 text-xs leading-relaxed text-[#D4D4D4]">
                       {selectedConv.summary}
                     </p>
                   </div>
                 ) : null}
 
                 {handoffBrief ? (
-                  <div className="space-y-2 border-t border-[#2B2722] pt-4 text-xs">
-                    <h3 className="font-semibold uppercase tracking-wider text-[#D97745]">
+                  <div className="space-y-2 border-t border-[#262626] pt-4 text-xs">
+                    <h3 className="font-semibold uppercase tracking-wider text-[#FFFFFF]">
                       Agent Handoff Brief
                     </h3>
-                    <p className="text-[#D6D0C4]">
-                      <strong className="text-[#F5F2EB]">Goal:</strong> {handoffBrief.customerGoal}
+                    <p className="text-[#D4D4D4]">
+                      <strong className="text-[#FAFAFA]">Goal:</strong> {handoffBrief.customerGoal}
                     </p>
-                    <p className="text-[#B5AEA2]">
-                      <strong className="text-[#F5F2EB]">Next step:</strong>{" "}
+                    <p className="text-[#A3A3A3]">
+                      <strong className="text-[#FAFAFA]">Next step:</strong>{" "}
                       {handoffBrief.recommendedAction}
                     </p>
                     <div className="space-y-1.5 pt-1">
-                      <p className="text-[11px] font-medium text-[#968E82]">
+                      <p className="text-[11px] font-medium text-[#8F8F8F]">
                         1-Click Suggested Replies:
                       </p>
                       {handoffBrief.suggestedReplies.map((sr, i) => (
@@ -433,7 +433,7 @@ export default function ConversationsPage() {
                           key={i}
                           type="button"
                           onClick={() => setReplyText(sr)}
-                          className="w-full rounded-lg border border-[#2B2722] bg-[#141210] p-2 text-left text-[11px] text-[#D6D0C4] transition-colors hover:border-[#D97745]/50 hover:text-[#F5F2EB] cursor-pointer"
+                          className="w-full rounded-lg border border-[#262626] bg-[#0E0E0E] p-2 text-left text-[11px] text-[#D4D4D4] transition-colors hover:border-[#FFFFFF]/50 hover:text-[#FAFAFA] cursor-pointer"
                         >
                           {sr}
                         </button>
@@ -443,19 +443,19 @@ export default function ConversationsPage() {
                 ) : null}
 
                 {faqDraft ? (
-                  <div className="space-y-2 border-t border-[#2B2722] pt-4 text-xs">
-                    <h3 className="font-semibold uppercase tracking-wider text-[#84A98C]">
+                  <div className="space-y-2 border-t border-[#262626] pt-4 text-xs">
+                    <h3 className="font-semibold uppercase tracking-wider text-[#D4D4D4]">
                       Self-Healing KB Suggestion
                     </h3>
-                    <p className="text-[#B5AEA2]">
+                    <p className="text-[#A3A3A3]">
                       Teach Harmek this verified human answer permanently:
                     </p>
-                    <div className="rounded-lg border border-[#84A98C]/35 bg-[#141210] p-2.5">
-                      <p className="font-medium text-[#F5F2EB]">Q: {faqDraft.question}</p>
-                      <p className="mt-1 text-[#B5AEA2]">A: {faqDraft.answer}</p>
+                    <div className="rounded-lg border border-[#D4D4D4]/35 bg-[#0E0E0E] p-2.5">
+                      <p className="font-medium text-[#FAFAFA]">Q: {faqDraft.question}</p>
+                      <p className="mt-1 text-[#A3A3A3]">A: {faqDraft.answer}</p>
                     </div>
                     {faqSavedNotice ? (
-                      <p className="text-[#84A98C]">{faqSavedNotice}</p>
+                      <p className="text-[#D4D4D4]">{faqSavedNotice}</p>
                     ) : (
                       <Button
                         size="sm"
@@ -481,8 +481,8 @@ export default function ConversationsPage() {
                   </div>
                 ) : null}
 
-                <div className="border-t border-[#2B2722] pt-4">
-                  <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#B5AEA2]">
+                <div className="border-t border-[#262626] pt-4">
+                  <h3 className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]">
                     <StickyNote className="h-3.5 w-3.5" />
                     Internal Notes
                   </h3>
@@ -501,10 +501,10 @@ export default function ConversationsPage() {
                     {notes.map((n) => (
                       <div
                         key={n.id}
-                        className="rounded-lg border border-[#2B2722] bg-[#141210] p-2.5 text-xs text-[#D6D0C4]"
+                        className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-2.5 text-xs text-[#D4D4D4]"
                       >
                         <p>{n.content}</p>
-                        <p className="mt-1 text-[10px] text-[#968E82]">
+                        <p className="mt-1 text-[10px] text-[#8F8F8F]">
                           {formatRelativeTime(n.created_at)}
                         </p>
                       </div>

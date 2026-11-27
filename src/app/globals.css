@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-ink: #11100E;
-  --color-stone: #181613;
-  --color-stone-elevated: #211E1A;
-  --color-stone-inset: #141210;
-  --color-hairline: #2B2722;
-  --color-hairline-strong: #3D3730;
-  --color-parchment: #F5F2EB;
-  --color-sand: #B5AEA2;
-  --color-ash: #968E82;
-  --color-copper: #D97745;
-  --color-copper-light: #E28758;
-  --color-sage: #84A98C;
+  --color-ink: #0A0A0A;
+  --color-stone: #121212;
+  --color-stone-elevated: #1C1C1C;
+  --color-stone-inset: #0E0E0E;
+  --color-hairline: #262626;
+  --color-hairline-strong: #383838;
+  --color-parchment: #FAFAFA;
+  --color-sand: #A3A3A3;
+  --color-ash: #8F8F8F;
+  --color-brand: #FFFFFF;
+  --color-brand-hover: #E5E5E5;
+  --color-sage: #D4D4D4;
   --font-sans: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-display), Georgia, serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
@@ -20,13 +20,13 @@
 
 :root {
   color-scheme: dark;
-  caret-color: #D97745;
+  caret-color: #FFFFFF;
 }
 
 html,
 body {
-  background-color: #11100E;
-  color: #F5F2EB;
+  background-color: #0A0A0A;
+  color: #FAFAFA;
   font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
 }
 
@@ -60,14 +60,14 @@ a {
 }
 
 ::-webkit-scrollbar-track {
-  background: #11100E;
+  background: #0A0A0A;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2B2722;
+  background: #262626;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3D3730;
+  background: #383838;
 }

@@ -60,23 +60,23 @@ export default function FeaturesPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="max-w-3xl">
-        <h1 className="font-display text-4xl font-normal text-[#F5F2EB] sm:text-5xl">
+        <h1 className="font-display text-4xl font-normal text-[#FAFAFA] sm:text-5xl">
           Everything a business needs to handle customer enquiries reliably.
         </h1>
-        <p className="mt-4 max-w-[60ch] text-base leading-relaxed text-[#B5AEA2]">
+        <p className="mt-4 max-w-[60ch] text-base leading-relaxed text-[#A3A3A3]">
           Built for clarity, accuracy, and daily operational use by non-technical teams.
         </p>
       </div>
 
       <div className="mt-16 space-y-16">
         {FEATURE_GROUPS.map((group) => (
-          <section key={group.name} className="border-t border-[#2B2722] pt-10">
-            <h2 className="font-display text-2xl font-normal text-[#D97745]">{group.name}</h2>
+          <section key={group.name} className="border-t border-[#262626] pt-10">
+            <h2 className="font-display text-2xl font-normal text-[#FFFFFF]">{group.name}</h2>
             <div className="mt-8 grid gap-8 md:grid-cols-3">
               {group.items.map((item) => (
                 <div key={item.title} className="space-y-2">
-                  <h3 className="text-base font-semibold text-[#F5F2EB]">{item.title}</h3>
-                  <p className="text-sm leading-relaxed text-[#B5AEA2]">{item.body}</p>
+                  <h3 className="text-base font-semibold text-[#FAFAFA]">{item.title}</h3>
+                  <p className="text-sm leading-relaxed text-[#A3A3A3]">{item.body}</p>
                 </div>
               ))}
             </div>
@@ -84,12 +84,12 @@ export default function FeaturesPage() {
         ))}
       </div>
 
-      <div className="mt-20 flex flex-col items-start justify-between gap-6 rounded-xl border border-[#2B2722] bg-[#181613] p-8 sm:flex-row sm:items-center">
+      <div className="mt-20 flex flex-col items-start justify-between gap-6 rounded-xl border border-[#262626] bg-[#121212] p-8 sm:flex-row sm:items-center">
         <div>
-          <h3 className="font-display text-2xl font-normal text-[#F5F2EB]">
+          <h3 className="font-display text-2xl font-normal text-[#FAFAFA]">
             Ready to test Harmek with your own catalog?
           </h3>
-          <p className="mt-1 text-sm text-[#B5AEA2]">
+          <p className="mt-1 text-sm text-[#A3A3A3]">
             Start free with no credit card required.
           </p>
         </div>

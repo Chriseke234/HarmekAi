@@ -52,10 +52,10 @@ export default function IndustriesPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="max-w-3xl">
-        <h1 className="font-display text-4xl font-normal text-[#F5F2EB] sm:text-5xl">
+        <h1 className="font-display text-4xl font-normal text-[#FAFAFA] sm:text-5xl">
           Built to adapt across customer-facing industries.
         </h1>
-        <p className="mt-4 max-w-[60ch] text-base leading-relaxed text-[#B5AEA2]">
+        <p className="mt-4 max-w-[60ch] text-base leading-relaxed text-[#A3A3A3]">
           Harmek AI learns your catalog, policies, and tone without forcing your business into a
           single rigid template.
         </p>
@@ -65,15 +65,15 @@ export default function IndustriesPage() {
         {INDUSTRIES.map((ind) => (
           <article
             key={ind.name}
-            className="overflow-hidden rounded-xl border border-[#2B2722] bg-[#181613]"
+            className="overflow-hidden rounded-xl border border-[#262626] bg-[#121212]"
           >
             <div className="relative h-48 w-full">
               <Image src={ind.image} alt={ind.name} fill className="object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#181613] via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-transparent to-transparent" />
             </div>
             <div className="p-6">
-              <h2 className="font-display text-xl font-normal text-[#F5F2EB]">{ind.name}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-[#B5AEA2]">{ind.examples}</p>
+              <h2 className="font-display text-xl font-normal text-[#FAFAFA]">{ind.name}</h2>
+              <p className="mt-2 text-sm leading-relaxed text-[#A3A3A3]">{ind.examples}</p>
             </div>
           </article>
         ))}

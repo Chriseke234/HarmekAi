@@ -36,34 +36,34 @@ export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="max-w-2xl">
-        <h1 className="font-display text-4xl font-normal text-[#F5F2EB] sm:text-5xl">
+        <h1 className="font-display text-4xl font-normal text-[#FAFAFA] sm:text-5xl">
           Privacy Policy
         </h1>
-        <p className="mt-4 text-base leading-relaxed text-[#B5AEA2]">
+        <p className="mt-4 text-base leading-relaxed text-[#A3A3A3]">
           How Harmek AI (operated by ChrisBuilds) protects business workspaces and end-customer
           conversations.
         </p>
-        <p className="mt-2 font-mono text-xs text-[#968E82]">
+        <p className="mt-2 font-mono text-xs text-[#8F8F8F]">
           Last Updated: November 25, 2026
         </p>
       </div>
 
-      <div className="mt-12 divide-y divide-[#2B2722] border-y border-[#2B2722]">
+      <div className="mt-12 divide-y divide-[#262626] border-y border-[#262626]">
         {SECTIONS.map((s) => (
           <section key={s.title} className="py-7">
-            <h2 className="font-display text-2xl font-normal text-[#F5F2EB]">{s.title}</h2>
-            <p className="mt-3 text-sm leading-relaxed text-[#B5AEA2]">{s.body}</p>
+            <h2 className="font-display text-2xl font-normal text-[#FAFAFA]">{s.title}</h2>
+            <p className="mt-3 text-sm leading-relaxed text-[#A3A3A3]">{s.body}</p>
           </section>
         ))}
       </div>
 
-      <p className="mt-8 text-xs text-[#968E82]">
+      <p className="mt-8 text-xs text-[#8F8F8F]">
         Questions or deletion requests? Email{" "}
-        <a href="mailto:ai.harmek.build@gmail.com" className="text-[#D97745] hover:underline">
+        <a href="mailto:ai.harmek.build@gmail.com" className="text-[#FFFFFF] hover:underline">
           ai.harmek.build@gmail.com
         </a>{" "}
         or visit{" "}
-        <Link href="/contact" className="text-[#D97745] hover:underline">
+        <Link href="/contact" className="text-[#FFFFFF] hover:underline">
           Contact &amp; Support
         </Link>
         .

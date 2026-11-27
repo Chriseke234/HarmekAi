@@ -302,10 +302,10 @@ export function OnboardingWizard({
             size={44}
           />
           <div>
-            <h1 className="font-display text-xl font-medium text-[#F5F2EB]">
+            <h1 className="font-display text-xl font-medium text-[#FAFAFA]">
               Harmek AI Guided Setup
             </h1>
-            <p className="text-xs text-[#B5AEA2]">
+            <p className="text-xs text-[#A3A3A3]">
               Step {step} of 7 — {STEP_LABELS[step - 1]}
             </p>
           </div>
@@ -322,10 +322,10 @@ export function OnboardingWizard({
             <div key={label} className="space-y-1.5">
               <div
                 className={`h-1.5 rounded-full transition-colors ${
-                  isDone ? "bg-[#D97745]" : isCurrent ? "bg-[#D97745]/70" : "bg-[#211E1A]"
+                  isDone ? "bg-[#FFFFFF]" : isCurrent ? "bg-[#FFFFFF]/70" : "bg-[#1C1C1C]"
                 }`}
               />
-              <p className="hidden truncate text-[11px] text-[#B5AEA2] sm:block">{label}</p>
+              <p className="hidden truncate text-[11px] text-[#A3A3A3] sm:block">{label}</p>
             </div>
           );
         })}
@@ -350,11 +350,11 @@ export function OnboardingWizard({
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Business Name</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Business Name</label>
                 <Input value={businessName} onChange={(e) => setBusinessName(e.target.value)} />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Industry</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Industry</label>
                 <Select value={industry} onChange={(e) => setIndustry(e.target.value)}>
                   {INDUSTRIES.map((ind) => (
                     <option key={ind} value={ind}>
@@ -366,7 +366,7 @@ export function OnboardingWizard({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#D6D0C4]">Business Description</label>
+              <label className="text-xs font-medium text-[#D4D4D4]">Business Description</label>
               <Textarea
                 placeholder="Briefly describe what your business sells or offers..."
                 value={description}
@@ -376,7 +376,7 @@ export function OnboardingWizard({
 
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Website</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Website</label>
                 <Input
                   placeholder="https://yourbusiness.com"
                   value={website}
@@ -384,7 +384,7 @@ export function OnboardingWizard({
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Business Email</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Business Email</label>
                 <Input
                   type="email"
                   placeholder="hello@yourbusiness.com"
@@ -393,7 +393,7 @@ export function OnboardingWizard({
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Business Phone</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Business Phone</label>
                 <Input
                   placeholder="+1 555 123 4567"
                   value={businessPhone}
@@ -404,7 +404,7 @@ export function OnboardingWizard({
 
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Location / Address</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Location / Address</label>
                 <Input
                   placeholder="123 Main Street, Suite 4"
                   value={locationAddress}
@@ -412,18 +412,18 @@ export function OnboardingWizard({
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Weekday Hours</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Weekday Hours</label>
                 <Input value={hoursWeekday} onChange={(e) => setHoursWeekday(e.target.value)} />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Weekend Hours</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Weekend Hours</label>
                 <Input value={hoursWeekend} onChange={(e) => setHoursWeekend(e.target.value)} />
               </div>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Delivery Information</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Delivery Information</label>
                 <Textarea
                   placeholder="Example: Same-day delivery within the city for orders before 2 PM."
                   value={deliveryInfo}
@@ -431,7 +431,7 @@ export function OnboardingWizard({
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">
+                <label className="text-xs font-medium text-[#D4D4D4]">
                   Booking / Return Policy
                 </label>
                 <Textarea
@@ -467,7 +467,7 @@ export function OnboardingWizard({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="rounded-xl border border-[#2B2722] bg-[#141210] p-4 space-y-3">
+            <div className="rounded-xl border border-[#262626] bg-[#0E0E0E] p-4 space-y-3">
               <h4 className="text-sm font-medium text-white">Quick Add Product / Service</h4>
               <div className="grid gap-3 sm:grid-cols-3">
                 <Input
@@ -493,7 +493,7 @@ export function OnboardingWizard({
               </Button>
             </div>
 
-            <div className="rounded-xl border border-[#2B2722] bg-[#141210] p-4 space-y-3">
+            <div className="rounded-xl border border-[#262626] bg-[#0E0E0E] p-4 space-y-3">
               <h4 className="text-sm font-medium text-white">Quick Add FAQ</h4>
               <Input
                 placeholder="Customer question (e.g. Do you offer gift wrapping?)"
@@ -513,7 +513,7 @@ export function OnboardingWizard({
 
             {addedItems.length > 0 ? (
               <div className="space-y-2">
-                <p className="text-xs font-medium text-[#B5AEA2]">Added to Knowledge Base:</p>
+                <p className="text-xs font-medium text-[#A3A3A3]">Added to Knowledge Base:</p>
                 <div className="flex flex-wrap gap-2">
                   {addedItems.map((it, i) => (
                     <Badge key={i} variant="success">
@@ -550,14 +550,14 @@ export function OnboardingWizard({
           <CardContent className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Assistant Name</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Assistant Name</label>
                 <Input
                   value={assistantName}
                   onChange={(e) => setAssistantName(e.target.value)}
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Tone of Voice</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Tone of Voice</label>
                 <Select
                   value={tone}
                   onChange={(e) => setTone(e.target.value as AssistantTone)}
@@ -573,7 +573,7 @@ export function OnboardingWizard({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#D6D0C4]">Welcome Message</label>
+              <label className="text-xs font-medium text-[#D4D4D4]">Welcome Message</label>
               <Textarea
                 value={welcomeMessage}
                 onChange={(e) => setWelcomeMessage(e.target.value)}
@@ -605,7 +605,7 @@ export function OnboardingWizard({
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#D6D0C4]">
+              <label className="text-xs font-medium text-[#D4D4D4]">
                 Topics Harmek must avoid (comma-separated, optional)
               </label>
               <Input
@@ -616,7 +616,7 @@ export function OnboardingWizard({
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#D6D0C4]">
+              <label className="text-xs font-medium text-[#D4D4D4]">
                 Keywords that trigger human handoff (comma-separated)
               </label>
               <Input
@@ -650,7 +650,7 @@ export function OnboardingWizard({
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="h-72 space-y-3 overflow-y-auto rounded-xl border border-[#2B2722] bg-[#141210] p-4">
+            <div className="h-72 space-y-3 overflow-y-auto rounded-xl border border-[#262626] bg-[#0E0E0E] p-4">
               {simMessages.map((msg, i) => (
                 <div
                   key={i}
@@ -661,8 +661,8 @@ export function OnboardingWizard({
                   <div
                     className={`max-w-[85%] rounded-xl px-3.5 py-2.5 text-sm ${
                       msg.role === "user"
-                        ? "bg-[#D97745] text-white"
-                        : "border border-[#2B2722] bg-[#211E1A] text-[#F5F2EB]"
+                        ? "bg-[#FFFFFF] text-[#0A0A0A]"
+                        : "border border-[#262626] bg-[#1C1C1C] text-[#FAFAFA]"
                     }`}
                   >
                     {msg.content}
@@ -672,7 +672,7 @@ export function OnboardingWizard({
                       {msg.sources.map((src, idx) => (
                         <span
                           key={idx}
-                          className="rounded bg-[#211E1A] px-2 py-0.5 text-[11px] text-[#B5AEA2]"
+                          className="rounded bg-[#1C1C1C] px-2 py-0.5 text-[11px] text-[#A3A3A3]"
                         >
                           Source: {src.title}
                         </span>
@@ -723,12 +723,12 @@ export function OnboardingWizard({
           </CardHeader>
           <CardContent className="space-y-5">
             {!activated ? (
-              <div className="rounded-xl border border-[#D97745]/30 bg-[#D97745]/10 p-5">
+              <div className="rounded-xl border border-[#FFFFFF]/30 bg-[#FFFFFF]/10 p-5">
                 <div className="flex items-start gap-3">
-                  <Bot className="mt-0.5 h-5 w-5 text-[#D97745]" />
-                  <div className="text-sm text-[#F5F2EB]">
+                  <Bot className="mt-0.5 h-5 w-5 text-[#FFFFFF]" />
+                  <div className="text-sm text-[#FAFAFA]">
                     <p className="font-medium text-white">Ready to launch with Native Harmek Engine</p>
-                    <p className="mt-1 text-[#B5AEA2]">
+                    <p className="mt-1 text-[#A3A3A3]">
                       No external LLM API key is needed. You can optionally enable Enhanced AI
                       anytime in your dashboard.
                     </p>
@@ -748,10 +748,10 @@ export function OnboardingWizard({
             ) : (
               <>
                 <div className="space-y-2">
-                  <label className="text-xs font-medium text-[#D6D0C4]">
+                  <label className="text-xs font-medium text-[#D4D4D4]">
                     Website Installation Snippet (paste before &lt;/body&gt;)
                   </label>
-                  <div className="flex items-center gap-2 rounded-lg border border-[#2B2722] bg-[#141210] p-3 font-mono text-xs text-[#F0A47A]">
+                  <div className="flex items-center gap-2 rounded-lg border border-[#262626] bg-[#0E0E0E] p-3 font-mono text-xs text-[#E5E5E5]">
                     <code className="flex-1 overflow-x-auto">{snippet}</code>
                     <Button variant="secondary" size="sm" onClick={copySnippet}>
                       {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}

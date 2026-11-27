@@ -35,39 +35,39 @@ export default function SecurityPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="max-w-3xl">
-        <h1 className="font-display text-4xl font-normal text-[#F5F2EB] sm:text-5xl">
+        <h1 className="font-display text-4xl font-normal text-[#FAFAFA] sm:text-5xl">
           Security built into every workspace from day one.
         </h1>
-        <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-[#B5AEA2]">
+        <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-[#A3A3A3]">
           Harmek AI is architected for real businesses that need strict tenant isolation,
           predictable AI guardrails, and transparent data practices.
         </p>
       </div>
 
-      <div className="mt-14 divide-y divide-[#2B2722] border-y border-[#2B2722]">
+      <div className="mt-14 divide-y divide-[#262626] border-y border-[#262626]">
         {PILLARS.map((item) => {
           const Icon = item.icon;
           return (
             <section key={item.title} className="grid gap-4 py-8 sm:grid-cols-12">
               <div className="flex items-start gap-3 sm:col-span-5">
-                <Icon className="mt-1 h-5 w-5 shrink-0 text-[#D97745]" />
-                <h2 className="font-display text-2xl font-normal text-[#F5F2EB]">
+                <Icon className="mt-1 h-5 w-5 shrink-0 text-[#FFFFFF]" />
+                <h2 className="font-display text-2xl font-normal text-[#FAFAFA]">
                   {item.title}
                 </h2>
               </div>
               <div className="sm:col-span-7">
-                <p className="text-sm leading-relaxed text-[#B5AEA2]">{item.body}</p>
+                <p className="text-sm leading-relaxed text-[#A3A3A3]">{item.body}</p>
               </div>
             </section>
           );
         })}
       </div>
 
-      <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-xl border border-[#2B2722] bg-[#181613] p-6 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-2.5 text-sm text-[#B5AEA2]">
-          <Check className="h-4 w-4 text-[#84A98C]" />
+      <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-xl border border-[#262626] bg-[#121212] p-6 sm:flex-row sm:items-center">
+        <div className="flex items-center gap-2.5 text-sm text-[#A3A3A3]">
+          <Check className="h-4 w-4 text-[#D4D4D4]" />
           Security enquiries or responsible disclosure:{" "}
-          <a href="mailto:ai.harmek.build@gmail.com" className="text-[#F5F2EB] underline">
+          <a href="mailto:ai.harmek.build@gmail.com" className="text-[#FAFAFA] underline">
             ai.harmek.build@gmail.com
           </a>
         </div>

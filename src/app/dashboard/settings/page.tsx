@@ -53,14 +53,14 @@ export default function SettingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-white">Settings</h1>
-        <p className="mt-1 text-sm text-[#B5AEA2]">
+        <p className="mt-1 text-sm text-[#A3A3A3]">
           Update your business profile, contact details, delivery info, and policies used by
           Harmek AI.
         </p>
       </div>
 
       {notice ? (
-        <div className="flex items-center gap-2 rounded-lg border border-[#D97745]/40 bg-[#D97745]/10 px-4 py-3 text-sm text-[#F5F2EB]">
+        <div className="flex items-center gap-2 rounded-lg border border-[#FFFFFF]/40 bg-[#FFFFFF]/10 px-4 py-3 text-sm text-[#FAFAFA]">
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{notice}</span>
         </div>
@@ -77,7 +77,7 @@ export default function SettingsPage() {
           <form onSubmit={handleSave} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Business Name</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Business Name</label>
                 <Input
                   required
                   placeholder="Your Business Name"
@@ -86,13 +86,13 @@ export default function SettingsPage() {
                 />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Industry</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Industry</label>
                 <Input value={industry} onChange={(e) => setIndustry(e.target.value)} />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#D6D0C4]">Description</label>
+              <label className="text-xs font-medium text-[#D4D4D4]">Description</label>
               <Textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}

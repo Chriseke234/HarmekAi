@@ -82,7 +82,7 @@ export default async function DashboardOverviewPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Overview</h1>
-          <p className="mt-1 text-sm text-[#B5AEA2]">
+          <p className="mt-1 text-sm text-[#A3A3A3]">
             Real-time customer engagement activity for {ctx.workspace.name}.
           </p>
         </div>
@@ -103,7 +103,7 @@ export default async function DashboardOverviewPage() {
       </div>
 
       {/* Trial Status Banner */}
-      <Card className="border-[#D97745]/30 bg-gradient-to-r from-[#181613] to-[#211E1A]">
+      <Card className="border-[#FFFFFF]/30 bg-gradient-to-r from-[#121212] to-[#1C1C1C]">
         <CardContent className="flex flex-col justify-between gap-4 p-5 sm:flex-row sm:items-center">
           <div className="flex items-center gap-3.5">
             <EmberFox
@@ -122,7 +122,7 @@ export default async function DashboardOverviewPage() {
                       ? "Your 14-Day Trial Has Ended — Review Your Performance Report"
                       : "Subscription Active"}
               </p>
-              <p className="text-xs text-[#B5AEA2]">
+              <p className="text-xs text-[#A3A3A3]">
                 Assistant status:{" "}
                 {assistantRes.data?.is_active ? "Active and ready" : "Inactive (draft mode)"}
               </p>
@@ -144,10 +144,10 @@ export default async function DashboardOverviewPage() {
             <Card key={item.label}>
               <CardContent className="flex items-center justify-between p-5">
                 <div>
-                  <p className="text-xs font-medium text-[#B5AEA2]">{item.label}</p>
+                  <p className="text-xs font-medium text-[#A3A3A3]">{item.label}</p>
                   <p className="mt-1.5 text-2xl font-bold text-white">{item.value}</p>
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#2B2722] bg-[#211E1A] text-[#D97745]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#262626] bg-[#1C1C1C] text-[#FFFFFF]">
                   <Icon className="h-5 w-5" />
                 </div>
               </CardContent>
@@ -181,13 +181,13 @@ export default async function DashboardOverviewPage() {
                   <Link
                     key={conv.id}
                     href="/dashboard/conversations"
-                    className="flex items-center justify-between rounded-lg border border-[#2B2722] bg-[#141210] p-3.5 transition-colors hover:border-[#3D3730]"
+                    className="flex items-center justify-between rounded-lg border border-[#262626] bg-[#0E0E0E] p-3.5 transition-colors hover:border-[#383838]"
                   >
                     <div className="min-w-0 pr-3">
-                      <p className="truncate text-sm font-medium text-[#F5F2EB]">
+                      <p className="truncate text-sm font-medium text-[#FAFAFA]">
                         {conv.summary || "Website customer enquiry"}
                       </p>
-                      <p className="mt-0.5 text-xs text-[#B5AEA2]">
+                      <p className="mt-0.5 text-xs text-[#A3A3A3]">
                         {formatRelativeTime(conv.last_message_at)}
                       </p>
                     </div>
@@ -228,9 +228,9 @@ export default async function DashboardOverviewPage() {
                 {unanswered.slice(0, 5).map((q) => (
                   <div
                     key={q.id}
-                    className="flex items-center justify-between rounded-lg border border-[#2B2722] bg-[#141210] p-3 text-sm"
+                    className="flex items-center justify-between rounded-lg border border-[#262626] bg-[#0E0E0E] p-3 text-sm"
                   >
-                    <span className="truncate pr-3 text-[#F5F2EB]">{q.question}</span>
+                    <span className="truncate pr-3 text-[#FAFAFA]">{q.question}</span>
                     <Link href="/dashboard/knowledge">
                       <Button variant="ghost" size="sm">
                         Add FAQ

@@ -68,7 +68,7 @@ export async function GET(request: Request) {
     assistantName: assistant?.name ?? "Harmek",
     isActive: assistant?.is_active ?? false,
     welcomeMessage: settings?.welcome_message ?? "Hello! How can I help you today?",
-    primaryColor: settings?.widget_primary_color ?? "#D97745",
+    primaryColor: settings?.widget_primary_color ?? "#FFFFFF",
     position: settings?.widget_position ?? "bottom-right",
     requireConsent: settings?.widget_require_consent ?? true,
     starterPrompts: starterPrompts.slice(0, 4),

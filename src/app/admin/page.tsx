@@ -93,15 +93,15 @@ export default async function PlatformAdminPage() {
   const subMap = new Map(subs.map((s) => [s.workspace_id, s]));
 
   return (
-    <div className="min-h-screen bg-[#11100E] px-4 py-8 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#0A0A0A] px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Header */}
-        <div className="flex flex-col justify-between gap-4 border-b border-[#2B2722] pb-6 sm:flex-row sm:items-center">
+        <div className="flex flex-col justify-between gap-4 border-b border-[#262626] pb-6 sm:flex-row sm:items-center">
           <div className="flex items-center gap-3.5">
             <HarmekLogo className="h-10 w-10" />
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="font-display text-2xl font-normal text-[#F5F2EB]">
+                <h1 className="font-display text-2xl font-normal text-[#FAFAFA]">
                   Harmek AI — Owner Admin Console
                 </h1>
                 <Badge variant="warning">
@@ -109,7 +109,7 @@ export default async function PlatformAdminPage() {
                   Platform Admin
                 </Badge>
               </div>
-              <p className="mt-0.5 text-xs text-[#968E82]">
+              <p className="mt-0.5 text-xs text-[#8F8F8F]">
                 Cross-tenant operations, trial tracking, AI engine telemetry, and channel
                 health.
               </p>
@@ -134,79 +134,79 @@ export default async function PlatformAdminPage() {
           <Card>
             <CardContent className="flex items-center justify-between p-5">
               <div>
-                <p className="text-xs text-[#B5AEA2]">Registered Workspaces / Users</p>
-                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#F5F2EB]">
+                <p className="text-xs text-[#A3A3A3]">Registered Workspaces / Users</p>
+                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#FAFAFA]">
                   {workspaces.length}{" "}
-                  <span className="text-lg text-[#968E82]">/ {profiles.length}</span>
+                  <span className="text-lg text-[#8F8F8F]">/ {profiles.length}</span>
                 </p>
               </div>
-              <Building2 className="h-5 w-5 text-[#D97745]" />
+              <Building2 className="h-5 w-5 text-[#FFFFFF]" />
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="flex items-center justify-between p-5">
               <div>
-                <p className="text-xs text-[#B5AEA2]">Active Assistants / Active Trials</p>
-                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#F5F2EB]">
+                <p className="text-xs text-[#A3A3A3]">Active Assistants / Active Trials</p>
+                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#FAFAFA]">
                   {assistants.filter((a) => a.is_active).length}{" "}
-                  <span className="text-lg text-[#84A98C]">
+                  <span className="text-lg text-[#D4D4D4]">
                     / {trials.filter((t) => t.status === "active").length}
                   </span>
                 </p>
               </div>
-              <Activity className="h-5 w-5 text-[#84A98C]" />
+              <Activity className="h-5 w-5 text-[#D4D4D4]" />
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="flex items-center justify-between p-5">
               <div>
-                <p className="text-xs text-[#B5AEA2]">Total Conversations Across Platform</p>
-                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#F5F2EB]">
+                <p className="text-xs text-[#A3A3A3]">Total Conversations Across Platform</p>
+                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#FAFAFA]">
                   {conversations.length}
                 </p>
               </div>
-              <MessageSquare className="h-5 w-5 text-[#D97745]" />
+              <MessageSquare className="h-5 w-5 text-[#FFFFFF]" />
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="flex items-center justify-between p-5">
               <div>
-                <p className="text-xs text-[#B5AEA2]">Native / Enhanced AI Messages</p>
-                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#F5F2EB]">
+                <p className="text-xs text-[#A3A3A3]">Native / Enhanced AI Messages</p>
+                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#FAFAFA]">
                   {nativeMsgs}{" "}
-                  <span className="text-lg text-[#968E82]">/ {enhancedMsgs}</span>
+                  <span className="text-lg text-[#8F8F8F]">/ {enhancedMsgs}</span>
                 </p>
               </div>
-              <Cpu className="h-5 w-5 text-[#84A98C]" />
+              <Cpu className="h-5 w-5 text-[#D4D4D4]" />
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="flex items-center justify-between p-5">
               <div>
-                <p className="text-xs text-[#B5AEA2]">Paid Subscriptions / Est. LLM Cost</p>
-                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#F5F2EB]">
+                <p className="text-xs text-[#A3A3A3]">Paid Subscriptions / Est. LLM Cost</p>
+                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#FAFAFA]">
                   {subs.filter((s) => s.status === "active").length}{" "}
-                  <span className="text-lg text-[#D97745]">/ ${estCost.toFixed(4)}</span>
+                  <span className="text-lg text-[#FFFFFF]">/ ${estCost.toFixed(4)}</span>
                 </p>
               </div>
-              <Sparkles className="h-5 w-5 text-[#D97745]" />
+              <Sparkles className="h-5 w-5 text-[#FFFFFF]" />
             </CardContent>
           </Card>
 
           <Card>
             <CardContent className="flex items-center justify-between p-5">
               <div>
-                <p className="text-xs text-[#B5AEA2]">WhatsApp Connected / Pending</p>
-                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#F5F2EB]">
+                <p className="text-xs text-[#A3A3A3]">WhatsApp Connected / Pending</p>
+                <p className="mt-1.5 font-display text-3xl tabular-nums text-[#FAFAFA]">
                   {whatsappConnected}{" "}
-                  <span className="text-lg text-[#968E82]">/ {whatsappPending}</span>
+                  <span className="text-lg text-[#8F8F8F]">/ {whatsappPending}</span>
                 </p>
               </div>
-              <Plug className="h-5 w-5 text-[#84A98C]" />
+              <Plug className="h-5 w-5 text-[#D4D4D4]" />
             </CardContent>
           </Card>
         </div>
@@ -216,7 +216,7 @@ export default async function PlatformAdminPage() {
           <Card className="lg:col-span-7">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-[#D97745]" />
+                <Users className="h-4 w-4 text-[#FFFFFF]" />
                 Tenant Workspaces ({workspaces.length})
               </CardTitle>
               <CardDescription>
@@ -225,7 +225,7 @@ export default async function PlatformAdminPage() {
             </CardHeader>
             <CardContent className="space-y-2.5">
               {workspaces.length === 0 ? (
-                <p className="text-sm text-[#968E82]">No workspaces registered yet.</p>
+                <p className="text-sm text-[#8F8F8F]">No workspaces registered yet.</p>
               ) : (
                 workspaces.map((w) => {
                   const t = trialMap.get(w.id);
@@ -234,11 +234,11 @@ export default async function PlatformAdminPage() {
                   return (
                     <div
                       key={w.id}
-                      className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[#2B2722] bg-[#141210] px-4 py-3 text-sm"
+                      className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-[#262626] bg-[#0E0E0E] px-4 py-3 text-sm"
                     >
                       <div>
-                        <p className="font-medium text-[#F5F2EB]">{w.name}</p>
-                        <p className="font-mono text-[11px] text-[#968E82]">
+                        <p className="font-medium text-[#FAFAFA]">{w.name}</p>
+                        <p className="font-mono text-[11px] text-[#8F8F8F]">
                           {w.slug} &bull; Created {formatRelativeTime(w.created_at)}
                         </p>
                       </div>
@@ -270,25 +270,25 @@ export default async function PlatformAdminPage() {
             </CardHeader>
             <CardContent className="space-y-2.5">
               {errors.length === 0 ? (
-                <p className="text-sm text-[#968E82]">
+                <p className="text-sm text-[#8F8F8F]">
                   No system errors or fallback warnings recorded.
                 </p>
               ) : (
                 errors.map((e) => (
                   <div
                     key={e.id}
-                    className="rounded-lg border border-[#2B2722] bg-[#141210] p-3 text-xs"
+                    className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-3 text-xs"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="font-mono font-semibold text-[#F5F2EB]">
+                      <span className="font-mono font-semibold text-[#FAFAFA]">
                         {e.component}
                       </span>
                       <Badge variant={e.severity === "critical" ? "destructive" : "warning"}>
                         {e.severity}
                       </Badge>
                     </div>
-                    <p className="mt-1 text-[#B5AEA2]">{e.message}</p>
-                    <p className="mt-1 text-[10px] text-[#968E82]">
+                    <p className="mt-1 text-[#A3A3A3]">{e.message}</p>
+                    <p className="mt-1 text-[10px] text-[#8F8F8F]">
                       {formatRelativeTime(e.created_at)}
                     </p>
                   </div>

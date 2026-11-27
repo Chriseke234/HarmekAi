@@ -51,7 +51,7 @@ export default function AutomationsPage() {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center text-[#B5AEA2]">
+      <div className="flex h-48 items-center justify-center text-[#A3A3A3]">
         <Loader2 className="h-5 w-5 animate-spin" />
       </div>
     );
@@ -61,7 +61,7 @@ export default function AutomationsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-white">Automations</h1>
-        <p className="mt-1 text-sm text-[#B5AEA2]">
+        <p className="mt-1 text-sm text-[#A3A3A3]">
           Simple, guided business rules that run automatically while respecting customer consent.
         </p>
       </div>
@@ -75,7 +75,7 @@ export default function AutomationsPage() {
                   <h3 className="text-sm font-semibold text-white">{rule.name}</h3>
                   <Badge variant="secondary">{rule.trigger_event.replace(/_/g, " ")}</Badge>
                 </div>
-                <p className="text-xs leading-relaxed text-[#B5AEA2]">{rule.description}</p>
+                <p className="text-xs leading-relaxed text-[#A3A3A3]">{rule.description}</p>
               </div>
               <Switch
                 checked={rule.is_enabled}
@@ -104,19 +104,19 @@ export default function AutomationsPage() {
               {executions.map((ex) => (
                 <div
                   key={ex.id}
-                  className="flex items-center justify-between rounded-lg border border-[#2B2722] bg-[#141210] px-4 py-2.5 text-xs"
+                  className="flex items-center justify-between rounded-lg border border-[#262626] bg-[#0E0E0E] px-4 py-2.5 text-xs"
                 >
                   <div>
                     <span className="font-medium text-white">
                       {ex.automations?.name || "Automation"}
                     </span>
-                    <span className="ml-2 text-[#B5AEA2]">{ex.summary}</span>
+                    <span className="ml-2 text-[#A3A3A3]">{ex.summary}</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge variant={ex.status === "executed" ? "success" : "warning"}>
                       {ex.status}
                     </Badge>
-                    <span className="text-[#968E82]">{formatRelativeTime(ex.executed_at)}</span>
+                    <span className="text-[#8F8F8F]">{formatRelativeTime(ex.executed_at)}</span>
                   </div>
                 </div>
               ))}

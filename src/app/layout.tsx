@@ -39,7 +39,7 @@ export default function RootLayout({
       lang="en"
       className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable} dark`}
     >
-      <body className="min-h-screen bg-[#11100E] text-[#F5F2EB] antialiased selection:bg-[#D97745]/30 selection:text-[#F5F2EB]">
+      <body className="min-h-screen bg-[#0A0A0A] text-[#FAFAFA] antialiased selection:bg-white/20 selection:text-white">
         {children}
       </body>
     </html>

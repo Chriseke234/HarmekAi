@@ -53,32 +53,32 @@ export default function ContactPage() {
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="grid gap-12 lg:grid-cols-12">
         <div className="lg:col-span-5">
-          <h1 className="font-display text-4xl font-normal text-[#F5F2EB] sm:text-5xl">
+          <h1 className="font-display text-4xl font-normal text-[#FAFAFA] sm:text-5xl">
             Contact &amp; Support
           </h1>
-          <p className="mt-4 text-base leading-relaxed text-[#B5AEA2]">
+          <p className="mt-4 text-base leading-relaxed text-[#A3A3A3]">
             Need help setting up your Knowledge Base, embedding the website chat widget, or
             connecting WhatsApp Business Platform? Reach our team directly.
           </p>
 
-          <div className="mt-8 space-y-4 border-t border-[#2B2722] pt-6 text-sm">
+          <div className="mt-8 space-y-4 border-t border-[#262626] pt-6 text-sm">
             <div className="flex items-start gap-3">
-              <Mail className="mt-0.5 h-5 w-5 text-[#D97745]" />
+              <Mail className="mt-0.5 h-5 w-5 text-[#FFFFFF]" />
               <div>
-                <p className="font-semibold text-[#F5F2EB]">Direct Email</p>
+                <p className="font-semibold text-[#FAFAFA]">Direct Email</p>
                 <a
                   href="mailto:ai.harmek.build@gmail.com"
-                  className="text-[#B5AEA2] hover:text-[#D97745]"
+                  className="text-[#A3A3A3] hover:text-[#FFFFFF]"
                 >
                   ai.harmek.build@gmail.com
                 </a>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <MessageSquare className="mt-0.5 h-5 w-5 text-[#84A98C]" />
+              <MessageSquare className="mt-0.5 h-5 w-5 text-[#D4D4D4]" />
               <div>
-                <p className="font-semibold text-[#F5F2EB]">Operator</p>
-                <p className="text-[#B5AEA2]">Harmek AI (operated by ChrisBuilds)</p>
+                <p className="font-semibold text-[#FAFAFA]">Operator</p>
+                <p className="text-[#A3A3A3]">Harmek AI (operated by ChrisBuilds)</p>
               </div>
             </div>
           </div>
@@ -94,13 +94,13 @@ export default function ContactPage() {
             </CardHeader>
             <CardContent>
               {success ? (
-                <div className="space-y-3 rounded-lg border border-[#84A98C]/40 bg-[#84A98C]/10 p-5 text-sm text-[#F5F2EB]">
-                  <div className="flex items-center gap-2 font-semibold text-[#A5C6AC]">
+                <div className="space-y-3 rounded-lg border border-[#D4D4D4]/40 bg-[#D4D4D4]/10 p-5 text-sm text-[#FAFAFA]">
+                  <div className="flex items-center gap-2 font-semibold text-[#E5E5E5]">
                     <CheckCircle2 className="h-5 w-5" />
                     Support Request Received
                   </div>
-                  <p className="text-[#D6D0C4]">{success.message}</p>
-                  <p className="font-mono text-xs text-[#968E82]">
+                  <p className="text-[#D4D4D4]">{success.message}</p>
+                  <p className="font-mono text-xs text-[#8F8F8F]">
                     Reference ID: {success.ticketId}
                   </p>
                   <Button
@@ -122,7 +122,7 @@ export default function ContactPage() {
 
                   <div className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-1.5">
-                      <label htmlFor="fullName" className="text-xs font-medium text-[#D6D0C4]">
+                      <label htmlFor="fullName" className="text-xs font-medium text-[#D4D4D4]">
                         Your Name
                       </label>
                       <Input
@@ -134,7 +134,7 @@ export default function ContactPage() {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label htmlFor="email" className="text-xs font-medium text-[#D6D0C4]">
+                      <label htmlFor="email" className="text-xs font-medium text-[#D4D4D4]">
                         Email Address
                       </label>
                       <Input
@@ -152,7 +152,7 @@ export default function ContactPage() {
                     <div className="space-y-1.5">
                       <label
                         htmlFor="businessName"
-                        className="text-xs font-medium text-[#D6D0C4]"
+                        className="text-xs font-medium text-[#D4D4D4]"
                       >
                         Business Name (optional)
                       </label>
@@ -164,7 +164,7 @@ export default function ContactPage() {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label htmlFor="topic" className="text-xs font-medium text-[#D6D0C4]">
+                      <label htmlFor="topic" className="text-xs font-medium text-[#D4D4D4]">
                         Topic
                       </label>
                       <Select
@@ -182,7 +182,7 @@ export default function ContactPage() {
                   </div>
 
                   <div className="space-y-1.5">
-                    <label htmlFor="message" className="text-xs font-medium text-[#D6D0C4]">
+                    <label htmlFor="message" className="text-xs font-medium text-[#D4D4D4]">
                       How can we help?
                     </label>
                     <Textarea

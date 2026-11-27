@@ -159,7 +159,7 @@ export default function WidgetEmbedPage({
 
   if (loading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-[#11100E] text-[#B5AEA2]">
+      <div className="flex h-screen items-center justify-center bg-[#0A0A0A] text-[#A3A3A3]">
         <Loader2 className="h-5 w-5 animate-spin" />
       </div>
     );
@@ -167,19 +167,19 @@ export default function WidgetEmbedPage({
 
   if (!config) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center bg-[#11100E] p-6 text-center">
+      <div className="flex h-screen flex-col items-center justify-center bg-[#0A0A0A] p-6 text-center">
         <AlertCircle className="h-8 w-8 text-rose-400" />
-        <p className="mt-3 text-sm text-[#D6D0C4]">{error || "Chat widget unavailable."}</p>
+        <p className="mt-3 text-sm text-[#D4D4D4]">{error || "Chat widget unavailable."}</p>
       </div>
     );
   }
 
   return (
-    <div className="flex h-screen flex-col bg-[#11100E] text-[#F5F2EB]">
+    <div className="flex h-screen flex-col bg-[#0A0A0A] text-[#FAFAFA]">
       {/* Header */}
       <div
         className="flex items-center justify-between px-4 py-3.5 text-white"
-        style={{ backgroundColor: config.primaryColor || "#D97745" }}
+        style={{ backgroundColor: config.primaryColor || "#FFFFFF" }}
       >
         <div className="flex items-center gap-2.5">
           {humanHandling ? (
@@ -204,19 +204,19 @@ export default function WidgetEmbedPage({
       {/* Consent Gate (if configured by business) */}
       {!consentChoiceMade ? (
         <div className="flex flex-1 flex-col justify-center p-6">
-          <div className="rounded-xl border border-[#2B2722] bg-[#181613] p-5">
-            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-[#D97745]/15 text-[#D97745]">
+          <div className="rounded-xl border border-[#262626] bg-[#121212] p-5">
+            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-[#FFFFFF]/15 text-[#FFFFFF]">
               <ShieldCheck className="h-5 w-5" />
             </div>
             <h2 className="text-sm font-semibold text-white">Chat Privacy Preference</h2>
-            <p className="mt-1.5 text-xs leading-relaxed text-[#B5AEA2]">
+            <p className="mt-1.5 text-xs leading-relaxed text-[#A3A3A3]">
               Would you like to save your conversation in this browser so you can continue it
               later, or chat for this session only? See our{" "}
               <a
                 href="/cookies"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[#D97745] underline"
+                className="text-[#FFFFFF] underline"
               >
                 Cookies Policy
               </a>
@@ -248,15 +248,15 @@ export default function WidgetEmbedPage({
                 }`}
               >
                 {m.sender_type === "system" ? (
-                  <span className="rounded-full border border-[#2B2722] bg-[#181613] px-3 py-1 text-[11px] text-[#B5AEA2]">
+                  <span className="rounded-full border border-[#262626] bg-[#121212] px-3 py-1 text-[11px] text-[#A3A3A3]">
                     {m.content}
                   </span>
                 ) : (
                   <div
                     className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${
                       m.sender_type === "customer"
-                        ? "bg-[#D97745] text-white"
-                        : "border border-[#2B2722] bg-[#211E1A] text-[#F5F2EB]"
+                        ? "bg-[#FFFFFF] text-[#0A0A0A]"
+                        : "border border-[#262626] bg-[#1C1C1C] text-[#FAFAFA]"
                     }`}
                   >
                     {m.content}
@@ -265,7 +265,7 @@ export default function WidgetEmbedPage({
               </div>
             ))}
             {sending ? (
-              <div className="flex items-center gap-2 text-xs text-[#B5AEA2]">
+              <div className="flex items-center gap-2 text-xs text-[#A3A3A3]">
                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 Typing...
               </div>
@@ -276,14 +276,14 @@ export default function WidgetEmbedPage({
 
           {/* Interactive Quick-Reply Chips */}
           {!humanHandling && quickReplies.length > 0 ? (
-            <div className="flex flex-wrap gap-1.5 border-t border-[#2B2722] bg-[#141210] px-3 pt-2.5 pb-1">
+            <div className="flex flex-wrap gap-1.5 border-t border-[#262626] bg-[#0E0E0E] px-3 pt-2.5 pb-1">
               {quickReplies.map((chip) => (
                 <button
                   key={chip}
                   type="button"
                   disabled={sending}
                   onClick={() => sendText(chip)}
-                  className="rounded-full border border-[#3D3730] bg-[#181613] px-3 py-1 text-xs text-[#F5F2EB] transition-colors hover:border-[#D97745] hover:text-[#F0A47A] disabled:opacity-50 cursor-pointer"
+                  className="rounded-full border border-[#383838] bg-[#121212] px-3 py-1 text-xs text-[#FAFAFA] transition-colors hover:border-[#FFFFFF] hover:text-[#E5E5E5] disabled:opacity-50 cursor-pointer"
                 >
                   {chip}
                 </button>
@@ -294,7 +294,7 @@ export default function WidgetEmbedPage({
           {/* Input */}
           <form
             onSubmit={handleSend}
-            className="flex items-center gap-2 border-t border-[#2B2722] bg-[#141210] p-3"
+            className="flex items-center gap-2 border-t border-[#262626] bg-[#0E0E0E] p-3"
           >
             <Input
               placeholder="Write your message..."

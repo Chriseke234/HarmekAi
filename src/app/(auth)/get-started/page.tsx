@@ -84,7 +84,7 @@ export default function GetStartedPage() {
           </div>
           <CardTitle className="text-xl">Verify your email</CardTitle>
           <CardDescription>
-            We sent a verification link to <strong className="text-[#F5F2EB]">{email}</strong>.
+            We sent a verification link to <strong className="text-[#FAFAFA]">{email}</strong>.
             Open the link to launch your Harmek AI onboarding.
           </CardDescription>
         </CardHeader>
@@ -118,7 +118,7 @@ export default function GetStartedPage() {
 
         <form onSubmit={handleRegister} className="space-y-4">
           <div className="space-y-1.5">
-            <label htmlFor="fullName" className="text-xs font-medium text-[#D6D0C4]">
+            <label htmlFor="fullName" className="text-xs font-medium text-[#D4D4D4]">
               Full Name
             </label>
             <Input
@@ -131,7 +131,7 @@ export default function GetStartedPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="businessName" className="text-xs font-medium text-[#D6D0C4]">
+            <label htmlFor="businessName" className="text-xs font-medium text-[#D4D4D4]">
               Business Name
             </label>
             <Input
@@ -144,7 +144,7 @@ export default function GetStartedPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-xs font-medium text-[#D6D0C4]">
+            <label htmlFor="email" className="text-xs font-medium text-[#D4D4D4]">
               Work Email
             </label>
             <Input
@@ -159,7 +159,7 @@ export default function GetStartedPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label htmlFor="password" className="text-xs font-medium text-[#D6D0C4]">
+            <label htmlFor="password" className="text-xs font-medium text-[#D4D4D4]">
               Password (minimum 8 characters)
             </label>
             <Input
@@ -189,9 +189,9 @@ export default function GetStartedPage() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-[#B5AEA2]">
+        <p className="mt-6 text-center text-xs text-[#A3A3A3]">
           Already have an account?{" "}
-          <Link href="/sign-in" className="font-medium text-[#D97745] hover:underline">
+          <Link href="/sign-in" className="font-medium text-[#FFFFFF] hover:underline">
             Sign in
           </Link>
         </p>

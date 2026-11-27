@@ -47,7 +47,7 @@ export default function IntegrationsPage() {
   const [notice, setNotice] = useState<string | null>(null);
 
   const [widgetKey, setWidgetKey] = useState("");
-  const [primaryColor, setPrimaryColor] = useState("#D97745");
+  const [primaryColor, setPrimaryColor] = useState("#FFFFFF");
   const [position, setPosition] = useState<"bottom-right" | "bottom-left">("bottom-right");
   const [requireConsent, setRequireConsent] = useState(true);
   const [welcomeMessage, setWelcomeMessage] = useState("Hello! How can I help you today?");
@@ -62,7 +62,7 @@ export default function IntegrationsPage() {
       setWidgetKey(data.widgetKey || "");
       setIntegrations(data.integrations ?? []);
       if (data.widgetSettings) {
-        setPrimaryColor(data.widgetSettings.widget_primary_color || "#D97745");
+        setPrimaryColor(data.widgetSettings.widget_primary_color || "#FFFFFF");
         setPosition(data.widgetSettings.widget_position || "bottom-right");
         setRequireConsent(Boolean(data.widgetSettings.widget_require_consent));
         setWelcomeMessage(data.widgetSettings.welcome_message || "");
@@ -118,7 +118,7 @@ export default function IntegrationsPage() {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center text-[#B5AEA2]">
+      <div className="flex h-48 items-center justify-center text-[#A3A3A3]">
         <Loader2 className="h-5 w-5 animate-spin" />
       </div>
     );
@@ -128,24 +128,24 @@ export default function IntegrationsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-white">Integrations</h1>
-        <p className="mt-1 text-sm text-[#B5AEA2]">
+        <p className="mt-1 text-sm text-[#A3A3A3]">
           Install your Website Chat Widget now and prepare official messaging channels.
         </p>
       </div>
 
       {notice ? (
-        <div className="flex items-center gap-2 rounded-lg border border-[#D97745]/40 bg-[#D97745]/10 px-4 py-3 text-sm text-[#F5F2EB]">
+        <div className="flex items-center gap-2 rounded-lg border border-[#FFFFFF]/40 bg-[#FFFFFF]/10 px-4 py-3 text-sm text-[#FAFAFA]">
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{notice}</span>
         </div>
       ) : null}
 
       {/* Website Chat Widget */}
-      <Card className="border-[#D97745]/40">
+      <Card className="border-[#FFFFFF]/40">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
-              <Globe className="h-4 w-4 text-[#D97745]" />
+              <Globe className="h-4 w-4 text-[#FFFFFF]" />
               Website Chat Widget
             </CardTitle>
             <Badge variant="success">Ready to Embed</Badge>
@@ -156,7 +156,7 @@ export default function IntegrationsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-5">
-          <div className="flex items-center gap-2 rounded-lg border border-[#2B2722] bg-[#141210] p-3 font-mono text-xs text-[#F0A47A]">
+          <div className="flex items-center gap-2 rounded-lg border border-[#262626] bg-[#0E0E0E] p-3 font-mono text-xs text-[#E5E5E5]">
             <code className="flex-1 overflow-x-auto">{snippet}</code>
             <Button
               size="sm"
@@ -174,13 +174,13 @@ export default function IntegrationsPage() {
 
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#D6D0C4]">Brand Accent Color</label>
+              <label className="text-xs font-medium text-[#D4D4D4]">Brand Accent Color</label>
               <div className="flex gap-2">
                 <input
                   type="color"
                   value={primaryColor}
                   onChange={(e) => setPrimaryColor(e.target.value)}
-                  className="h-10 w-12 cursor-pointer rounded border border-[#3D3730] bg-transparent"
+                  className="h-10 w-12 cursor-pointer rounded border border-[#383838] bg-transparent"
                 />
                 <Input
                   value={primaryColor}
@@ -189,7 +189,7 @@ export default function IntegrationsPage() {
               </div>
             </div>
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#D6D0C4]">Widget Position</label>
+              <label className="text-xs font-medium text-[#D4D4D4]">Widget Position</label>
               <Select
                 value={position}
                 onChange={(e) =>
@@ -200,8 +200,8 @@ export default function IntegrationsPage() {
                 <option value="bottom-left">Bottom Left</option>
               </Select>
             </div>
-            <div className="flex items-center justify-between rounded-lg border border-[#2B2722] bg-[#141210] px-3 py-2">
-              <span className="text-xs text-[#D6D0C4]">Require persistence consent</span>
+            <div className="flex items-center justify-between rounded-lg border border-[#262626] bg-[#0E0E0E] px-3 py-2">
+              <span className="text-xs text-[#D4D4D4]">Require persistence consent</span>
               <Switch checked={requireConsent} onCheckedChange={setRequireConsent} />
             </div>
           </div>
@@ -211,7 +211,7 @@ export default function IntegrationsPage() {
               href={`/widget/${widgetKey}`}
               target="_blank"
               rel="noreferrer"
-              className="text-xs font-medium text-[#D97745] hover:underline"
+              className="text-xs font-medium text-[#FFFFFF] hover:underline"
             >
               Open Live Widget Preview in New Tab
             </a>
@@ -233,7 +233,7 @@ export default function IntegrationsPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="flex items-center gap-2 text-base">
-                    <Plug className="h-4 w-4 text-[#B5AEA2]" />
+                    <Plug className="h-4 w-4 text-[#A3A3A3]" />
                     {ch.name}
                   </CardTitle>
                   <Badge
@@ -252,12 +252,12 @@ export default function IntegrationsPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 {ch.provider === "whatsapp" ? (
-                  <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-3 text-xs text-[#B5AEA2]">
-                    <p className="font-medium text-[#F5F2EB]">Official Meta Webhook Callback URL:</p>
-                    <code className="mt-1 block break-all font-mono text-[11px] text-[#D97745]">
+                  <div className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-3 text-xs text-[#A3A3A3]">
+                    <p className="font-medium text-[#FAFAFA]">Official Meta Webhook Callback URL:</p>
+                    <code className="mt-1 block break-all font-mono text-[11px] text-[#FFFFFF]">
                       {origin}/api/webhooks/whatsapp
                     </code>
-                    <p className="mt-1.5 text-[11px] text-[#968E82]">
+                    <p className="mt-1.5 text-[11px] text-[#8F8F8F]">
                       Set WHATSAPP_ACCESS_TOKEN, WHATSAPP_WEBHOOK_VERIFY_TOKEN, and META_APP_SECRET
                       in your server environment, then enter your Phone Number ID below.
                     </p>

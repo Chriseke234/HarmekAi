@@ -80,7 +80,7 @@ function SignInForm() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1.5">
-            <label htmlFor="email" className="text-xs font-medium text-[#D6D0C4]">
+            <label htmlFor="email" className="text-xs font-medium text-[#D4D4D4]">
               Work Email
             </label>
             <Input
@@ -96,12 +96,12 @@ function SignInForm() {
 
           <div className="space-y-1.5">
             <div className="flex items-center justify-between">
-              <label htmlFor="password" className="text-xs font-medium text-[#D6D0C4]">
+              <label htmlFor="password" className="text-xs font-medium text-[#D4D4D4]">
                 Password
               </label>
               <Link
                 href="/forgot-password"
-                className="text-xs text-[#D97745] hover:underline"
+                className="text-xs text-[#FFFFFF] hover:underline"
               >
                 Forgot password?
               </Link>
@@ -132,9 +132,9 @@ function SignInForm() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-[#B5AEA2]">
+        <p className="mt-6 text-center text-xs text-[#A3A3A3]">
           New to Harmek AI?{" "}
-          <Link href="/get-started" className="font-medium text-[#D97745] hover:underline">
+          <Link href="/get-started" className="font-medium text-[#FFFFFF] hover:underline">
             Create your free workspace
           </Link>
         </p>
@@ -145,7 +145,7 @@ function SignInForm() {
 
 export default function SignInPage() {
   return (
-    <Suspense fallback={<div className="h-64 rounded-xl bg-[#181613]" />}>
+    <Suspense fallback={<div className="h-64 rounded-xl bg-[#121212]" />}>
       <SignInForm />
     </Suspense>
   );

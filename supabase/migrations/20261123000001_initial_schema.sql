@@ -173,7 +173,7 @@ create table if not exists public.assistant_settings (
   intelligence_mode text not null default 'native' check (intelligence_mode in ('native', 'enhanced')),
   enhanced_provider text check (enhanced_provider in ('openai', 'anthropic', 'gemini')),
   enhanced_model text,
-  widget_primary_color text not null default '#D97745',
+  widget_primary_color text not null default '#121212',
   widget_position text not null default 'bottom-right' check (widget_position in ('bottom-right', 'bottom-left')),
   widget_require_consent boolean not null default true,
   created_at timestamptz not null default now(),

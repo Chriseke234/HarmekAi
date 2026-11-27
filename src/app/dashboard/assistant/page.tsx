@@ -189,7 +189,7 @@ export default function AssistantPage() {
 
   if (loading || !assistant || !settings) {
     return (
-      <div className="flex h-64 items-center justify-center text-[#B5AEA2]">
+      <div className="flex h-64 items-center justify-center text-[#A3A3A3]">
         <Loader2 className="h-5 w-5 animate-spin" />
       </div>
     );
@@ -200,14 +200,14 @@ export default function AssistantPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">AI Assistant</h1>
-          <p className="mt-1 text-sm text-[#B5AEA2]">
+          <p className="mt-1 text-sm text-[#A3A3A3]">
             Configure personality, confidence rules, and optional Enhanced AI without writing
             technical prompts.
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 rounded-lg border border-[#2B2722] bg-[#181613] px-3 py-2">
-            <span className="text-xs font-medium text-[#D6D0C4]">
+          <div className="flex items-center gap-2 rounded-lg border border-[#262626] bg-[#121212] px-3 py-2">
+            <span className="text-xs font-medium text-[#D4D4D4]">
               {assistant.is_active ? "Active" : "Paused"}
             </span>
             <Switch
@@ -226,7 +226,7 @@ export default function AssistantPage() {
       </div>
 
       {notice ? (
-        <div className="flex items-center gap-2 rounded-lg border border-[#D97745]/40 bg-[#D97745]/10 px-4 py-3 text-sm text-[#F5F2EB]">
+        <div className="flex items-center gap-2 rounded-lg border border-[#FFFFFF]/40 bg-[#FFFFFF]/10 px-4 py-3 text-sm text-[#FAFAFA]">
           <CheckCircle2 className="h-4 w-4 shrink-0" />
           <span>{notice}</span>
         </div>
@@ -238,7 +238,7 @@ export default function AssistantPage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="flex items-center gap-2">
-                  <Cpu className="h-4 w-4 text-[#D97745]" />
+                  <Cpu className="h-4 w-4 text-[#FFFFFF]" />
                   Intelligence Mode
                 </CardTitle>
                 <Badge variant={settings.intelligence_mode === "enhanced" ? "default" : "success"}>
@@ -261,15 +261,15 @@ export default function AssistantPage() {
                   }
                   className={`rounded-xl border p-4 text-left transition-colors cursor-pointer ${
                     settings.intelligence_mode === "native"
-                      ? "border-[#D97745] bg-[#D97745]/10"
-                      : "border-[#2B2722] bg-[#141210] hover:border-[#3D3730]"
+                      ? "border-[#FFFFFF] bg-[#FFFFFF]/10"
+                      : "border-[#262626] bg-[#0E0E0E] hover:border-[#383838]"
                   }`}
                 >
                   <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                    <Bot className="h-4 w-4 text-[#D97745]" />
+                    <Bot className="h-4 w-4 text-[#FFFFFF]" />
                     Native Harmek Engine
                   </div>
-                  <p className="mt-1 text-xs text-[#B5AEA2]">
+                  <p className="mt-1 text-xs text-[#A3A3A3]">
                     Default mode. Zero external API key needed. Deterministic &amp; grounded.
                   </p>
                 </button>
@@ -285,25 +285,25 @@ export default function AssistantPage() {
                   }
                   className={`rounded-xl border p-4 text-left transition-colors cursor-pointer ${
                     settings.intelligence_mode === "enhanced"
-                      ? "border-[#D97745] bg-[#D97745]/10"
-                      : "border-[#2B2722] bg-[#141210] hover:border-[#3D3730]"
+                      ? "border-[#FFFFFF] bg-[#FFFFFF]/10"
+                      : "border-[#262626] bg-[#0E0E0E] hover:border-[#383838]"
                   }`}
                 >
                   <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                    <Sparkles className="h-4 w-4 text-[#D97745]" />
+                    <Sparkles className="h-4 w-4 text-[#FFFFFF]" />
                     Enhanced AI (Optional)
                   </div>
-                  <p className="mt-1 text-xs text-[#B5AEA2]">
+                  <p className="mt-1 text-xs text-[#A3A3A3]">
                     Connect OpenAI, Anthropic, or Gemini with encrypted server-side keys.
                   </p>
                 </button>
               </div>
 
               {settings.intelligence_mode === "enhanced" ? (
-                <div className="space-y-3 rounded-xl border border-[#2B2722] bg-[#141210] p-4">
+                <div className="space-y-3 rounded-xl border border-[#262626] bg-[#0E0E0E] p-4">
                   <div className="grid gap-3 sm:grid-cols-2">
                     <div className="space-y-1">
-                      <label className="text-xs font-medium text-[#D6D0C4]">Provider</label>
+                      <label className="text-xs font-medium text-[#D4D4D4]">Provider</label>
                       <Select
                         value={settings.enhanced_provider ?? "openai"}
                         onChange={(e) =>
@@ -319,7 +319,7 @@ export default function AssistantPage() {
                       </Select>
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs font-medium text-[#D6D0C4]">
+                      <label className="text-xs font-medium text-[#D4D4D4]">
                         Model (optional)
                       </label>
                       <Input
@@ -332,7 +332,7 @@ export default function AssistantPage() {
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <label className="flex items-center gap-1.5 text-xs font-medium text-[#D6D0C4]">
+                    <label className="flex items-center gap-1.5 text-xs font-medium text-[#D4D4D4]">
                       <KeyRound className="h-3.5 w-3.5" />
                       API Key (encrypted server-side, never exposed in browser)
                     </label>
@@ -382,14 +382,14 @@ export default function AssistantPage() {
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-[#D6D0C4]">Assistant Name</label>
+                  <label className="text-xs font-medium text-[#D4D4D4]">Assistant Name</label>
                   <Input
                     value={assistant.name}
                     onChange={(e) => setAssistant({ ...assistant, name: e.target.value })}
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-[#D6D0C4]">Tone Preset</label>
+                  <label className="text-xs font-medium text-[#D4D4D4]">Tone Preset</label>
                   <Select
                     value={settings.tone}
                     onChange={(e) =>
@@ -407,7 +407,7 @@ export default function AssistantPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">Welcome Message</label>
+                <label className="text-xs font-medium text-[#D4D4D4]">Welcome Message</label>
                 <Textarea
                   value={settings.welcome_message}
                   onChange={(e) =>
@@ -418,7 +418,7 @@ export default function AssistantPage() {
 
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-[#D6D0C4]">
+                  <label className="text-xs font-medium text-[#D4D4D4]">
                     Auto-Answer Threshold ({Math.round(settings.auto_answer_threshold * 100)}%)
                   </label>
                   <input
@@ -433,11 +433,11 @@ export default function AssistantPage() {
                         auto_answer_threshold: Number(e.target.value),
                       })
                     }
-                    className="w-full accent-[#D97745]"
+                    className="w-full accent-[#FFFFFF]"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-[#D6D0C4]">
+                  <label className="text-xs font-medium text-[#D4D4D4]">
                     Clarification Threshold ({Math.round(settings.clarification_threshold * 100)}%)
                   </label>
                   <input
@@ -452,13 +452,13 @@ export default function AssistantPage() {
                         clarification_threshold: Number(e.target.value),
                       })
                     }
-                    className="w-full accent-[#D97745]"
+                    className="w-full accent-[#FFFFFF]"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">
+                <label className="text-xs font-medium text-[#D4D4D4]">
                   Avoided Topics (comma-separated)
                 </label>
                 <Input
@@ -476,7 +476,7 @@ export default function AssistantPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[#D6D0C4]">
+                <label className="text-xs font-medium text-[#D4D4D4]">
                   Escalation Keywords (comma-separated)
                 </label>
                 <Input
@@ -510,7 +510,7 @@ export default function AssistantPage() {
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="h-96 space-y-3 overflow-y-auto rounded-xl border border-[#2B2722] bg-[#141210] p-4">
+              <div className="h-96 space-y-3 overflow-y-auto rounded-xl border border-[#262626] bg-[#0E0E0E] p-4">
                 {simMessages.map((m, idx) => (
                   <div
                     key={idx}
@@ -519,22 +519,22 @@ export default function AssistantPage() {
                     <div
                       className={`max-w-[88%] rounded-xl px-3.5 py-2.5 text-sm ${
                         m.role === "user"
-                          ? "bg-[#D97745] text-white"
-                          : "border border-[#2B2722] bg-[#211E1A] text-[#F5F2EB]"
+                          ? "bg-[#FFFFFF] text-[#0A0A0A]"
+                          : "border border-[#262626] bg-[#1C1C1C] text-[#FAFAFA]"
                       }`}
                     >
                       {m.content}
                     </div>
                     {m.role === "assistant" && m.intent ? (
-                      <div className="mt-1 flex flex-wrap gap-1.5 text-[10px] text-[#B5AEA2]">
-                        <span className="rounded bg-[#211E1A] px-1.5 py-0.5">
+                      <div className="mt-1 flex flex-wrap gap-1.5 text-[10px] text-[#A3A3A3]">
+                        <span className="rounded bg-[#1C1C1C] px-1.5 py-0.5">
                           mode: {m.mode}
                         </span>
-                        <span className="rounded bg-[#211E1A] px-1.5 py-0.5">
+                        <span className="rounded bg-[#1C1C1C] px-1.5 py-0.5">
                           intent: {m.intent}
                         </span>
                         {typeof m.confidence === "number" ? (
-                          <span className="rounded bg-[#211E1A] px-1.5 py-0.5">
+                          <span className="rounded bg-[#1C1C1C] px-1.5 py-0.5">
                             confidence: {Math.round(m.confidence * 100)}%
                           </span>
                         ) : null}
@@ -560,13 +560,13 @@ export default function AssistantPage() {
               </form>
 
               {/* Built-in Accuracy Check (Golden Test Suite) */}
-              <div className="space-y-3 border-t border-[#2B2722] pt-4">
+              <div className="space-y-3 border-t border-[#262626] pt-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-xs font-semibold uppercase tracking-wider text-[#D97745]">
+                    <h4 className="text-xs font-semibold uppercase tracking-wider text-[#FFFFFF]">
                       Accuracy Check (Golden Test Suite)
                     </h4>
-                    <p className="text-[11px] text-[#968E82]">
+                    <p className="text-[11px] text-[#8F8F8F]">
                       Verify real customer questions against your Knowledge Base in 1 click.
                     </p>
                   </div>
@@ -618,8 +618,8 @@ export default function AssistantPage() {
                 ))}
 
                 {evalReport ? (
-                  <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-3 text-xs">
-                    <p className="font-semibold text-[#F5F2EB]">
+                  <div className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-3 text-xs">
+                    <p className="font-semibold text-[#FAFAFA]">
                       Score: {evalReport.accuracyPercent}% ({evalReport.passed}/{evalReport.total}{" "}
                       passed)
                     </p>
@@ -627,7 +627,7 @@ export default function AssistantPage() {
                       {evalReport.results.map((r, i) => (
                         <p
                           key={i}
-                          className={r.passed ? "text-[#84A98C]" : "text-[#EB9494]"}
+                          className={r.passed ? "text-[#D4D4D4]" : "text-[#EB9494]"}
                         >
                           {r.passed ? "PASS" : "MISS"} — {r.question}
                         </p>

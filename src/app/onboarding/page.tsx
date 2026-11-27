@@ -37,7 +37,7 @@ export default async function OnboardingPage() {
     process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, "") || "http://localhost:3000";
 
   return (
-    <div className="min-h-screen bg-[#11100E]">
+    <div className="min-h-screen bg-[#0A0A0A]">
       <OnboardingWizard
         workspace={workspace}
         businessProfile={businessProfile ?? null}

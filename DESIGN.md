@@ -1,31 +1,22 @@
 # Harmek AI — Design System (DESIGN.md)
 
-## Visual World: Warm Ink & Burnished Copper
-A calm, tactile, high-craft dark palette inspired by hospitality, apothecary retail, and editorial print — completely distinct from generic purple/neon AI templates.
+## Visual World: Monochrome Obsidian & Pure White
+High-contrast architectural minimalism derived directly from the official Harmek AI "H" monogram — deep obsidian black surfaces, pure crisp white primary accents, and calibrated neutral grays.
 
 ### Color Palette
-- **Canvas (Warm Ink):** `#11100E`
-- **Surface (Warm Stone):** `#181613`
-- **Surface Elevated:** `#211E1A`
-- **Surface Subtle / Inset:** `#141210`
-- **Hairline Border:** `#2B2722`
-- **Border Strong:** `#3D3730`
-- **Primary Text (Warm Parchment):** `#F5F2EB`
-- **Secondary Text (Warm Stone):** `#B5AEA2`
-- **Muted Text:** `#968E82` (WCAG AA ≥ 5.5:1 on Warm Stone)
-- **Primary Accent (Burnished Copper):** `#D97745` (hover `#E28758`, subtle tint `rgba(217, 119, 69, 0.14)`)
-- **Semantic Positive / Grounded (Sage Olive):** `#84A98C` (subtle tint `rgba(132, 169, 140, 0.14)`)
-- **Warning (Warm Ochre):** `#D9A05B`
-- **Destructive (Muted Terracotta Red):** `#D95B5B`
+- **Canvas (Obsidian Black):** `#0A0A0A`
+- **Surface (Carbon Black):** `#121212`
+- **Surface Elevated (Graphite):** `#1C1C1C`
+- **Surface Inset:** `#0E0E0E`
+- **Hairline Border:** `#262626`
+- **Border Strong:** `#383838`
+- **Primary Brand Accent:** `#FFFFFF` (Pure White with `#0A0A0A` ink text; hover `#E5E5E5`)
+- **Primary Text:** `#FAFAFA`
+- **Secondary Text:** `#A3A3A3`
+- **Muted Text (WCAG AA ≥ 5.5:1 on Carbon):** `#8F8F8F`
+- **Semantic Status:** Emerald `#22C55E` (grounded/connected), Amber `#EAB308` (warning), Red `#EF4444` (destructive)
 
 ### Typography
-- **Display & Editorial Headings:** `Newsreader` (serif, optical sizing, weights 400–600, tracking `-0.025em`)
-- **UI & Body:** `Manrope` (geometric-humanist sans, weights 400–700)
+- **Display & Editorial Headings:** `Newsreader` (serif, tracking `-0.02em`, `text-wrap: balance`)
+- **UI & Body:** `Manrope` (geometric-humanist sans, `text-wrap: pretty`)
 - **Code, Snippets & Tabular Metrics:** `JetBrains Mono` (`tabular-nums`)
-
-### Craft Rules (Impeccable Floor)
-- No eyebrow kickers above every section heading; let the heading carry its own weight.
-- No identical icon-tile + heading + paragraph card grids as the default page scaffold.
-- No nested cards; declare elevation once (hairline border OR soft offset shadow, never both as a ghost card).
-- No gradient text, no neon glow halos, no emojis (Lucide SVG icons only).
-- Theme browser surfaces: custom text selection (`#D97745` tint), caret color, scrollbars, and copper focus rings.

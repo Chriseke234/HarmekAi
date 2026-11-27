@@ -272,13 +272,13 @@ export default function KnowledgeBasePage() {
     <div className="space-y-6">
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="font-display text-3xl font-normal text-[#F5F2EB]">Knowledge Base</h1>
-          <p className="mt-1 text-sm text-[#B5AEA2]">
+          <h1 className="font-display text-3xl font-normal text-[#FAFAFA]">Knowledge Base</h1>
+          <p className="mt-1 text-sm text-[#A3A3A3]">
             Structured Products, Services, FAQs, Policies, Website URLs, and Bulk CSV Imports.
           </p>
         </div>
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-[#968E82]" />
+          <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-[#8F8F8F]" />
           <Input
             className="w-64 pl-9"
             placeholder="Filter knowledge..."
@@ -290,19 +290,19 @@ export default function KnowledgeBasePage() {
 
       {/* Knowledge Health Audit Banner */}
       {health ? (
-        <Card className="border-[#2B2722]">
+        <Card className="border-[#262626]">
           <CardContent className="p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#2B2722] bg-[#211E1A] text-[#84A98C]">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-[#262626] bg-[#1C1C1C] text-[#D4D4D4]">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-[#F5F2EB]">
+                  <p className="text-sm font-semibold text-[#FAFAFA]">
                     Knowledge Health Score:{" "}
-                    <span className="font-mono text-[#D97745]">{health.score}/100</span>
+                    <span className="font-mono text-[#FFFFFF]">{health.score}/100</span>
                   </p>
-                  <p className="text-xs text-[#B5AEA2]">
+                  <p className="text-xs text-[#A3A3A3]">
                     {health.totalEntries} indexed entries &bull; {health.issues.length} item
                     {health.issues.length === 1 ? "" : "s"} to review
                   </p>
@@ -313,11 +313,11 @@ export default function KnowledgeBasePage() {
               </Badge>
             </div>
             {health.issues.length > 0 ? (
-              <div className="mt-4 space-y-1.5 border-t border-[#2B2722] pt-3">
+              <div className="mt-4 space-y-1.5 border-t border-[#262626] pt-3">
                 {health.issues.map((iss, idx) => (
                   <div
                     key={idx}
-                    className="flex items-start gap-2 text-xs text-[#D6D0C4]"
+                    className="flex items-start gap-2 text-xs text-[#D4D4D4]"
                   >
                     <AlertTriangle
                       className={`mt-0.5 h-3.5 w-3.5 shrink-0 ${
@@ -325,7 +325,7 @@ export default function KnowledgeBasePage() {
                           ? "text-[#EB9494]"
                           : iss.severity === "warning"
                             ? "text-[#ECC28A]"
-                            : "text-[#84A98C]"
+                            : "text-[#D4D4D4]"
                       }`}
                     />
                     <span>{iss.message}</span>
@@ -363,8 +363,8 @@ export default function KnowledgeBasePage() {
       </div>
 
       {notice ? (
-        <div className="flex items-center gap-2 rounded-lg border border-[#D97745]/40 bg-[#D97745]/10 px-4 py-2.5 text-sm text-[#F5F2EB]">
-          <CheckCircle2 className="h-4 w-4 shrink-0 text-[#D97745]" />
+        <div className="flex items-center gap-2 rounded-lg border border-[#FFFFFF]/40 bg-[#FFFFFF]/10 px-4 py-2.5 text-sm text-[#FAFAFA]">
+          <CheckCircle2 className="h-4 w-4 shrink-0 text-[#FFFFFF]" />
           <span>{notice}</span>
         </div>
       ) : null}
@@ -375,7 +375,7 @@ export default function KnowledgeBasePage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
-                <Globe className="h-4 w-4 text-[#D97745]" />
+                <Globe className="h-4 w-4 text-[#FFFFFF]" />
                 Import from Website URL
               </CardTitle>
               <CardDescription>
@@ -404,7 +404,7 @@ export default function KnowledgeBasePage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
-                <FileUp className="h-4 w-4 text-[#84A98C]" />
+                <FileUp className="h-4 w-4 text-[#D4D4D4]" />
                 Upload File (.txt, .md, .json) or Bulk CSV
               </CardTitle>
               <CardDescription>
@@ -412,19 +412,19 @@ export default function KnowledgeBasePage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="rounded-lg border border-dashed border-[#3D3730] bg-[#141210] p-4">
-                <label className="block text-xs font-medium text-[#D6D0C4]">
+              <div className="rounded-lg border border-dashed border-[#383838] bg-[#0E0E0E] p-4">
+                <label className="block text-xs font-medium text-[#D4D4D4]">
                   Choose a `.csv`, `.txt`, `.md`, or `.json` file
                 </label>
                 <input
                   type="file"
                   accept=".csv,.txt,.md,.json"
                   onChange={handleFileUpload}
-                  className="mt-2 block w-full text-xs text-[#B5AEA2] file:mr-3 file:rounded-md file:border-0 file:bg-[#211E1A] file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-[#F5F2EB] hover:file:bg-[#2A2621]"
+                  className="mt-2 block w-full text-xs text-[#A3A3A3] file:mr-3 file:rounded-md file:border-0 file:bg-[#1C1C1C] file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-[#FAFAFA] hover:file:bg-[#262626]"
                 />
               </div>
 
-              <form onSubmit={handleCsvImport} className="space-y-3 border-t border-[#2B2722] pt-4">
+              <form onSubmit={handleCsvImport} className="space-y-3 border-t border-[#262626] pt-4">
                 <Select
                   value={csvTarget}
                   onChange={(e) =>
@@ -692,8 +692,8 @@ export default function KnowledgeBasePage() {
               )}
 
               {/* Quick Knowledge Tester */}
-              <div className="mt-6 border-t border-[#2B2722] pt-5">
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-[#B5AEA2]">
+              <div className="mt-6 border-t border-[#262626] pt-5">
+                <h4 className="text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]">
                   Test Knowledge Retrieval
                 </h4>
                 <form onSubmit={runKnowledgeTest} className="mt-2 flex gap-2">
@@ -707,7 +707,7 @@ export default function KnowledgeBasePage() {
                   </Button>
                 </form>
                 {testReply ? (
-                  <div className="mt-3 rounded-lg border border-[#2B2722] bg-[#141210] p-3 text-xs leading-relaxed text-[#F5F2EB]">
+                  <div className="mt-3 rounded-lg border border-[#262626] bg-[#0E0E0E] p-3 text-xs leading-relaxed text-[#FAFAFA]">
                     {testReply}
                   </div>
                 ) : null}
@@ -718,7 +718,7 @@ export default function KnowledgeBasePage() {
           {/* Right Column: Items List */}
           <div className="space-y-3 lg:col-span-7">
             {loading ? (
-              <div className="flex h-48 items-center justify-center text-[#B5AEA2]">
+              <div className="flex h-48 items-center justify-center text-[#A3A3A3]">
                 <Loader2 className="h-5 w-5 animate-spin" />
               </div>
             ) : (
@@ -738,13 +738,13 @@ export default function KnowledgeBasePage() {
                           <CardContent className="flex items-start justify-between gap-4 p-4">
                             <div>
                               <div className="flex flex-wrap items-center gap-2">
-                                <h3 className="text-sm font-semibold text-[#F5F2EB]">{p.name}</h3>
+                                <h3 className="text-sm font-semibold text-[#FAFAFA]">{p.name}</h3>
                                 <Badge variant="secondary">{p.category}</Badge>
                                 <Badge variant="success">
                                   {formatCurrency(p.price, p.currency)}
                                 </Badge>
                               </div>
-                              <p className="mt-1 text-xs text-[#B5AEA2]">
+                              <p className="mt-1 text-xs text-[#A3A3A3]">
                                 {p.description || "No description provided."}
                               </p>
                             </div>
@@ -766,7 +766,7 @@ export default function KnowledgeBasePage() {
                                 }
                                 aria-label="Edit product"
                               >
-                                <Pencil className="h-4 w-4 text-[#B5AEA2]" />
+                                <Pencil className="h-4 w-4 text-[#A3A3A3]" />
                               </Button>
                               <Button
                                 variant="ghost"
@@ -774,7 +774,7 @@ export default function KnowledgeBasePage() {
                                 onClick={() => handleDelete("product", p.id)}
                                 aria-label="Delete product"
                               >
-                                <Trash2 className="h-4 w-4 text-[#B5AEA2] hover:text-rose-400" />
+                                <Trash2 className="h-4 w-4 text-[#A3A3A3] hover:text-rose-400" />
                               </Button>
                             </div>
                           </CardContent>
@@ -798,7 +798,7 @@ export default function KnowledgeBasePage() {
                           <CardContent className="flex items-start justify-between gap-4 p-4">
                             <div>
                               <div className="flex flex-wrap items-center gap-2">
-                                <h3 className="text-sm font-semibold text-[#F5F2EB]">{s.name}</h3>
+                                <h3 className="text-sm font-semibold text-[#FAFAFA]">{s.name}</h3>
                                 {s.duration_label ? (
                                   <Badge variant="secondary">{s.duration_label}</Badge>
                                 ) : null}
@@ -806,7 +806,7 @@ export default function KnowledgeBasePage() {
                                   {formatCurrency(s.price, s.currency)}
                                 </Badge>
                               </div>
-                              <p className="mt-1 text-xs text-[#B5AEA2]">{s.description}</p>
+                              <p className="mt-1 text-xs text-[#A3A3A3]">{s.description}</p>
                             </div>
                             <div className="flex shrink-0 items-center gap-1">
                               <Button
@@ -826,7 +826,7 @@ export default function KnowledgeBasePage() {
                                 }
                                 aria-label="Edit service"
                               >
-                                <Pencil className="h-4 w-4 text-[#B5AEA2]" />
+                                <Pencil className="h-4 w-4 text-[#A3A3A3]" />
                               </Button>
                               <Button
                                 variant="ghost"
@@ -834,7 +834,7 @@ export default function KnowledgeBasePage() {
                                 onClick={() => handleDelete("service", s.id)}
                                 aria-label="Delete service"
                               >
-                                <Trash2 className="h-4 w-4 text-[#B5AEA2] hover:text-rose-400" />
+                                <Trash2 className="h-4 w-4 text-[#A3A3A3] hover:text-rose-400" />
                               </Button>
                             </div>
                           </CardContent>
@@ -857,10 +857,10 @@ export default function KnowledgeBasePage() {
                         <Card key={f.id}>
                           <CardContent className="flex items-start justify-between gap-4 p-4">
                             <div>
-                              <h3 className="text-sm font-semibold text-[#F5F2EB]">
+                              <h3 className="text-sm font-semibold text-[#FAFAFA]">
                                 {f.question}
                               </h3>
-                              <p className="mt-1 text-xs leading-relaxed text-[#D6D0C4]">
+                              <p className="mt-1 text-xs leading-relaxed text-[#D4D4D4]">
                                 {f.answer}
                               </p>
                             </div>
@@ -881,7 +881,7 @@ export default function KnowledgeBasePage() {
                                 }
                                 aria-label="Edit FAQ"
                               >
-                                <Pencil className="h-4 w-4 text-[#B5AEA2]" />
+                                <Pencil className="h-4 w-4 text-[#A3A3A3]" />
                               </Button>
                               <Button
                                 variant="ghost"
@@ -889,7 +889,7 @@ export default function KnowledgeBasePage() {
                                 onClick={() => handleDelete("faq", f.id)}
                                 aria-label="Delete FAQ"
                               >
-                                <Trash2 className="h-4 w-4 text-[#B5AEA2] hover:text-rose-400" />
+                                <Trash2 className="h-4 w-4 text-[#A3A3A3] hover:text-rose-400" />
                               </Button>
                             </div>
                           </CardContent>
@@ -913,7 +913,7 @@ export default function KnowledgeBasePage() {
                           <CardContent className="flex items-start justify-between gap-4 p-4">
                             <div>
                               <div className="flex flex-wrap items-center gap-2">
-                                <h3 className="text-sm font-semibold text-[#F5F2EB]">
+                                <h3 className="text-sm font-semibold text-[#FAFAFA]">
                                   {s.title}
                                 </h3>
                                 <Badge variant="secondary">{s.source_type}</Badge>
@@ -929,7 +929,7 @@ export default function KnowledgeBasePage() {
                                   {s.status}
                                 </Badge>
                               </div>
-                              <p className="mt-1 line-clamp-3 text-xs text-[#B5AEA2]">
+                              <p className="mt-1 line-clamp-3 text-xs text-[#A3A3A3]">
                                 {s.status === "failed" && s.error_message
                                   ? `Failed: ${s.error_message}`
                                   : s.content}
@@ -951,7 +951,7 @@ export default function KnowledgeBasePage() {
                                 }
                                 aria-label="Edit source"
                               >
-                                <Pencil className="h-4 w-4 text-[#B5AEA2]" />
+                                <Pencil className="h-4 w-4 text-[#A3A3A3]" />
                               </Button>
                               <Button
                                 variant="ghost"
@@ -959,7 +959,7 @@ export default function KnowledgeBasePage() {
                                 onClick={() => handleDelete("source", s.id)}
                                 aria-label="Delete source"
                               >
-                                <Trash2 className="h-4 w-4 text-[#B5AEA2] hover:text-rose-400" />
+                                <Trash2 className="h-4 w-4 text-[#A3A3A3] hover:text-rose-400" />
                               </Button>
                             </div>
                           </CardContent>

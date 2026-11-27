@@ -36,12 +36,12 @@ export default function ContactsPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Contacts</h1>
-          <p className="mt-1 text-sm text-[#B5AEA2]">
+          <p className="mt-1 text-sm text-[#A3A3A3]">
             Customers who shared contact information during enquiries, with consent preferences.
           </p>
         </div>
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-[#968E82]" />
+          <Search className="pointer-events-none absolute left-3 top-2.5 h-4 w-4 text-[#8F8F8F]" />
           <Input
             className="w-64 pl-9"
             placeholder="Search contacts..."
@@ -52,7 +52,7 @@ export default function ContactsPage() {
       </div>
 
       {loading ? (
-        <div className="flex h-48 items-center justify-center text-[#B5AEA2]">
+        <div className="flex h-48 items-center justify-center text-[#A3A3A3]">
           <Loader2 className="h-5 w-5 animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
@@ -71,7 +71,7 @@ export default function ContactsPage() {
                     <h3 className="text-sm font-semibold text-white">
                       {c.full_name || "Anonymous Visitor"}
                     </h3>
-                    <p className="mt-0.5 text-xs text-[#B5AEA2]">
+                    <p className="mt-0.5 text-xs text-[#A3A3A3]">
                       {c.email || "No email provided"} &bull; {c.phone || "No phone provided"}
                     </p>
                   </div>

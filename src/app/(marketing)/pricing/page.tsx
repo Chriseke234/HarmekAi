@@ -54,10 +54,10 @@ export default function PricingPage() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="max-w-3xl">
-        <h1 className="font-display text-4xl font-normal text-[#F5F2EB] sm:text-5xl">
+        <h1 className="font-display text-4xl font-normal text-[#FAFAFA] sm:text-5xl">
           Transparent pricing, backed by a genuine 14-day trial.
         </h1>
-        <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-[#B5AEA2]">
+        <p className="mt-4 max-w-[62ch] text-base leading-relaxed text-[#A3A3A3]">
           No credit card required. Your 14-day free trial starts only when you activate your
           assistant — and concludes with a real Trial Performance Report before you decide.
         </p>
@@ -69,31 +69,31 @@ export default function PricingPage() {
             key={plan.name}
             className={`flex flex-col justify-between rounded-xl border p-7 ${
               plan.highlight
-                ? "border-[#D97745] bg-[#1C1915]"
-                : "border-[#2B2722] bg-[#181613]"
+                ? "border-[#FFFFFF] bg-[#161616]"
+                : "border-[#262626] bg-[#121212]"
             }`}
           >
             <div>
               <div className="flex items-center justify-between">
-                <h2 className="font-display text-2xl font-normal text-[#F5F2EB]">
+                <h2 className="font-display text-2xl font-normal text-[#FAFAFA]">
                   {plan.name}
                 </h2>
                 {plan.highlight ? (
-                  <span className="font-mono text-xs text-[#D97745]">Recommended</span>
+                  <span className="font-mono text-xs text-[#FFFFFF]">Recommended</span>
                 ) : null}
               </div>
-              <p className="mt-1.5 text-sm text-[#B5AEA2]">{plan.description}</p>
-              <div className="mt-6 flex items-baseline gap-1 border-b border-[#2B2722] pb-6">
-                <span className="font-display text-4xl font-medium tabular-nums text-[#F5F2EB]">
+              <p className="mt-1.5 text-sm text-[#A3A3A3]">{plan.description}</p>
+              <div className="mt-6 flex items-baseline gap-1 border-b border-[#262626] pb-6">
+                <span className="font-display text-4xl font-medium tabular-nums text-[#FAFAFA]">
                   {plan.price}
                 </span>
-                <span className="text-sm text-[#968E82]">{plan.period}</span>
+                <span className="text-sm text-[#8F8F8F]">{plan.period}</span>
               </div>
 
-              <ul className="mt-6 space-y-3 text-sm text-[#B5AEA2]">
+              <ul className="mt-6 space-y-3 text-sm text-[#A3A3A3]">
                 {plan.features.map((feat) => (
                   <li key={feat} className="flex items-start gap-2.5">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#84A98C]" />
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-[#D4D4D4]" />
                     <span>{feat}</span>
                   </li>
                 ))}
@@ -112,14 +112,14 @@ export default function PricingPage() {
         ))}
       </div>
 
-      <div className="mt-12 rounded-xl border border-[#2B2722] bg-[#181613] p-6">
+      <div className="mt-12 rounded-xl border border-[#262626] bg-[#121212] p-6">
         <div className="flex items-start gap-3">
-          <Shield className="mt-0.5 h-5 w-5 shrink-0 text-[#84A98C]" />
+          <Shield className="mt-0.5 h-5 w-5 shrink-0 text-[#D4D4D4]" />
           <div>
-            <h3 className="text-sm font-semibold text-[#F5F2EB]">
+            <h3 className="text-sm font-semibold text-[#FAFAFA]">
               Fair Post-Trial Data Retention Policy
             </h3>
-            <p className="mt-1 text-sm leading-relaxed text-[#B5AEA2]">
+            <p className="mt-1 text-sm leading-relaxed text-[#A3A3A3]">
               We never silently delete your business data when a trial ends. If your 14-day
               trial expires without upgrading, automated replies pause while your knowledge
               base, contacts, conversation history, and Trial Performance Report remain safely

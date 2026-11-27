@@ -70,7 +70,7 @@ export default function TeamPage() {
 
   if (loading) {
     return (
-      <div className="flex h-48 items-center justify-center text-[#B5AEA2]">
+      <div className="flex h-48 items-center justify-center text-[#A3A3A3]">
         <Loader2 className="h-5 w-5 animate-spin" />
       </div>
     );
@@ -80,7 +80,7 @@ export default function TeamPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-white">Team</h1>
-        <p className="mt-1 text-sm text-[#B5AEA2]">
+        <p className="mt-1 text-sm text-[#A3A3A3]">
           Manage workspace members and role-based permissions (Owner, Administrator, Agent).
         </p>
       </div>
@@ -96,7 +96,7 @@ export default function TeamPage() {
           </CardHeader>
           <CardContent>
             {notice ? (
-              <p className="mb-3 text-xs text-[#F0A47A]">{notice}</p>
+              <p className="mb-3 text-xs text-[#E5E5E5]">{notice}</p>
             ) : null}
             <form onSubmit={handleInvite} className="flex flex-col gap-3 sm:flex-row">
               <Input
@@ -131,13 +131,13 @@ export default function TeamPage() {
           {members.map((m) => (
             <div
               key={m.id}
-              className="flex items-center justify-between rounded-lg border border-[#2B2722] bg-[#141210] px-4 py-3"
+              className="flex items-center justify-between rounded-lg border border-[#262626] bg-[#0E0E0E] px-4 py-3"
             >
               <div>
                 <p className="text-sm font-medium text-white">
                   {m.profiles?.full_name || "Team Member"}
                 </p>
-                <p className="text-xs text-[#B5AEA2]">{m.profiles?.email}</p>
+                <p className="text-xs text-[#A3A3A3]">{m.profiles?.email}</p>
               </div>
               <Badge variant={m.role === "owner" ? "default" : "secondary"}>{m.role}</Badge>
             </div>
@@ -154,10 +154,10 @@ export default function TeamPage() {
             {invitations.map((inv) => (
               <div
                 key={inv.id}
-                className="flex items-center justify-between rounded-lg border border-[#2B2722] bg-[#141210] px-4 py-2.5 text-sm"
+                className="flex items-center justify-between rounded-lg border border-[#262626] bg-[#0E0E0E] px-4 py-2.5 text-sm"
               >
-                <span className="flex items-center gap-2 text-[#F5F2EB]">
-                  <Mail className="h-4 w-4 text-[#968E82]" />
+                <span className="flex items-center gap-2 text-[#FAFAFA]">
+                  <Mail className="h-4 w-4 text-[#8F8F8F]" />
                   {inv.email}
                 </span>
                 <Badge variant="warning">{inv.role} (pending)</Badge>

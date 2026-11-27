@@ -71,18 +71,18 @@ export function DashboardShell({
   }
 
   const sidebarContent = (
-    <div className="flex h-full flex-col bg-[#141210]">
-      <div className="flex h-16 items-center justify-between border-b border-[#2B2722] px-4">
+    <div className="flex h-full flex-col bg-[#0E0E0E]">
+      <div className="flex h-16 items-center justify-between border-b border-[#262626] px-4">
         <Link href="/dashboard" className="flex items-center gap-2.5">
           <HarmekLogo className="h-8 w-8" />
           <div className="min-w-0">
-            <p className="truncate font-display text-base font-medium text-[#F5F2EB]">Harmek AI</p>
-            <p className="truncate text-[11px] text-[#968E82]">{workspaceName}</p>
+            <p className="truncate font-display text-base font-medium text-[#FAFAFA]">Harmek AI</p>
+            <p className="truncate text-[11px] text-[#8F8F8F]">{workspaceName}</p>
           </div>
         </Link>
         <button
           type="button"
-          className="rounded-lg p-1.5 text-[#968E82] hover:bg-[#211E1A] hover:text-[#F5F2EB] lg:hidden"
+          className="rounded-lg p-1.5 text-[#8F8F8F] hover:bg-[#1C1C1C] hover:text-[#FAFAFA] lg:hidden"
           onClick={() => setDrawerOpen(false)}
           aria-label="Close navigation"
         >
@@ -106,11 +106,11 @@ export function DashboardShell({
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
                 active
-                  ? "bg-[#D97745]/15 text-[#F5F2EB] border border-[#D97745]/35"
-                  : "text-[#B5AEA2] hover:bg-[#211E1A] hover:text-[#F5F2EB]"
+                  ? "bg-[#FFFFFF]/15 text-[#FAFAFA] border border-[#FFFFFF]/35"
+                  : "text-[#A3A3A3] hover:bg-[#1C1C1C] hover:text-[#FAFAFA]"
               )}
             >
-              <Icon className={cn("h-4 w-4 shrink-0", active ? "text-[#D97745]" : "")} />
+              <Icon className={cn("h-4 w-4 shrink-0", active ? "text-[#FFFFFF]" : "")} />
               <span>{item.label}</span>
             </Link>
           );
@@ -128,10 +128,10 @@ export function DashboardShell({
         ) : null}
       </nav>
 
-      <div className="border-t border-[#2B2722] p-3">
-        <div className="mb-2.5 rounded-lg border border-[#2B2722] bg-[#181613] px-3 py-2">
-          <p className="truncate text-xs font-medium text-[#F5F2EB]">{userEmail}</p>
-          <p className="mt-0.5 text-[11px] text-[#968E82]">
+      <div className="border-t border-[#262626] p-3">
+        <div className="mb-2.5 rounded-lg border border-[#262626] bg-[#121212] px-3 py-2">
+          <p className="truncate text-xs font-medium text-[#FAFAFA]">{userEmail}</p>
+          <p className="mt-0.5 text-[11px] text-[#8F8F8F]">
             {trialStatus === "active"
               ? `14-Day Trial: ${trialDaysRemaining}d left`
               : trialStatus === "not_started"
@@ -144,7 +144,7 @@ export function DashboardShell({
         <button
           type="button"
           onClick={handleSignOut}
-          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#968E82] hover:bg-[#211E1A] hover:text-[#F5F2EB] cursor-pointer"
+          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#8F8F8F] hover:bg-[#1C1C1C] hover:text-[#FAFAFA] cursor-pointer"
         >
           <LogOut className="h-4 w-4" />
           Sign Out
@@ -154,9 +154,9 @@ export function DashboardShell({
   );
 
   return (
-    <div className="flex min-h-screen bg-[#11100E]">
+    <div className="flex min-h-screen bg-[#0A0A0A]">
       {/* Desktop Sidebar */}
-      <aside className="hidden w-64 shrink-0 border-r border-[#2B2722] lg:block">
+      <aside className="hidden w-64 shrink-0 border-r border-[#262626] lg:block">
         <div className="sticky top-0 h-screen">{sidebarContent}</div>
       </aside>
 
@@ -167,7 +167,7 @@ export function DashboardShell({
             className="fixed inset-0 bg-black/75"
             onClick={() => setDrawerOpen(false)}
           />
-          <div className="relative z-10 w-64 border-r border-[#2B2722]">
+          <div className="relative z-10 w-64 border-r border-[#262626]">
             {sidebarContent}
           </div>
         </div>
@@ -175,17 +175,17 @@ export function DashboardShell({
 
       {/* Main Content */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#2B2722] bg-[#11100E]/95 px-4 backdrop-blur-sm sm:px-6">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#262626] bg-[#0A0A0A]/95 px-4 backdrop-blur-sm sm:px-6">
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="rounded-lg p-2 text-[#B5AEA2] hover:bg-[#211E1A] lg:hidden"
+              className="rounded-lg p-2 text-[#A3A3A3] hover:bg-[#1C1C1C] lg:hidden"
               onClick={() => setDrawerOpen(true)}
               aria-label="Open menu"
             >
               <Menu className="h-5 w-5" />
             </button>
-            <span className="text-sm font-medium text-[#F5F2EB]">{workspaceName}</span>
+            <span className="text-sm font-medium text-[#FAFAFA]">{workspaceName}</span>
           </div>
 
           <div className="flex items-center gap-2.5">

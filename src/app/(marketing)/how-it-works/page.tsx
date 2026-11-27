@@ -29,26 +29,26 @@ export default function HowItWorksPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
       <div className="max-w-2xl">
-        <h1 className="font-display text-4xl font-normal text-[#F5F2EB] sm:text-5xl">
+        <h1 className="font-display text-4xl font-normal text-[#FAFAFA] sm:text-5xl">
           From setup to live customer assistant in four steps.
         </h1>
-        <p className="mt-4 text-base leading-relaxed text-[#B5AEA2]">
+        <p className="mt-4 text-base leading-relaxed text-[#A3A3A3]">
           Guided in plain language so any business owner can launch Harmek without technical
           support.
         </p>
       </div>
 
-      <ol className="mt-14 divide-y divide-[#2B2722] border-y border-[#2B2722]">
+      <ol className="mt-14 divide-y divide-[#262626] border-y border-[#262626]">
         {STEPS.map((item, index) => (
           <li key={item.title} className="grid gap-4 py-8 sm:grid-cols-12">
             <div className="sm:col-span-2">
-              <span className="font-mono text-sm text-[#D97745]">Step {index + 1}</span>
+              <span className="font-mono text-sm text-[#FFFFFF]">Step {index + 1}</span>
             </div>
             <div className="sm:col-span-10">
-              <h2 className="font-display text-2xl font-normal text-[#F5F2EB]">
+              <h2 className="font-display text-2xl font-normal text-[#FAFAFA]">
                 {item.title}
               </h2>
-              <p className="mt-2 max-w-[62ch] text-sm leading-relaxed text-[#B5AEA2]">
+              <p className="mt-2 max-w-[62ch] text-sm leading-relaxed text-[#A3A3A3]">
                 {item.description}
               </p>
             </div>
@@ -56,9 +56,9 @@ export default function HowItWorksPage() {
         ))}
       </ol>
 
-      <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-xl border border-[#2B2722] bg-[#181613] p-6 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-2.5 text-sm text-[#B5AEA2]">
-          <Check className="h-4 w-4 text-[#84A98C]" />
+      <div className="mt-12 flex flex-col items-start justify-between gap-4 rounded-xl border border-[#262626] bg-[#121212] p-6 sm:flex-row sm:items-center">
+        <div className="flex items-center gap-2.5 text-sm text-[#A3A3A3]">
+          <Check className="h-4 w-4 text-[#D4D4D4]" />
           Your 14-day trial begins only at Step 4 when you activate Harmek.
         </div>
         <Link href="/get-started">

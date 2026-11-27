@@ -26,7 +26,7 @@ export default function BillingPage() {
 
   if (loading || !data) {
     return (
-      <div className="flex h-48 items-center justify-center text-[#B5AEA2]">
+      <div className="flex h-48 items-center justify-center text-[#A3A3A3]">
         <Loader2 className="h-5 w-5 animate-spin" />
       </div>
     );
@@ -38,18 +38,18 @@ export default function BillingPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-white">Billing &amp; 14-Day Trial</h1>
-        <p className="mt-1 text-sm text-[#B5AEA2]">
+        <p className="mt-1 text-sm text-[#A3A3A3]">
           Track your activation-based 14-day free trial, usage limits, and real Trial
           Performance Report.
         </p>
       </div>
 
       {/* Trial Status Card */}
-      <Card className="border-[#D97745]/40">
+      <Card className="border-[#FFFFFF]/40">
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
-              <CreditCard className="h-4 w-4 text-[#D97745]" />
+              <CreditCard className="h-4 w-4 text-[#FFFFFF]" />
               Trial Status
             </CardTitle>
             <Badge
@@ -75,14 +75,14 @@ export default function BillingPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-4">
-            <p className="text-xs text-[#B5AEA2]">Conversations Remaining</p>
+          <div className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-4">
+            <p className="text-xs text-[#A3A3A3]">Conversations Remaining</p>
             <p className="mt-1 text-xl font-bold text-white">
               {trialReport.metrics.remainingConversations} / {trialStatus.conversationLimit}
             </p>
           </div>
-          <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-4">
-            <p className="text-xs text-[#B5AEA2]">Automated Messages Remaining</p>
+          <div className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-4">
+            <p className="text-xs text-[#A3A3A3]">Automated Messages Remaining</p>
             <p className="mt-1 text-xl font-bold text-white">
               {trialReport.metrics.remainingMessages} / {trialStatus.messageLimit}
             </p>
@@ -94,7 +94,7 @@ export default function BillingPage() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FileBarChart className="h-4 w-4 text-[#D97745]" />
+            <FileBarChart className="h-4 w-4 text-[#FFFFFF]" />
             Harmek AI Trial Performance Report
           </CardTitle>
           <CardDescription>
@@ -103,31 +103,31 @@ export default function BillingPage() {
         </CardHeader>
         <CardContent className="space-y-5">
           {!trialReport.hasSufficientData ? (
-            <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-4 text-sm text-[#D6D0C4]">
+            <div className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-4 text-sm text-[#D4D4D4]">
               {trialReport.insufficientDataMessage}
             </div>
           ) : (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-3.5">
-                <p className="text-xs text-[#B5AEA2]">Total Conversations</p>
+              <div className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-3.5">
+                <p className="text-xs text-[#A3A3A3]">Total Conversations</p>
                 <p className="mt-1 text-xl font-bold text-white">
                   {trialReport.metrics.totalConversations}
                 </p>
               </div>
-              <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-3.5">
-                <p className="text-xs text-[#B5AEA2]">AI-Handled</p>
+              <div className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-3.5">
+                <p className="text-xs text-[#A3A3A3]">AI-Handled</p>
                 <p className="mt-1 text-xl font-bold text-white">
                   {trialReport.metrics.aiHandledConversations}
                 </p>
               </div>
-              <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-3.5">
-                <p className="text-xs text-[#B5AEA2]">Human Escalations</p>
+              <div className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-3.5">
+                <p className="text-xs text-[#A3A3A3]">Human Escalations</p>
                 <p className="mt-1 text-xl font-bold text-white">
                   {trialReport.metrics.humanEscalations}
                 </p>
               </div>
-              <div className="rounded-lg border border-[#2B2722] bg-[#141210] p-3.5">
-                <p className="text-xs text-[#B5AEA2]">Leads Captured</p>
+              <div className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-3.5">
+                <p className="text-xs text-[#A3A3A3]">Leads Captured</p>
                 <p className="mt-1 text-xl font-bold text-white">
                   {trialReport.metrics.leadsCaptured}
                 </p>
@@ -136,13 +136,13 @@ export default function BillingPage() {
           )}
 
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-[#B5AEA2]">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-[#A3A3A3]">
               Actionable Knowledge Suggestions
             </h4>
-            <ul className="mt-2 space-y-2 text-sm text-[#D6D0C4]">
+            <ul className="mt-2 space-y-2 text-sm text-[#D4D4D4]">
               {trialReport.suggestions.map((s, idx) => (
                 <li key={idx} className="flex items-start gap-2">
-                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#D97745]" />
+                  <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#FFFFFF]" />
                   <span>{s}</span>
                 </li>
               ))}
@@ -175,12 +175,12 @@ export default function BillingPage() {
             ].map((plan) => (
               <div
                 key={plan.name}
-                className="flex flex-col justify-between rounded-xl border border-[#2B2722] bg-[#141210] p-5"
+                className="flex flex-col justify-between rounded-xl border border-[#262626] bg-[#0E0E0E] p-5"
               >
                 <div>
                   <h3 className="text-base font-semibold text-white">{plan.name}</h3>
                   <p className="mt-1 text-2xl font-bold text-white">{plan.price}</p>
-                  <p className="mt-1 text-xs text-[#B5AEA2]">{plan.limit}</p>
+                  <p className="mt-1 text-xs text-[#A3A3A3]">{plan.limit}</p>
                 </div>
                 <Button
                   className="mt-4 w-full"
@@ -197,8 +197,8 @@ export default function BillingPage() {
             ))}
           </div>
 
-          <div className="flex items-start gap-2.5 rounded-lg border border-[#2B2722] bg-[#141210] p-4 text-xs text-[#B5AEA2]">
-            <Shield className="mt-0.5 h-4 w-4 shrink-0 text-[#D97745]" />
+          <div className="flex items-start gap-2.5 rounded-lg border border-[#262626] bg-[#0E0E0E] p-4 text-xs text-[#A3A3A3]">
+            <Shield className="mt-0.5 h-4 w-4 shrink-0 text-[#FFFFFF]" />
             <span>
               Post-trial policy: When a trial expires, Sage pauses automated widget responses
               while keeping all contacts, conversations, knowledge items, and performance

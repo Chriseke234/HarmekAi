@@ -63,7 +63,7 @@ export default function AnalyticsPage() {
 
   if (loading) {
     return (
-      <div className="flex h-64 items-center justify-center text-[#B5AEA2]">
+      <div className="flex h-64 items-center justify-center text-[#A3A3A3]">
         <Loader2 className="h-5 w-5 animate-spin" />
       </div>
     );
@@ -76,7 +76,7 @@ export default function AnalyticsPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Analytics</h1>
-          <p className="mt-1 text-sm text-[#B5AEA2]">
+          <p className="mt-1 text-sm text-[#A3A3A3]">
             Real database metrics separating handled conversations, resolutions, leads, and
             recorded sales.
           </p>
@@ -112,7 +112,7 @@ export default function AnalyticsPage() {
         ].map((m) => (
           <Card key={m.label}>
             <CardContent className="p-5">
-              <p className="text-xs font-medium text-[#B5AEA2]">{m.label}</p>
+              <p className="text-xs font-medium text-[#A3A3A3]">{m.label}</p>
               <p className="mt-1.5 text-2xl font-bold text-white">{m.value}</p>
             </CardContent>
           </Card>
@@ -122,7 +122,7 @@ export default function AnalyticsPage() {
       <div className="grid gap-4 sm:grid-cols-3">
         <Card>
           <CardContent className="p-5">
-            <p className="text-xs text-[#B5AEA2]">Average First Response</p>
+            <p className="text-xs text-[#A3A3A3]">Average First Response</p>
             <p className="mt-1 text-xl font-semibold text-white">
               {s?.avgFirstResponseMs ? `${(s.avgFirstResponseMs / 1000).toFixed(2)}s` : "No data yet"}
             </p>
@@ -130,7 +130,7 @@ export default function AnalyticsPage() {
         </Card>
         <Card>
           <CardContent className="p-5">
-            <p className="text-xs text-[#B5AEA2]">Native Engine Messages</p>
+            <p className="text-xs text-[#A3A3A3]">Native Engine Messages</p>
             <p className="mt-1 text-xl font-semibold text-white">
               {s?.nativeMessagesUsed ?? 0}
             </p>
@@ -138,7 +138,7 @@ export default function AnalyticsPage() {
         </Card>
         <Card>
           <CardContent className="p-5">
-            <p className="text-xs text-[#B5AEA2]">Enhanced AI Messages</p>
+            <p className="text-xs text-[#A3A3A3]">Enhanced AI Messages</p>
             <p className="mt-1 text-xl font-semibold text-white">
               {s?.enhancedMessagesUsed ?? 0}
             </p>
@@ -163,18 +163,18 @@ export default function AnalyticsPage() {
             <div className="h-72 w-full">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={data.dailySeries}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#2B2722" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#262626" />
                   <XAxis dataKey="date" stroke="#94A3B8" fontSize={12} />
                   <YAxis stroke="#94A3B8" fontSize={12} allowDecimals={false} />
                   <Tooltip
                     contentStyle={{
-                      backgroundColor: "#181613",
-                      borderColor: "#2B2722",
+                      backgroundColor: "#121212",
+                      borderColor: "#262626",
                       color: "#F8FAFC",
                     }}
                   />
-                  <Bar dataKey="ai" name="AI-Handled" fill="#D97745" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="human" name="Human-Handled" fill="#84A98C" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="ai" name="AI-Handled" fill="#FFFFFF" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="human" name="Human-Handled" fill="#D4D4D4" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -203,19 +203,19 @@ export default function AnalyticsPage() {
               {data.customerInsights.map((ins) => (
                 <div
                   key={ins.theme}
-                  className="rounded-lg border border-[#2B2722] bg-[#141210] p-4"
+                  className="rounded-lg border border-[#262626] bg-[#0E0E0E] p-4"
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <h3 className="text-sm font-semibold text-[#F5F2EB]">{ins.theme}</h3>
+                    <h3 className="text-sm font-semibold text-[#FAFAFA]">{ins.theme}</h3>
                     <Badge variant="default">
                       {ins.mentions} mention{ins.mentions === 1 ? "" : "s"}
                     </Badge>
                   </div>
-                  <p className="mt-1.5 text-xs italic text-[#968E82]">
+                  <p className="mt-1.5 text-xs italic text-[#8F8F8F]">
                     &ldquo;{ins.sampleCustomerQuote}&rdquo;
                   </p>
-                  <p className="mt-2 text-xs leading-relaxed text-[#D6D0C4]">
-                    <strong className="text-[#84A98C]">Business Action:</strong>{" "}
+                  <p className="mt-2 text-xs leading-relaxed text-[#D4D4D4]">
+                    <strong className="text-[#D4D4D4]">Business Action:</strong>{" "}
                     {ins.businessOutcomeRecommendation}
                   </p>
                 </div>
@@ -254,9 +254,9 @@ export default function AnalyticsPage() {
               {data.unansweredQuestions.map((q) => (
                 <div
                   key={q.id}
-                  className="flex items-center justify-between rounded-lg border border-[#2B2722] bg-[#141210] px-4 py-3 text-sm"
+                  className="flex items-center justify-between rounded-lg border border-[#262626] bg-[#0E0E0E] px-4 py-3 text-sm"
                 >
-                  <span className="text-[#F5F2EB]">{q.question}</span>
+                  <span className="text-[#FAFAFA]">{q.question}</span>
                   <Badge variant="warning">
                     {q.detected_intent?.replace(/_/g, " ") || "unmatched"}
                   </Badge>
