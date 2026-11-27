@@ -41,8 +41,22 @@ body {
   }
 }
 
+@keyframes harmek-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
 .animate-harmek-drift {
   animation: harmek-drift 22s ease-in-out infinite;
+}
+
+.animate-harmek-float {
+  animation: harmek-float 4.2s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -50,7 +64,8 @@ body {
   body {
     scroll-behavior: auto;
   }
-  .animate-harmek-drift {
+  .animate-harmek-drift,
+  .animate-harmek-float {
     animation: none;
   }
 }

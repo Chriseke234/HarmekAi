@@ -15,6 +15,8 @@ import {
   Users,
 } from "lucide-react";
 import { CinematicSignalCanvas } from "@/components/marketing/cinematic-canvas";
+import { ScrollReveal } from "@/components/marketing/motion";
+import { FloatingMascotChat } from "@/components/marketing/floating-mascot-chat";
 
 const INTELLIGENCE_PILLARS = [
   {
@@ -136,41 +138,49 @@ export default function HomePage() {
 
         {/* Central Hero Typography */}
         <div className="relative z-10 mx-auto my-auto flex max-w-4xl flex-col items-center px-4 py-12 text-center sm:px-6 lg:py-16">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-cyan-200/90 sm:text-xs">
-            INTELLIGENCE THAT UNDERSTANDS YOUR BUSINESS
-          </p>
+          <ScrollReveal delayMs={40} yOffset={16}>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-cyan-200/90 sm:text-xs">
+              INTELLIGENCE THAT UNDERSTANDS YOUR BUSINESS
+            </p>
+          </ScrollReveal>
 
-          <h1 className="mt-5 text-4xl font-semibold tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)] sm:text-6xl lg:text-[4.5rem] lg:leading-[1.06]">
-            Every Conversation
-            <br />
-            Opens an Opportunity.
-          </h1>
+          <ScrollReveal delayMs={120} yOffset={20}>
+            <h1 className="mt-5 text-4xl font-semibold tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)] sm:text-6xl lg:text-[4.5rem] lg:leading-[1.06]">
+              Every Conversation
+              <br />
+              Opens an Opportunity.
+            </h1>
+          </ScrollReveal>
 
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-slate-200/90 sm:text-lg">
-            Meet HARMEK AI. Your intelligent business communication platform, designed to
-            understand your business, engage customers and turn enquiries into meaningful
-            opportunities.
-          </p>
+          <ScrollReveal delayMs={200} yOffset={18}>
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-slate-200/90 sm:text-lg">
+              Meet HARMEK AI. Your intelligent business communication platform, designed to
+              understand your business, engage customers and turn enquiries into meaningful
+              opportunities.
+            </p>
+          </ScrollReveal>
 
-          <div className="mt-9 flex flex-col items-center gap-3.5 sm:flex-row">
-            <Link
-              href="#discover"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-cyan-400 px-6 text-sm font-semibold text-[#041318] transition-all hover:bg-cyan-300 shadow-[0_8px_32px_rgba(34,211,238,0.28)]"
-            >
-              Start Exploring
-              <ArrowUpRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/how-it-works"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-cyan-200/25 bg-[#06151B]/65 px-6 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:border-cyan-200/50 hover:bg-[#0A2029]/80"
-            >
-              See How It Works
-            </Link>
-          </div>
+          <ScrollReveal delayMs={280} yOffset={16}>
+            <div className="mt-9 flex flex-col items-center gap-3.5 sm:flex-row">
+              <Link
+                href="#discover"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-cyan-400 px-6 text-sm font-semibold text-[#041318] transition-all duration-300 hover:-translate-y-0.5 hover:bg-cyan-300 shadow-[0_8px_32px_rgba(34,211,238,0.28)]"
+              >
+                Start Exploring
+                <ArrowUpRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/how-it-works"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-cyan-200/25 bg-[#06151B]/65 px-6 text-sm font-medium text-white backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-200/50 hover:bg-[#0A2029]/80"
+              >
+                See How It Works
+              </Link>
+            </div>
+          </ScrollReveal>
         </div>
 
         {/* Lower Hero Content — Bottom-Left & Bottom-Right Editorial Anchors */}
-        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+        <ScrollReveal delayMs={320} yOffset={16} className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
           <div className="grid items-end gap-8 border-t border-cyan-200/15 pt-7 md:grid-cols-12">
             {/* Bottom-Left */}
             <div className="md:col-span-7">
@@ -195,14 +205,14 @@ export default function HomePage() {
               </p>
               <Link
                 href="#discover"
-                className="mt-4 inline-flex items-center gap-2 rounded-lg border border-cyan-200/25 bg-[#071820]/70 px-4 py-2 text-xs font-medium text-cyan-100 backdrop-blur-sm transition-colors hover:border-cyan-300/50 hover:bg-[#0B232E]"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg border border-cyan-200/25 bg-[#071820]/70 px-4 py-2 text-xs font-medium text-cyan-100 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/50 hover:bg-[#0B232E]"
               >
                 Discover HARMEK
                 <ArrowRight className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
       {/* =====================================================================
@@ -213,7 +223,7 @@ export default function HomePage() {
         className="relative border-t border-cyan-300/10 bg-gradient-to-b from-[#050C10] to-[#071319] py-24 sm:py-32"
       >
         <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
-          <div className="lg:col-span-6">
+          <ScrollReveal className="lg:col-span-6">
             <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
               Your Business. Understood.
             </h2>
@@ -236,10 +246,10 @@ export default function HomePage() {
                 Never invents prices or policies
               </span>
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div className="lg:col-span-6">
-            <div className="relative overflow-hidden rounded-2xl border border-cyan-300/15 bg-[#08161D]/90 p-6 sm:p-8">
+          <ScrollReveal delayMs={140} className="lg:col-span-6">
+            <div className="relative overflow-hidden rounded-2xl border border-cyan-300/15 bg-[#08161D]/90 p-6 transition-colors duration-300 hover:border-cyan-300/30 sm:p-8">
               <div className="pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full bg-cyan-400/10 blur-3xl" />
               <div className="space-y-5">
                 <div className="flex items-center justify-between border-b border-cyan-300/10 pb-4">
@@ -276,7 +286,7 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </section>
 
@@ -285,7 +295,7 @@ export default function HomePage() {
          ===================================================================== */}
       <section className="relative border-t border-cyan-300/10 bg-[#061015] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
+          <ScrollReveal className="max-w-3xl">
             <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
               Intelligence That Works Your Way.
             </h2>
@@ -294,29 +304,28 @@ export default function HomePage() {
               with the Native HARMEK Intelligence Engine, and optionally connect an external AI
               provider only if and when your business wants it.
             </p>
-          </div>
+          </ScrollReveal>
 
           <div className="mt-14 divide-y divide-cyan-300/10 border-y border-cyan-300/10">
-            {INTELLIGENCE_PILLARS.map((item) => {
+            {INTELLIGENCE_PILLARS.map((item, idx) => {
               const Icon = item.icon;
               return (
-                <div
-                  key={item.title}
-                  className="grid gap-4 py-8 md:grid-cols-12 md:items-baseline"
-                >
-                  <div className="flex items-center gap-3 md:col-span-4">
-                    <Icon className="h-5 w-5 shrink-0 text-cyan-400" />
-                    <h3 className="text-lg font-medium text-white">{item.title}</h3>
+                <ScrollReveal key={item.title} delayMs={idx * 70}>
+                  <div className="grid gap-4 py-8 transition-colors duration-300 hover:bg-cyan-300/[0.03] md:grid-cols-12 md:items-baseline">
+                    <div className="flex items-center gap-3 md:col-span-4">
+                      <Icon className="h-5 w-5 shrink-0 text-cyan-400" />
+                      <h3 className="text-lg font-medium text-white">{item.title}</h3>
+                    </div>
+                    <div className="md:col-span-6">
+                      <p className="text-sm leading-relaxed text-slate-300">
+                        {item.description}
+                      </p>
+                    </div>
+                    <div className="md:col-span-2 md:text-right">
+                      <span className="font-mono text-xs text-cyan-300/90">{item.tag}</span>
+                    </div>
                   </div>
-                  <div className="md:col-span-6">
-                    <p className="text-sm leading-relaxed text-slate-300">
-                      {item.description}
-                    </p>
-                  </div>
-                  <div className="md:col-span-2 md:text-right">
-                    <span className="font-mono text-xs text-cyan-300/90">{item.tag}</span>
-                  </div>
-                </div>
+                </ScrollReveal>
               );
             })}
           </div>
@@ -330,7 +339,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-14 lg:grid-cols-12">
             <div className="lg:col-span-5">
-              <div className="lg:sticky lg:top-28">
+              <ScrollReveal className="lg:sticky lg:top-28">
                 <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
                   Every Interaction Has Potential.
                 </h2>
@@ -348,26 +357,25 @@ export default function HomePage() {
                     <ArrowRight className="h-4 w-4" />
                   </Link>
                 </div>
-              </div>
+              </ScrollReveal>
             </div>
 
             <div className="lg:col-span-7">
               <ol className="space-y-6">
-                {CONVERSATION_STAGES.map((stage) => (
-                  <li
-                    key={stage.step}
-                    className="group relative flex gap-5 rounded-2xl border border-cyan-300/12 bg-[#061218]/80 p-6 transition-colors hover:border-cyan-300/30"
-                  >
-                    <span className="font-mono text-sm font-medium text-cyan-400">
-                      {stage.step}
-                    </span>
-                    <div>
-                      <h3 className="text-lg font-medium text-white">{stage.title}</h3>
-                      <p className="mt-2 text-sm leading-relaxed text-slate-300">
-                        {stage.description}
-                      </p>
-                    </div>
-                  </li>
+                {CONVERSATION_STAGES.map((stage, idx) => (
+                  <ScrollReveal key={stage.step} delayMs={idx * 70}>
+                    <li className="group relative flex gap-5 rounded-2xl border border-cyan-300/12 bg-[#061218]/80 p-6 transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-300/35">
+                      <span className="font-mono text-sm font-medium text-cyan-400">
+                        {stage.step}
+                      </span>
+                      <div>
+                        <h3 className="text-lg font-medium text-white">{stage.title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                          {stage.description}
+                        </p>
+                      </div>
+                    </li>
+                  </ScrollReveal>
                 ))}
               </ol>
             </div>
@@ -380,7 +388,7 @@ export default function HomePage() {
          ===================================================================== */}
       <section className="relative border-t border-cyan-300/10 bg-[#050E13] py-24 sm:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
+          <ScrollReveal className="max-w-3xl">
             <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
               Understand What Your Customers Are Asking.
             </h2>
@@ -389,24 +397,23 @@ export default function HomePage() {
               benchmarks or inflated projections. See what customers need and where your
               knowledge can grow.
             </p>
-          </div>
+          </ScrollReveal>
 
           <div className="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {BI_SIGNALS.map((sig) => {
+            {BI_SIGNALS.map((sig, idx) => {
               const Icon = sig.icon;
               return (
-                <div
-                  key={sig.label}
-                  className="border-t border-cyan-300/20 pt-6"
-                >
-                  <div className="flex items-center gap-2.5 text-cyan-300">
-                    <Icon className="h-4 w-4" />
-                    <h3 className="text-base font-semibold text-white">{sig.label}</h3>
+                <ScrollReveal key={sig.label} delayMs={idx * 60}>
+                  <div className="border-t border-cyan-300/20 pt-6 transition-colors duration-300 hover:border-cyan-300/50">
+                    <div className="flex items-center gap-2.5 text-cyan-300">
+                      <Icon className="h-4 w-4" />
+                      <h3 className="text-base font-semibold text-white">{sig.label}</h3>
+                    </div>
+                    <p className="mt-2.5 text-sm leading-relaxed text-slate-300/90">
+                      {sig.detail}
+                    </p>
                   </div>
-                  <p className="mt-2.5 text-sm leading-relaxed text-slate-300/90">
-                    {sig.detail}
-                  </p>
-                </div>
+                </ScrollReveal>
               );
             })}
           </div>
@@ -418,7 +425,7 @@ export default function HomePage() {
          ===================================================================== */}
       <section className="relative overflow-hidden border-t border-cyan-300/15 bg-[#040B0F] py-24 sm:py-32">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,184,166,0.16)_0%,rgba(5,12,16,0.92)_68%)]" />
-        <div className="relative z-10 mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+        <ScrollReveal className="relative z-10 mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
             Let Every Conversation Take You Further.
           </h2>
@@ -428,14 +435,14 @@ export default function HomePage() {
           <div className="mt-9 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
             <Link
               href="/get-started"
-              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-cyan-400 px-7 text-sm font-semibold text-[#041318] transition-all hover:bg-cyan-300 shadow-[0_8px_32px_rgba(34,211,238,0.28)]"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-cyan-400 px-7 text-sm font-semibold text-[#041318] transition-all duration-300 hover:-translate-y-0.5 hover:bg-cyan-300 shadow-[0_8px_32px_rgba(34,211,238,0.28)]"
             >
               Start Your 14-Day Free Trial
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/pricing"
-              className="inline-flex h-12 items-center justify-center rounded-lg border border-cyan-200/25 bg-[#06151B]/70 px-6 text-sm font-medium text-white transition-colors hover:border-cyan-200/50 hover:bg-[#0A2029]"
+              className="inline-flex h-12 items-center justify-center rounded-lg border border-cyan-200/25 bg-[#06151B]/70 px-6 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-cyan-200/50 hover:bg-[#0A2029]"
             >
               View Pricing
             </Link>
@@ -444,8 +451,11 @@ export default function HomePage() {
             No credit card required. Your 14-day trial begins only when you activate your
             assistant.
           </p>
-        </div>
+        </ScrollReveal>
       </section>
+
+      {/* Floating Mascot Chat Widget */}
+      <FloatingMascotChat />
     </div>
   );
 }

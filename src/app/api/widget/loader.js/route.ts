@@ -48,19 +48,20 @@ export async function GET(request: Request) {
   var button = document.createElement('button');
   button.type = 'button';
   button.setAttribute('aria-label', 'Open chat assistant');
-  button.style.width = '56px';
-  button.style.height = '56px';
+  button.style.width = '60px';
+  button.style.height = '60px';
   button.style.borderRadius = '9999px';
-  button.style.border = 'none';
+  button.style.border = '2px solid rgba(103, 232, 249, 0.55)';
   button.style.background = '#FFFFFF';
-  button.style.color = '#FFFFFF';
+  button.style.padding = '0';
+  button.style.overflow = 'hidden';
   button.style.cursor = 'pointer';
   button.style.display = 'flex';
   button.style.alignItems = 'center';
   button.style.justifyContent = 'center';
   button.style.marginLeft = 'auto';
-  button.style.boxShadow = '0 10px 25px rgba(255, 255, 255, 0.25)';
-  button.innerHTML = '<svg width="32" height="32" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 27L19 11L30 21Z" fill="#FAFAFA"/><path d="M49 27L45 11L34 21Z" fill="#FAFAFA"/><path d="M14 31C14 23 22 19 32 19C42 19 50 23 50 31C50 41.5 41 49 32 51C23 49 14 41.5 14 31Z" fill="#FAFAFA"/><circle cx="24" cy="33" r="2.6" fill="#0A0A0A"/><circle cx="40" cy="33" r="2.6" fill="#0A0A0A"/><path d="M29.5 39.5H34.5L32 42.5Z" fill="#0A0A0A"/></svg>';
+  button.style.boxShadow = '0 10px 28px rgba(6, 182, 212, 0.35)';
+  button.innerHTML = '<img src="' + baseUrl + '/harmek-mascot.jpg" alt="HARMEK AI Chat" style="width:100%;height:100%;object-fit:cover;object-position:top;" />';
 
   button.addEventListener('click', function() {
     isOpen = !isOpen;
