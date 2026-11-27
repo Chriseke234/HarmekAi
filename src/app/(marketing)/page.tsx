@@ -1,128 +1,277 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Check, ShieldCheck } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { EmberFox } from "@/components/brand/ember-fox";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  BarChart3,
+  BookOpen,
+  Cpu,
+  GitBranch,
+  HelpCircle,
+  MessageSquare,
+  ShieldCheck,
+  Sparkles,
+  UserCheck,
+  Users,
+} from "lucide-react";
+import { CinematicSignalCanvas } from "@/components/marketing/cinematic-canvas";
 
-const CAPABILITY_ROWS = [
+const INTELLIGENCE_PILLARS = [
   {
-    title: "Native Intelligence — Zero LLM API Required",
-    detail:
-      "Answers product, pricing, service, FAQ, delivery, and policy enquiries directly from your structured business records. Optional Enhanced AI (OpenAI, Anthropic, Gemini) plugs in whenever you choose and falls back cleanly if unavailable.",
-    tag: "Default Engine",
+    icon: Cpu,
+    title: "Native HARMEK Intelligence Engine",
+    description:
+      "Operates out of the box with zero external LLM API required. Deterministic intent detection, BM25 catalog retrieval, entity extraction, and confidence thresholds work natively on your structured business data.",
+    tag: "Default • Zero API Key",
   },
   {
-    title: "Unified Inbox with Instant Human Takeover",
-    detail:
-      "Every website chat lands in one calm workspace inbox. Step in at any moment and Harmek immediately pauses automated replies until an authorized team member hands control back.",
-    tag: "Human First",
+    icon: Sparkles,
+    title: "Optional Enhanced AI",
+    description:
+      "Connect OpenAI, Anthropic, or Google Gemini securely on the server side whenever you want deeper conversational nuance — protected by a post-generation fact verifier and automatic fallback to Native HARMEK.",
+    tag: "Modular Add-On",
   },
   {
-    title: "Strict Grounding & Knowledge Gap Reports",
-    detail:
-      "Harmek never invents prices, availability, bookings, or policies. Unmatched questions are acknowledged honestly, escalated when appropriate, and logged so you can close gaps in one click.",
-    tag: "Verified Truth",
+    icon: BookOpen,
+    title: "Business-Specific Knowledge",
+    description:
+      "Grounds every answer in your verified products, services, prices, FAQs, policies, uploaded documents, and imported webpages — never guessing or inventing facts.",
+    tag: "Verified Grounding",
   },
   {
-    title: "Real Database Analytics, Never Fabricated ROI",
-    detail:
-      "Distinguishes clearly between conversations handled, issues resolved, leads captured, and staff-verified sales completed — backed by real database events and an end-of-trial performance report.",
-    tag: "Honest Metrics",
+    icon: UserCheck,
+    title: "Intelligent Human Handoff",
+    description:
+      "Detects urgency, complex requests, or explicit requests for staff, then hands off seamlessly with a 3-point Agent Handoff Brief while pausing automated replies until control is returned.",
+    tag: "Human-First Control",
+  },
+];
+
+const CONVERSATION_STAGES = [
+  {
+    step: "01",
+    title: "Respond to enquiries",
+    description:
+      "Greet website and messaging visitors immediately in your business's tone, day or night, with zero wait time.",
+  },
+  {
+    step: "02",
+    title: "Answer product and service questions",
+    description:
+      "Deliver exact catalog prices, availability, durations, delivery rules, and business policies directly from your verified records.",
+  },
+  {
+    step: "03",
+    title: "Capture leads",
+    description:
+      "Collect customer names, emails, and phone numbers naturally during high-intent buying or booking moments — always respecting consent.",
+  },
+  {
+    step: "04",
+    title: "Guide customer journeys",
+    description:
+      "Actively listen to customer challenges, compare options side-by-side, calculate verified subtotals, and suggest complementary items.",
+  },
+  {
+    step: "05",
+    title: "Escalate conversations to staff",
+    description:
+      "Hand off nuanced requests cleanly to your unified inbox, where staff can take over with one click and teach HARMEK from every resolution.",
+  },
+];
+
+const BI_SIGNALS = [
+  {
+    icon: BarChart3,
+    label: "Conversation analytics",
+    detail: "Track real conversation volume, AI-handled vs. staff-handled ratios, and response times across custom date ranges.",
+  },
+  {
+    icon: HelpCircle,
+    label: "Knowledge gaps",
+    detail: "Spot questions HARMEK could not answer with high confidence and turn them into verified FAQs in one click.",
+  },
+  {
+    icon: GitBranch,
+    label: "Customer enquiry patterns",
+    detail: "Interpret recurring customer challenges and hesitations to uncover what drives demand across your catalog.",
+  },
+  {
+    icon: Users,
+    label: "Leads captured",
+    detail: "Clearly separate conversations handled, issues resolved, leads captured, and staff-verified sales completed.",
+  },
+  {
+    icon: MessageSquare,
+    label: "Unanswered questions",
+    detail: "Review every unmatched customer question transparently — never hidden, never fabricated.",
   },
 ];
 
 export default function HomePage() {
   return (
-    <div>
-      {/* Editorial Split Hero */}
-      <section className="border-b border-[#262626]">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-12 lg:px-8 lg:py-28">
-          <div className="lg:col-span-7">
-            <h1 className="font-display text-5xl font-normal leading-[1.06] text-[#FAFAFA] sm:text-6xl lg:text-[4.25rem]">
-              Your business, always within reach.
-            </h1>
-            <p className="mt-6 max-w-[58ch] text-lg leading-relaxed text-[#A3A3A3]">
-              Harmek AI answers customer questions from your verified catalog, captures leads,
-              and hands conversations to your team the moment a human is needed — working out
-              of the box without requiring an external LLM API.
-            </p>
+    <div className="bg-[#050C10] text-slate-100">
+      {/* =====================================================================
+          CINEMATIC FULL-SCREEN HERO + LOWER HERO COMPOSITION
+         ===================================================================== */}
+      <section className="relative flex min-h-[100svh] flex-col justify-between overflow-hidden bg-[#040B0F] pt-24 pb-10 sm:pt-28 sm:pb-12">
+        {/* Original Generated Architectural Portal Backdrop */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+          <Image
+            src="/harmek-hero-portal.jpg"
+            alt="Luminous turquoise architectural portal representing HARMEK AI intelligent business communication"
+            fill
+            priority
+            sizes="100vw"
+            className="animate-harmek-drift object-cover object-center opacity-90"
+          />
+          {/* Atmospheric teal/charcoal depth vignettes for crisp typography legibility */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(4,19,24,0.22)_0%,rgba(4,12,16,0.62)_62%,rgba(4,10,14,0.92)_100%)]" />
+          <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#040B0F]/80 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-[#050C10] via-[#050C10]/75 to-transparent" />
+        </div>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Link href="/get-started">
-                <Button size="lg" className="w-full sm:w-auto">
-                  Start 14-Day Free Trial
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </Link>
-              <Link href="/how-it-works">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                  How Harmek Works
-                </Button>
-              </Link>
+        {/* Restrained Floating Particles & Interconnected Signal Lines */}
+        <CinematicSignalCanvas />
+
+        {/* Central Hero Typography */}
+        <div className="relative z-10 mx-auto my-auto flex max-w-4xl flex-col items-center px-4 py-12 text-center sm:px-6 lg:py-16">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-cyan-200/90 sm:text-xs">
+            INTELLIGENCE THAT UNDERSTANDS YOUR BUSINESS
+          </p>
+
+          <h1 className="mt-5 text-4xl font-semibold tracking-tight text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.55)] sm:text-6xl lg:text-[4.5rem] lg:leading-[1.06]">
+            Every Conversation
+            <br />
+            Opens an Opportunity.
+          </h1>
+
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-slate-200/90 sm:text-lg">
+            Meet HARMEK AI. Your intelligent business communication platform, designed to
+            understand your business, engage customers and turn enquiries into meaningful
+            opportunities.
+          </p>
+
+          <div className="mt-9 flex flex-col items-center gap-3.5 sm:flex-row">
+            <Link
+              href="#discover"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-cyan-400 px-6 text-sm font-semibold text-[#041318] transition-all hover:bg-cyan-300 shadow-[0_8px_32px_rgba(34,211,238,0.28)]"
+            >
+              Start Exploring
+              <ArrowUpRight className="h-4 w-4" />
+            </Link>
+            <Link
+              href="/how-it-works"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg border border-cyan-200/25 bg-[#06151B]/65 px-6 text-sm font-medium text-white backdrop-blur-sm transition-colors hover:border-cyan-200/50 hover:bg-[#0A2029]/80"
+            >
+              See How It Works
+            </Link>
+          </div>
+        </div>
+
+        {/* Lower Hero Content — Bottom-Left & Bottom-Right Editorial Anchors */}
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 pt-6 sm:px-6 lg:px-8">
+          <div className="grid items-end gap-8 border-t border-cyan-200/15 pt-7 md:grid-cols-12">
+            {/* Bottom-Left */}
+            <div className="md:col-span-7">
+              <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.22em] text-cyan-300/90">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-300" aria-hidden="true" />
+                THE POWER OF UNDERSTANDING
+              </div>
+              <h2 className="mt-2.5 text-2xl font-medium tracking-tight text-white sm:text-3xl lg:text-[2.1rem]">
+                Beyond Automated Replies.
+              </h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-300/90 sm:text-base">
+                From understanding customer enquiries to helping businesses build meaningful
+                relationships, HARMEK makes every interaction count.
+              </p>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 border-t border-[#262626] pt-6 text-xs text-[#A3A3A3]">
-              <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#D4D4D4]" />
-                No credit card required
+            {/* Bottom-Right */}
+            <div className="flex flex-col items-start md:col-span-5 md:items-end md:text-right">
+              <p className="max-w-sm text-xs leading-relaxed text-slate-300/85 sm:text-sm">
+                Powered by its native intelligence engine, HARMEK understands your business and
+                helps you respond with confidence.
+              </p>
+              <Link
+                href="#discover"
+                className="mt-4 inline-flex items-center gap-2 rounded-lg border border-cyan-200/25 bg-[#071820]/70 px-4 py-2 text-xs font-medium text-cyan-100 backdrop-blur-sm transition-colors hover:border-cyan-300/50 hover:bg-[#0B232E]"
+              >
+                Discover HARMEK
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================================
+          SECTION A: INTRODUCTION — "Your Business. Understood."
+         ===================================================================== */}
+      <section
+        id="discover"
+        className="relative border-t border-cyan-300/10 bg-gradient-to-b from-[#050C10] to-[#071319] py-24 sm:py-32"
+      >
+        <div className="mx-auto grid max-w-7xl items-center gap-14 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+          <div className="lg:col-span-6">
+            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+              Your Business. Understood.
+            </h2>
+            <p className="mt-6 text-base leading-relaxed text-slate-300 sm:text-lg">
+              Most chat tools treat every business the same. HARMEK learns your exact products,
+              services, pricing, operating hours, policies, and preferred tone of voice — turning
+              your everyday business knowledge into calm, accurate customer conversations.
+            </p>
+            <p className="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">
+              Set up in plain language without writing code or fragile prompts. Update a price,
+              upload a CSV catalog, or import a webpage — and HARMEK reflects it immediately.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-6 border-t border-cyan-300/10 pt-6 text-xs text-cyan-100/85">
+              <span className="inline-flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-cyan-400" />
+                Grounded in your verified records
               </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#D4D4D4]" />
-                Trial starts only on activation
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5 text-[#D4D4D4]" />
-                No prompt engineering
+              <span className="inline-flex items-center gap-2">
+                <ShieldCheck className="h-4 w-4 text-cyan-400" />
+                Never invents prices or policies
               </span>
             </div>
           </div>
 
-          {/* Grounded Visual Proof Panel */}
-          <div className="lg:col-span-5">
-            <div className="overflow-hidden rounded-xl border border-[#262626] bg-[#121212]">
-              <div className="relative h-64 w-full sm:h-72">
-                <Image
-                  src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=80"
-                  alt="Business owner serving customers with calm precision"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#121212] via-[#121212]/25 to-transparent" />
-                <div className="absolute bottom-4 left-5 right-5 flex items-center justify-between">
-                  <span className="font-mono text-[11px] uppercase tracking-wider text-[#FAFAFA]/90">
-                    Native Harmek Engine
+          <div className="lg:col-span-6">
+            <div className="relative overflow-hidden rounded-2xl border border-cyan-300/15 bg-[#08161D]/90 p-6 sm:p-8">
+              <div className="pointer-events-none absolute -top-24 -right-24 h-56 w-56 rounded-full bg-cyan-400/10 blur-3xl" />
+              <div className="space-y-5">
+                <div className="flex items-center justify-between border-b border-cyan-300/10 pb-4">
+                  <span className="font-mono text-xs uppercase tracking-widest text-cyan-300">
+                    Live Business Signal
                   </span>
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#121212]/90 px-2.5 py-1 text-[11px] font-medium text-[#D4D4D4] border border-[#D4D4D4]/30">
-                    <ShieldCheck className="h-3.5 w-3.5" />
-                    Catalog Grounded
+                  <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2.5 py-0.5 text-[11px] font-medium text-cyan-200">
+                    Native Engine Active
                   </span>
                 </div>
-              </div>
 
-              <div className="divide-y divide-[#262626] px-5 py-4 text-sm">
-                <div className="pb-3.5">
-                  <p className="text-[11px] font-medium uppercase tracking-wider text-[#8F8F8F]">
-                    Customer Enquiry
-                  </p>
-                  <p className="mt-1 text-[#FAFAFA]">
-                    &ldquo;How much is the Vitamin C Serum and do you offer same-day
-                    delivery?&rdquo;
-                  </p>
-                </div>
-                <div className="pt-3.5">
-                  <div className="flex items-start gap-3">
-                    <EmberFox mood="friendly" size={38} />
-                    <div>
-                      <p className="text-[11px] font-medium uppercase tracking-wider text-[#FFFFFF]">
-                        Harmek AI &bull; Verified Response
-                      </p>
-                      <p className="mt-1 leading-relaxed text-[#A3A3A3]">
-                        Vitamin C Serum is <span className="font-mono text-[#FAFAFA]">$38.00</span>{" "}
-                        and currently in stock. Same-day local delivery is available for orders
-                        placed before 2 PM.
-                      </p>
-                    </div>
+                <div className="space-y-4 text-sm">
+                  <div className="rounded-xl border border-white/10 bg-[#050E13] p-4">
+                    <p className="text-[11px] font-medium uppercase tracking-wider text-slate-400">
+                      Customer asks
+                    </p>
+                    <p className="mt-1.5 text-white">
+                      &ldquo;My skin has been feeling dry lately — what do you recommend, and
+                      do you deliver today?&rdquo;
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-cyan-400/25 bg-cyan-950/25 p-4">
+                    <p className="text-[11px] font-medium uppercase tracking-wider text-cyan-300">
+                      HARMEK AI responds
+                    </p>
+                    <p className="mt-1.5 leading-relaxed text-slate-200">
+                      &ldquo;I understand how frustrating dry skin can be. From our catalog,{" "}
+                      <span className="font-medium text-white">Hydra Barrier Cream ($42.00)</span>{" "}
+                      is formulated for deep hydration and is currently in stock. Same-day
+                      courier delivery is available for orders placed before 2 PM.&rdquo;
+                    </p>
                   </div>
                 </div>
               </div>
@@ -131,108 +280,170 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Editorial Ruled Capability List (No generic icon-card grid) */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-        <div className="max-w-2xl">
-          <h2 className="font-display text-3xl font-normal text-[#FAFAFA] sm:text-4xl">
-            Designed for real businesses, not prompt engineers.
-          </h2>
-          <p className="mt-3 text-base leading-relaxed text-[#A3A3A3]">
-            Structure your products, services, prices, and policies in plain language. Embed a
-            lightweight chat widget in minutes.
-          </p>
-        </div>
-
-        <div className="mt-12 divide-y divide-[#262626] border-y border-[#262626]">
-          {CAPABILITY_ROWS.map((row) => (
-            <div
-              key={row.title}
-              className="grid gap-4 py-7 md:grid-cols-12 md:items-baseline"
-            >
-              <div className="md:col-span-5">
-                <h3 className="text-lg font-semibold text-[#FAFAFA]">{row.title}</h3>
-              </div>
-              <div className="md:col-span-5">
-                <p className="text-sm leading-relaxed text-[#A3A3A3]">{row.detail}</p>
-              </div>
-              <div className="md:col-span-2 md:text-right">
-                <span className="font-mono text-xs text-[#D4D4D4]">{row.tag}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Dual Intelligence Architectural Contrast */}
-      <section className="border-y border-[#262626] bg-[#121212]">
-        <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-24">
-          <div className="grid gap-12 lg:grid-cols-12">
-            <div className="lg:col-span-4">
-              <h2 className="font-display text-3xl font-normal text-[#FAFAFA] sm:text-4xl">
-                Reliable natively. Optionally enhanced.
-              </h2>
-              <p className="mt-4 text-sm leading-relaxed text-[#A3A3A3]">
-                Your customer communication never breaks if an external AI provider goes down
-                or has no key configured.
-              </p>
-            </div>
-
-            <div className="grid gap-8 sm:grid-cols-2 lg:col-span-8">
-              <div className="rounded-xl border border-[#D4D4D4]/35 bg-[#0E0E0E] p-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-base font-semibold text-[#FAFAFA]">
-                    Native Harmek Engine
-                  </h3>
-                  <span className="font-mono text-xs text-[#D4D4D4]">Included Default</span>
-                </div>
-                <p className="mt-2.5 text-sm leading-relaxed text-[#A3A3A3]">
-                  Deterministic intent detection, fuzzy catalog matching, entity extraction,
-                  confidence thresholds, and clarification prompts — zero API keys required.
-                </p>
-              </div>
-
-              <div className="rounded-xl border border-[#262626] bg-[#0E0E0E] p-6">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-base font-semibold text-[#FAFAFA]">
-                    Enhanced AI Layer
-                  </h3>
-                  <span className="font-mono text-xs text-[#FFFFFF]">Optional Add-On</span>
-                </div>
-                <p className="mt-2.5 text-sm leading-relaxed text-[#A3A3A3]">
-                  Connect OpenAI, Anthropic, or Gemini with AES-256 encrypted server-side keys,
-                  grounded business rules, and automatic fallback to Native Harmek.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Bottom Conversion Band */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="flex flex-col justify-between gap-8 rounded-xl border border-[#262626] bg-[#121212] p-8 sm:p-12 lg:flex-row lg:items-center">
-          <div className="max-w-xl">
-            <h2 className="font-display text-3xl font-normal text-[#FAFAFA] sm:text-4xl">
-              Test Harmek with your real catalog before going live.
+      {/* =====================================================================
+          SECTION B: INTELLIGENCE — "Intelligence That Works Your Way."
+         ===================================================================== */}
+      <section className="relative border-t border-cyan-300/10 bg-[#061015] py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+              Intelligence That Works Your Way.
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-[#A3A3A3]">
-              Set up your workspace, add your products and FAQs, and run live conversations in
-              the simulator. Your 14-day trial begins only when you activate Harmek.
+            <p className="mt-5 text-base leading-relaxed text-slate-300 sm:text-lg">
+              HARMEK operates reliably without requiring an external LLM API. Start immediately
+              with the Native HARMEK Intelligence Engine, and optionally connect an external AI
+              provider only if and when your business wants it.
             </p>
           </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Link href="/get-started">
-              <Button size="lg">
-                Create Free Workspace
-                <ArrowRight className="h-4 w-4" />
-              </Button>
+
+          <div className="mt-14 divide-y divide-cyan-300/10 border-y border-cyan-300/10">
+            {INTELLIGENCE_PILLARS.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className="grid gap-4 py-8 md:grid-cols-12 md:items-baseline"
+                >
+                  <div className="flex items-center gap-3 md:col-span-4">
+                    <Icon className="h-5 w-5 shrink-0 text-cyan-400" />
+                    <h3 className="text-lg font-medium text-white">{item.title}</h3>
+                  </div>
+                  <div className="md:col-span-6">
+                    <p className="text-sm leading-relaxed text-slate-300">
+                      {item.description}
+                    </p>
+                  </div>
+                  <div className="md:col-span-2 md:text-right">
+                    <span className="font-mono text-xs text-cyan-300/90">{item.tag}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================================
+          SECTION C: CUSTOMER CONVERSATIONS — "Every Interaction Has Potential."
+         ===================================================================== */}
+      <section className="relative border-t border-cyan-300/10 bg-gradient-to-b from-[#061015] to-[#08171E] py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-14 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <div className="lg:sticky lg:top-28">
+                <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+                  Every Interaction Has Potential.
+                </h2>
+                <p className="mt-5 text-base leading-relaxed text-slate-300">
+                  Move beyond static FAQ widgets. HARMEK guides each visitor through discovery,
+                  answers real catalog questions, captures qualified leads, and escalates
+                  seamlessly to your human team when personal attention matters most.
+                </p>
+                <div className="mt-8">
+                  <Link
+                    href="/features"
+                    className="inline-flex items-center gap-2 text-sm font-medium text-cyan-300 transition-colors hover:text-cyan-200"
+                  >
+                    Explore all platform capabilities
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="lg:col-span-7">
+              <ol className="space-y-6">
+                {CONVERSATION_STAGES.map((stage) => (
+                  <li
+                    key={stage.step}
+                    className="group relative flex gap-5 rounded-2xl border border-cyan-300/12 bg-[#061218]/80 p-6 transition-colors hover:border-cyan-300/30"
+                  >
+                    <span className="font-mono text-sm font-medium text-cyan-400">
+                      {stage.step}
+                    </span>
+                    <div>
+                      <h3 className="text-lg font-medium text-white">{stage.title}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-slate-300">
+                        {stage.description}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================================
+          SECTION D: BUSINESS INTELLIGENCE — "Understand What Your Customers Are Asking."
+         ===================================================================== */}
+      <section className="relative border-t border-cyan-300/10 bg-[#050E13] py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+              Understand What Your Customers Are Asking.
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-slate-300 sm:text-lg">
+              Every metric in HARMEK comes directly from real database records — never invented
+              benchmarks or inflated projections. See what customers need and where your
+              knowledge can grow.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            {BI_SIGNALS.map((sig) => {
+              const Icon = sig.icon;
+              return (
+                <div
+                  key={sig.label}
+                  className="border-t border-cyan-300/20 pt-6"
+                >
+                  <div className="flex items-center gap-2.5 text-cyan-300">
+                    <Icon className="h-4 w-4" />
+                    <h3 className="text-base font-semibold text-white">{sig.label}</h3>
+                  </div>
+                  <p className="mt-2.5 text-sm leading-relaxed text-slate-300/90">
+                    {sig.detail}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* =====================================================================
+          SECTION E: FINAL CTA — "Let Every Conversation Take You Further."
+         ===================================================================== */}
+      <section className="relative overflow-hidden border-t border-cyan-300/15 bg-[#040B0F] py-24 sm:py-32">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(20,184,166,0.16)_0%,rgba(5,12,16,0.92)_68%)]" />
+        <div className="relative z-10 mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+            Let Every Conversation Take You Further.
+          </h2>
+          <p className="mt-5 text-base text-slate-300 sm:text-lg">
+            Discover a smarter way to manage customer communication.
+          </p>
+          <div className="mt-9 flex flex-col items-center justify-center gap-3.5 sm:flex-row">
+            <Link
+              href="/get-started"
+              className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-cyan-400 px-7 text-sm font-semibold text-[#041318] transition-all hover:bg-cyan-300 shadow-[0_8px_32px_rgba(34,211,238,0.28)]"
+            >
+              Start Your 14-Day Free Trial
+              <ArrowRight className="h-4 w-4" />
             </Link>
-            <Link href="/pricing">
-              <Button variant="outline" size="lg">
-                View Pricing
-              </Button>
+            <Link
+              href="/pricing"
+              className="inline-flex h-12 items-center justify-center rounded-lg border border-cyan-200/25 bg-[#06151B]/70 px-6 text-sm font-medium text-white transition-colors hover:border-cyan-200/50 hover:bg-[#0A2029]"
+            >
+              View Pricing
             </Link>
           </div>
+          <p className="mt-6 text-xs text-slate-400">
+            No credit card required. Your 14-day trial begins only when you activate your
+            assistant.
+          </p>
         </div>
       </section>
     </div>
